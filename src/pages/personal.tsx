@@ -10,41 +10,65 @@ import Login from "@/components/home/login";
 import PersonalInfoCard from "@/components/home/personalInfoCard";
 import ResumeManagementCard from "@/components/home/resumeManagementCard";
 import BrowseInformationCard from "@/components/home/BrowseInformationCard";
+import axios from "@/api/axios";
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof actions;
 type Props = StateProps & DispatchProps 
 
-class Personal extends React.Component<Props>{
-  render() {
-    return (
-      <div className="search_layout">
-        <Header />
-        <div className="search_options">
+const Personal = () => { 
+  const [listData,setListData] = React.useState([]);
+  const getList = async() => {
+    // 获取首页列表数据
+    const {data} = await axios.post("/cpe/resume/choice",{
+      pageNum:1,
+      pageSize:10,
+      param:{}
+    });
+    setListData(data.data);
+    console.log("data",data);
+  };
+  const searchList = async(data)=> {
+    const {code:workAddrCityCode,value:search} = data;
+    const {data: rs} = await axios.post("/cpe/resume/search",{
+      pageNum:1,
+      pageSize:10,
+      param:{
+        search,
+        workAddrCityCode
+      }
+    });
+    setListData(rs.data);
+    console.log("data",rs);
+  };
+  React.useEffect(()=>{
+    getList();
+  },[]);
+  return (
+    <div className="search_layout">
+      <Header />
+      <div className="search_options">
           
-        </div> 
-        <div className="search_lists">
-          <div className="search_lists_content">
-            <div className="search_lists_content_left">
-              <div className="search_lists_content_left_top">
-                <SearchHeader />
-              </div>
-              <Card/>
-              <Card/>
-              <Card/>
-              <Card/>
+      </div> 
+      <div className="search_lists">
+        <div className="search_lists_content">
+          <div className="search_lists_content_left">
+            <div className="search_lists_content_left_top">
+              <SearchHeader />
             </div>
-            <div className="search_lists_content_right">
-              <PersonalInfoCard />
-              <Login />
-              <ResumeManagementCard />
-              <BrowseInformationCard />
-            </div>
-          </div> 
+            {listData.map((item,index) => <Card key={index} data={item} />)}
+
+          </div>
+          <div className="search_lists_content_right">
+            <PersonalInfoCard />
+            <Login />
+            <ResumeManagementCard />
+            <BrowseInformationCard />
+          </div>
         </div> 
-      </div>
-    );
-  }
-}
+      </div> 
+    </div>
+  );
+};
 
 const mapStateToProps = function (state: CombinedState): CounterState {
   return state.counter;

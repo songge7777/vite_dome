@@ -26,7 +26,7 @@ const Counter = () =>{
   };
   const searchList = async(data)=> {
     const {code:workAddrCityCode,value:search} = data;
-    const rs = await axios.post("/cpe/resume/search",{
+    const {data: rs} = await axios.post("/cpe/resume/search",{
       pageNum:1,
       pageSize:10,
       param:{
@@ -34,6 +34,7 @@ const Counter = () =>{
         workAddrCityCode
       }
     });
+    setListData(rs.data);
     console.log("data",rs);
   };
   React.useEffect(()=>{

@@ -96,6 +96,8 @@ const ResumeManagement = () => {
     phone:3,
     workTime:dayjs("2022-12-08"),
     jobIdentity:"1",
+    // 学历
+    educationName:"",
   });
   // 期望职位
   const [formTwoData,setFormTwoData] = React.useState({
@@ -314,20 +316,23 @@ const ResumeManagement = () => {
         resumeIds:["1601142715991904258"]
       }
     };
-    const {data:rs} = await axios.post("/eps/nds_resume/list",data);
+    const {data:_rs} = await axios.post("/eps/nds_resume/list",data);
+    const rs = _rs.data[0];
     const newR = {
-      name:1,
-      jobMent:1,
+      name:rs.name,
+      jobMent:rs.jobMent,
       // birthday:,dayjs("2022-12-11")],
       birthday:dayjs("2022-12-08"),
       // salaryExpectation:["1","3"],
-      sex:"1",
-      wx:1,
-      email:1,
-      phone:1,
+      sex:rs.name,
+      wx:rs.name,
+      email:rs.email,
+      phone:rs.phone,
       workTime:dayjs("2022-12-08"),
       jobIdentity:"1",
+      educationName:rs.educationName
     };
+    console.log("-*--->",newR);
     setFormOneData(newR);
   };
   const data2 = async()=>{

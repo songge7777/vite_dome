@@ -21,7 +21,7 @@ type TProps = {
   data:baseC[];
   inputNode:React.ReactNode;
   single: boolean;
-  onChange:()=>{},
+  onChange?:()=>{},
   cb:()=>{}
 }
 
@@ -43,7 +43,7 @@ const DoubleTree:React.FC = (props:TProps) => {
     setCurrent(item);
   };
   const clickCurrent = (item) => {
-    onChange(item.code);
+    onChange && onChange(item.code);
     cb(item);
     setCurrentValue(item.name);
     setShow(false);

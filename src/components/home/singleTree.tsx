@@ -19,7 +19,7 @@ type baseC  = {
 
 type TProps = {
   data:baseC[];
-  onChange:()=>{},
+  onChange?:()=>{},
   cb:()=>{}
 }
 
@@ -32,7 +32,7 @@ const SingleTree:React.FC = (props:TProps) => {
     setCurrent(item);
   };
   const clickCurrent = (item) => {
-    onChange(item.code);
+    onChange && onChange(item.code);
     cb(item);
     setCurrentValue(item.name);
     setShow(false);
