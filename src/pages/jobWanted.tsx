@@ -2,11 +2,16 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { CombinedState, CounterState } from "../store/reducers";
 import * as actions from "@/store/actions/counter";
+import SingleTree from "@/components/home/singleTree";
 import "@/styles/pages/jobWanted.scss";
 import Header from "@/components/home/Header";
 import LOGO from "@/img/LOGO.png";
 import * as dayjs from "dayjs";
 import classnames from "classnames";
+import DoubleTree from "@/components/home/doubleTree";
+import axios from "@/api/axios";
+import { FormInstance, RuleObject } from "antd/es/form";
+import { StoreValue } from "antd/es/form/interface";
 import {
   moneyList,
   expectedIndustryData,
@@ -15,6 +20,16 @@ import {
   educationData,
   educationalData
 } from "@/utils/optionList";
+import {
+  Form,
+  Input,
+  Button,
+  Radio,
+  Select,
+  DatePicker,
+} from "antd";
+
+
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof actions;
 type Props = StateProps & DispatchProps 
@@ -61,16 +76,7 @@ const SalaryExpectation: React.FC = (props:TestProps) => {
   </div>;
 };
 
-import {
-  Form,
-  Input,
-  Button,
-  Radio,
-  Select,
-  DatePicker,
-} from "antd";
-import { FormInstance, RuleObject } from "antd/es/form";
-import { StoreValue } from "antd/es/form/interface";
+
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
@@ -80,15 +86,15 @@ const jobWanted: React.FC = () => {
   const [_, setIsShow] = useState<[]>();
   const [formMustData,setFormMustData] = React.useState({
     // 姓名
-    identityName:"1",
+    name:"1",
     // 期望职位
     expectedPosition:"2",
     // 出生日期
-    dateBirth:[dayjs("2022-12-08"),dayjs("2022-12-11")],
+    birthday:[dayjs("2022-12-08"),dayjs("2022-12-11")],
     // 期望薪资
     salaryExpectation:["1","3"],
     // 性别
-    identitySex:"",
+    sex:"",
     // 期望行业
     expectedIndustry:"",
     // 当前状态
@@ -104,11 +110,31 @@ const jobWanted: React.FC = () => {
   });
   const [formOptional] = Form.useForm();
   const [formLayout, setFormLayout] = useState<LayoutType>("vertical");
+  const [postCategoryData, setPostCategoryData]=React.useState([]);
+  const [industryCategoryData, setIndustryCategoryData]=React.useState([]);
 
   const onFinish = async() => {
     const r1 = formMust.getFieldsValue();
     const r2 = formOptional.getFieldsValue();
+    console.log("r1",r1);
+    console.log("r2",r2);
   };
+  const getIndustryCategory = async() => {
+    const {data} = await axios.get("/sys/industry_category/get_cache_tree");
+    setIndustryCategoryData(data.data);
+  };
+  const getPostCategory = async() => {
+    const {data} = await axios.get("/sys/post_category/cache_tree");
+    setPostCategoryData(data.data);
+  };
+  // 获取数据
+  const getData = async()=>{
+    getPostCategory();
+    getIndustryCategory();
+  };
+  React.useEffect(()=>{
+    getData();
+  },[]);
   const inputValidator = (rule: RuleObject, value: StoreValue, callback: (error?: string) => void):Promise<void | any> | void =>{
     if(!value) return callback();
     if(value.length < 2 || value.length >50){
@@ -119,6 +145,12 @@ const jobWanted: React.FC = () => {
   };
   const clickSex = (id:number) => {
     console.log(id);
+  };
+  const postCategoryDataCb = (item:{}) => {
+    console.log("ITEM",item);
+  };
+  const industryCategoryDataCb = (item:{}) => {
+    console.log("ITEM",item);
   };
 
   return (
@@ -139,21 +171,19 @@ const jobWanted: React.FC = () => {
                   initialValues={{ layout: formLayout,...formMustData }}
                   className="jobWanted_options_layout_cartTop_content_right_form"
                 >
-                  <Form.Item label="姓名" name="identityName" rules={[{ required: true, message:"请输入姓名"},{validator:inputValidator }]}>
+                  <Form.Item label="姓名" name="name" rules={[{ required: true, message:"请输入姓名"},{validator:inputValidator }]}>
                     <Input placeholder="请输入姓名" />
                   </Form.Item>
                   <Form.Item label="期望职位" name="expectedPosition" rules={[{ required: true, message:"请选择期望职位"}]}>
-                    <Select placeholder="请选择职位类型">
-                      <Select.Option value="demo">Demo</Select.Option>
-                    </Select>
+                    <DoubleTree data={postCategoryData} cb={postCategoryDataCb} />
                   </Form.Item>
-                  <Form.Item label="出生日期" name="dateBirth" rules={[{ required: true, message:"请选择出生日期"}]}>
+                  <Form.Item label="出生日期" name="birthday" rules={[{ required: true, message:"请选择出生日期"}]}>
                     <RangePicker placeholder="请选择出生日期" />
                   </Form.Item>
                   <Form.Item label="期望薪资" name="salaryExpectation" rules={[{ required: true, message:"请选择期望薪资"}]} >
                     <SalaryExpectation formMust={formMust}/>
                   </Form.Item>
-                  <Form.Item label="性别" name="identitySex" rules={[{ required: true, message:"请选择性别"}]}>
+                  <Form.Item label="性别" name="sex" rules={[{ required: true, message:"请选择性别"}]}>
                     {/* Radio */}
                     {/*  defaultValue="a"  */}
                     <div onChange={()=>{}} className="formRadio">
@@ -167,9 +197,7 @@ const jobWanted: React.FC = () => {
                     </div>
                   </Form.Item>
                   <Form.Item label="期望行业" name="expectedIndustry"  rules={[{ required: true, message:"请选择行业"}]}>
-                    <Select placeholder="请选择行业" >
-                      {expectedIndustryData().map(item => <Select.Option key={`&2_${item.id}`} value={item.id}>{item.value}</Select.Option>)}
-                    </Select>
+                    <SingleTree data={industryCategoryData} cb={industryCategoryDataCb} />
                   </Form.Item>
                   <Form.Item label="当前状态" name="identityStatus" rules={[{ required: true, message:"请选择状态"}]}>
                     <Select placeholder="请选择状态">
@@ -192,7 +220,7 @@ const jobWanted: React.FC = () => {
                   </Form.Item>
                   
                   <Form.Item className="formItemTwo"> </Form.Item>
-                  <Form.Item label="参加工作时间" name='joinWork'  initialValue={2} rules={[{ required: true, message:"请填写参加工作时间"  }]}>
+                  <Form.Item label="参加工作时间" name='joinWork' rules={[{ required: true, message:"请填写参加工作时间"  }]}>
                     <Input placeholder="请选择参加工作时间" />
                   </Form.Item>
                   <Form.Item label="个人优势" name="identityAdvantage" className="formFloat">

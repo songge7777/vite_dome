@@ -37,17 +37,455 @@
           border-radius: 8px 8px 8px 8px;
           opacity: 1;
           border: 1px solid #ebedf1;
+          padding-top: 16px;
+          &_title {
+            padding: 4px 0 4px 16px;
+            color: rgba(156, 158, 156, 1);
+          }
+          &_item {
+            margin: 8px 0;
+          }
         }
         &_resume {
           margin-left: 16px;
           width: 744px;
-          background: red;
+          &_title {
+            font-size: 18px;
+            font-weight: 400;
+            color: #606266;
+            margin-bottom: 10px;
+          }
+          &_card {
+            width: 744px;
+            background: #ffffff;
+            border-radius: 8px 8px 8px 8px;
+            margin: 12px 0;
+            @include flex(row);
+            justify-content: space-between;
+            padding: 20px;
+            &_left {
+              flex: 1;
+              .part-1 {
+                &_title {
+                  font-size: 18px;
+                  font-weight: 400;
+                  color: #606266;
+                }
+                &_workInfo {
+                  margin-top: 14px;
+                  font-size: 14px;
+                  font-weight: 400;
+                  color: #606266;
+                  span {
+                    margin-left: 40px;
+                  }
+                  & span:first-child {
+                    margin-left: 0px;
+                  }
+                }
+                &_call {
+                  margin-top: 12px;
+                  @include flex(row);
+                  align-items: center;
+                  font-size: 14px;
+                  font-weight: 400;
+                  color: #606266;
+                  img {
+                    width: 10px;
+                    height: 10px;
+                  }
+                  span {
+                    margin: 0 42px 0 5px;
+                  }
+                }
+              }
+              .part-2 {
+                &_title {
+                  font-size: 18px;
+                  font-weight: 400;
+                  color: #606266;
+                }
+                &_workInfo {
+                  margin-top: 14px;
+                  font-size: 14px;
+                  font-weight: 400;
+                  color: #606266;
+                  width: 418px;
+                  word-wrap: break-word;
+                }
+              }
+              .part-3 {
+                &_title {
+                  font-size: 18px;
+                  font-weight: 400;
+                  color: #606266;
+                }
+                &_workInfo {
+                  margin-top: 14px;
+                  font-size: 14px;
+                  font-weight: 400;
+                  color: #606266;
+                  span {
+                    margin-left: 40px;
+                  }
+                  & span:first-child {
+                    margin-left: 0px;
+                  }
+                }
+              }
+              .resumeM_options_layout_cartTop_content_right_form {
+                padding: 20px;
+                box-sizing: border-box;
+                @include flex(row);
+                justify-content: space-between;
+                width: 696px;
+                .ant-form-item {
+                  width: 288px;
+                  flex-shrink: 1;
+                }
+                .formItemLine {
+                  @include flex(row);
+                  width: 100%;
+                  justify-content: space-between;
+                }
+                .formItemTwo {
+                  width: 136px;
+                  margin: 0;
+                }
+              }
+
+              // formFloat
+              .formFloat {
+                margin-top: -98px;
+              }
+              // btn
+              .btn {
+                float: right;
+                margin-right: 40px;
+              }
+            }
+            &_right {
+              @include flex();
+              .part-1 {
+                width: 64px;
+                &_logo {
+                  width: 64px;
+                  height: 64px;
+                  border-radius: 50%;
+                  margin-bottom: 14px;
+                }
+                &_span {
+                  width: 100%;
+                  @include flex(row);
+                  justify-content: flex-end;
+                  align-items: center;
+                  font-size: 12px;
+                  font-weight: 400;
+                  color: #f08300;
+                }
+                &_icon {
+                  width: 10px;
+                  height: 10px;
+                  margin-right: 4px;
+                }
+              }
+              .part-2 {
+                width: 64px;
+                &_span {
+                  width: 100%;
+                  @include flex(row);
+                  justify-content: flex-end;
+                  align-items: center;
+                  font-size: 12px;
+                  font-weight: 400;
+                  color: #f08300;
+                }
+                &_icon {
+                  width: 10px;
+                  height: 10px;
+                  margin-right: 4px;
+                }
+              }
+              .part-3 {
+                width: 64px;
+                &_span {
+                  @include flex(row);
+                  justify-content: flex-end;
+                  align-items: center;
+                  font-size: 12px;
+                  color: #f08300;
+                }
+                &_list {
+                  @include flex(row);
+                  justify-content: flex-end;
+                  &_span {
+                    margin-top: 20px;
+                    @include flex(row);
+                    justify-content: flex-end;
+                    align-items: center;
+                    font-size: 12px;
+                    color: #f08300;
+                    margin-left: 10px;
+                  }
+                }
+                &_icon {
+                  width: 10px;
+                  height: 10px;
+                  margin-right: 4px;
+                }
+              }
+            }
+          }
+          &_work {
+            width: 744px;
+            background: #ffffff;
+            border-radius: 8px 8px 8px 8px;
+            margin: 12px 0;
+            @include flex();
+            padding: 20px;
+            .part-4 {
+              &_title {
+                @include flex(row);
+                justify-content: space-between;
+                &_span {
+                  font-size: 18px;
+                  font-weight: 400;
+                  color: #606266;
+                  @include flex(row);
+                  justify-content: center;
+                  align-items: center;
+                  font-size: 12px;
+                  font-weight: 400;
+                  color: #f08300;
+                  &_icon {
+                    width: 10px;
+                    height: 10px;
+                    margin-right: 4px;
+                  }
+                }
+              }
+              &_card {
+                padding: 2px 0 0 2px;
+                box-sizing: border-box;
+                &_title {
+                  margin-top: 4px;
+                  width: 100%;
+                  @include flex(row);
+                  position: relative;
+                  &_name {
+                    font-size: 16px;
+                    font-weight: 500;
+                    color: #343130;
+                  }
+                  &_time {
+                    margin-left: 40px;
+                    font-size: 14px;
+                    font-weight: 400;
+                    color: #9c9e9c;
+                  }
+                  &_list {
+                    position: absolute;
+                    right: 0;
+                    @include flex(row);
+                    justify-content: center;
+                    align-items: center;
+                    &_span {
+                      width: 50px;
+                      @include flex(row);
+                      justify-content: flex-end;
+                      align-items: center;
+                      font-size: 12px;
+                      font-weight: 400;
+                      color: #f08300;
+                      &_icon {
+                        width: 10px;
+                        height: 10px;
+                        margin-right: 4px;
+                      }
+                    }
+                  }
+                }
+                &_post {
+                  font-size: 14px;
+                  font-weight: 500;
+                  color: #343130;
+                  margin-top: 4px;
+                }
+                &_workList {
+                  font-size: 14px;
+                  font-weight: 500;
+                  color: #606266;
+                  margin-top: 4px;
+                }
+                &_workContent {
+                  width: 500px;
+                  height: 100px;
+                }
+              }
+            }
+            .part-5 {
+              &_title {
+                @include flex(row);
+                justify-content: space-between;
+              }
+              &_card {
+                padding: 2px 0 0 2px;
+                box-sizing: border-box;
+                &_title {
+                  margin-top: 4px;
+                  width: 100%;
+                  @include flex(row);
+                  position: relative;
+                  &_name {
+                    font-size: 16px;
+                    font-weight: 500;
+                    color: #343130;
+                  }
+                  &_time {
+                    margin-left: 40px;
+                    font-size: 14px;
+                    font-weight: 400;
+                    color: #9c9e9c;
+                  }
+                }
+                &_post {
+                  font-size: 14px;
+                  font-weight: 500;
+                  color: #343130;
+                  margin-top: 4px;
+                }
+                &_workList {
+                  font-size: 14px;
+                  font-weight: 500;
+                  color: #606266;
+                  margin-top: 4px;
+                }
+                &_workContent {
+                  width: 500px;
+                  height: 100px;
+                }
+              }
+            }
+            .part-6 {
+              &_title {
+                @include flex(row);
+                justify-content: space-between;
+              }
+              &_card {
+                padding: 2px 0 0 2px;
+                box-sizing: border-box;
+                &_title {
+                  margin-top: 4px;
+                  width: 100%;
+                  @include flex(row);
+                  position: relative;
+                  &_name {
+                    font-size: 16px;
+                    font-weight: 500;
+                    color: #343130;
+                  }
+                  &_major {
+                    color: #606266;
+                    font-size: 14px;
+                    font-weight: 400;
+                  }
+                  &_time {
+                    margin-left: 40px;
+                    font-size: 14px;
+                    font-weight: 400;
+                    color: #9c9e9c;
+                  }
+                }
+                &_post {
+                  font-size: 14px;
+                  font-weight: 500;
+                  color: #343130;
+                  margin-top: 4px;
+                }
+                &_workList {
+                  font-size: 14px;
+                  font-weight: 500;
+                  color: #606266;
+                  margin-top: 4px;
+                }
+                &_workContent {
+                  width: 500px;
+                  height: 100px;
+                }
+              }
+            }
+            .part-7 {
+              &_title {
+                @include flex(row);
+                justify-content: space-between;
+              }
+              &_card {
+                padding: 2px 0 0 2px;
+                box-sizing: border-box;
+                &_title {
+                  margin-top: 4px;
+                  width: 100%;
+                  @include flex(row);
+                  position: relative;
+                  &_name {
+                    font-size: 16px;
+                    font-weight: 500;
+                    color: #343130;
+                  }
+                  &_time {
+                    margin-left: 40px;
+                    font-size: 14px;
+                    font-weight: 400;
+                    color: #9c9e9c;
+                  }
+                }
+                &_post {
+                  font-size: 14px;
+                  font-weight: 500;
+                  color: #343130;
+                  margin-top: 4px;
+                }
+                &_workList {
+                  font-size: 14px;
+                  font-weight: 500;
+                  color: #606266;
+                  margin-top: 4px;
+                }
+                &_workContent {
+                  width: 500px;
+                  height: 100px;
+                }
+              }
+            }
+          }
         }
       }
       &_right {
         width: 280px;
         height: 300px;
         margin-left: 16px;
+      }
+    }
+    // Radio
+    .formRadio {
+      display: flex;
+      &_item {
+        flex: 1;
+        border-radius: 5px;
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+        background: #f1f2f5;
+        border-radius: 3px 3px 3px 3px;
+        cursor: pointer;
+      }
+      &_active {
+        border: 1px solid #f08300;
+        background: #fef3e6;
+        color: #f08300;
+      }
+      &_empty {
+        margin: 0 5px;
       }
     }
   }

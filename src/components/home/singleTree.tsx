@@ -19,11 +19,12 @@ type baseC  = {
 
 type TProps = {
   data:baseC[];
+  onChange:()=>{},
   cb:()=>{}
 }
 
 const SingleTree:React.FC = (props:TProps) => {
-  const {data,cb} = props;
+  const {data,cb,onChange} = props;
   const [show,setShow] = React.useState(false);
   const [current,setCurrent] = React.useState({});
   const [currentValue,setCurrentValue] = React.useState();
@@ -31,6 +32,7 @@ const SingleTree:React.FC = (props:TProps) => {
     setCurrent(item);
   };
   const clickCurrent = (item) => {
+    onChange(item.code);
     cb(item);
     setCurrentValue(item.name);
     setShow(false);

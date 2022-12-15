@@ -43,7 +43,7 @@ export const expectedIndustryData = ()=>{
  
 
 /**
- * 
+ *
  * @description 城市
  */
 export const expectedCityData = ()=>{
@@ -53,35 +53,39 @@ export const expectedCityData = ()=>{
       value:"不限"
     },
     {
-      id:1,
+      id:420100,
       value:"武汉"
     },
     {
-      id:2,
-      value:"鄂州"
+      id:320500,
+      value:"苏州"
     },
     {
-      id:3,
-      value:"咸宁"
+      id:610100,
+      value:"西安"
     },
     {
-      id:4,
-      value:"宜昌"
+      id:120100,
+      value:"天津"
     },
     {
-      id:5,
+      id:330100,
+      value:"杭州"
+    },
+    {
+      id:440300,
       value:"深圳"
     },
     {
-      id:6,
+      id:440100,
       value:"广州"
     },
     {
-      id:7,
+      id:310100,
       value:"上海"
     },
     {
-      id:8,
+      id:110100,
       value:"北京"
     }
   ];
