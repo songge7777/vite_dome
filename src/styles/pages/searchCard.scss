@@ -1,0 +1,105 @@
+@import "../layout.scss";
+.search_home_lists {
+  @include flex(row);
+  justify-content: space-between;
+  border-radius: 8px 8px 8px 0px;
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.04);
+  height: 136px;
+  width: 100%;
+  background: #fff;
+  margin-bottom: 16px;
+  .search_content_layout_lists {
+    &_left {
+    }
+    &_right {
+      width: 268px;
+      height: 100%;
+      padding: 16px 0 0 20px;
+      @include flex(row);
+      &_img {
+        width: 48px;
+        height: 48px;
+        margin-right: 12px;
+      }
+      &_info {
+        &_personnel {
+          font-weight: 400;
+          color: #606266;
+          img {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-right: 8px;
+          }
+          @include flex(row);
+          align-items: center;
+        }
+        &_call {
+          margin-top: 17px;
+          width: 80px;
+          height: 24px;
+          line-height: 24px;
+          text-align: center;
+          border-radius: 3px 3px 3px 3px;
+          opacity: 1;
+          border: 1px solid #ebedf1;
+          display: flex;
+          font-size: 12px;
+          justify-content: center;
+          align-items: center;
+          img {
+            width: 12px;
+            height: 12px;
+          }
+        }
+      }
+    }
+    &_div {
+      width: 389px;
+      height: 136px;
+      padding: 16px 0 0 20px;
+      &_title {
+        width: 349px;
+        margin-bottom: 13px;
+        @include flex(row);
+        justify-content: space-between;
+        &_left {
+          height: 24px;
+          font-size: 16px;
+          font-weight: 400;
+          color: #343130;
+        }
+        &_right {
+          font-size: 16px;
+          font-weight: 400;
+          color: #f5383a;
+          line-height: 24px;
+        }
+      }
+      &_btns {
+        width: 349px;
+        margin-bottom: 13px;
+        @include flex(row);
+        &_item {
+          width: 48px;
+          height: 24px;
+          border-radius: 3px 3px 3px 3px;
+          opacity: 1;
+          margin-right: 8px;
+          text-align: center;
+          padding: 4px;
+          box-sizing: content-box;
+          background: #f1f2f5;
+        }
+      }
+      &_bottom {
+        width: 349px;
+        &_name {
+          font-size: 14px;
+          color: #9c9e9c;
+          margin-right: 16px;
+        }
+      }
+    }
+  }
+}

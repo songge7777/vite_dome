@@ -1,0 +1,79 @@
+@import "../layout.scss";
+.InterviewList_home_lists {
+  @include flex(row);
+  border-radius: 8px 8px 8px 0px;
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.04);
+  height: 136px;
+  width: 100%;
+  background: #fff;
+  margin-bottom: 16px;
+  padding: 20px;
+  box-sizing: border-box;
+  .InterviewList_content_layout_lists {
+    &_div {
+      width: 288px;
+      height: 100%;
+      @include flex();
+      &_personnel {
+        font-weight: 400;
+        color: #606266;
+        @include flex(row);
+        align-items: center;
+        img {
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          margin-right: 8px;
+        }
+      }
+      &_title {
+        margin-top: 14px;
+      }
+      &_money {
+        font-size: 16px;
+        font-weight: 400;
+        color: #f5383a;
+        line-height: 24px;
+        margin-top: 4px;
+      }
+      &_bottom {
+        width: 349px;
+        &_name {
+          font-size: 14px;
+          color: #9c9e9c;
+          margin-right: 16px;
+        }
+      }
+    }
+    &_time {
+      width: 304px;
+      height: 100%;
+      @include flex();
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 400;
+      color: #343130;
+    }
+    &_status {
+      width: 120px;
+      @include flex();
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 24px;
+    }
+    &_result {
+      width: 150px;
+      height: 100%;
+      color: red;
+      @include flex(row);
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      button {
+        margin-left: 10px;
+      }
+    }
+  }
+}

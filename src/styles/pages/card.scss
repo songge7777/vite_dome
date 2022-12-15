@@ -1,0 +1,62 @@
+@import "../layout.scss";
+.home_content_layout_lists {
+  &_div {
+    margin-bottom: 16px;
+    width: 389px;
+    height: 136px;
+    padding: 16px 0 0 20px;
+    background: #fff;
+    border-radius: 8px 8px 0px 0px;
+    &_title {
+      width: 349px;
+      margin-bottom: 13px;
+      @include flex(row);
+      justify-content: space-between;
+      &_left {
+        height: 24px;
+        font-size: 16px;
+        font-weight: 400;
+        color: #343130;
+      }
+      &_right {
+        font-size: 16px;
+        font-weight: 400;
+        color: #f5383a;
+        line-height: 24px;
+      }
+    }
+    &_btns {
+      width: 349px;
+      margin-bottom: 13px;
+      @include flex(row);
+      &_item {
+        width: 48px;
+        height: 24px;
+        background: #f1f2f5;
+        border-radius: 3px 3px 3px 3px;
+        opacity: 1;
+        margin-right: 8px;
+        text-align: center;
+        padding: 4px;
+        box-sizing: content-box;
+      }
+    }
+    &_bottom {
+      width: 349px;
+      @include flex(row);
+      justify-content: space-between;
+      position: relative;
+      &_img {
+        width: 24px;
+        height: 24px;
+        margin-right: 8px;
+      }
+      &_name {
+        position: absolute;
+        left: 32px;
+      }
+      &_address {
+      }
+    }
+  }
+}

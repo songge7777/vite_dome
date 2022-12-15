@@ -1,0 +1,66 @@
+@import "../layout.scss";
+
+.home {
+  &_top {
+    width: 100%;
+    height: 80px;
+    background: #344444;
+    color: #cccccc;
+    @include flex();
+    justify-content: center;
+    align-items: center;
+    &_layout {
+      width: 1200px;
+      @include flex(row);
+      position: relative;
+      align-items: center;
+      &_img {
+        width: 304px;
+        height: 40px;
+      }
+      &_btns {
+        margin-left: 52px;
+        width: 176px;
+        height: 36px;
+        @include flex(row);
+        justify-content: space-around;
+        align-items: center;
+        color: #cccccc;
+        &_active {
+          color: $primaryColor;
+          position: relative;
+          &::after {
+            @include borderLine(20px);
+          }
+        }
+      }
+      &_right {
+        position: absolute;
+        right: 0;
+        @include flex(row);
+        justify-content: center;
+        align-items: center;
+      }
+      &_myResume {
+        &_btn {
+          margin-left: 14px;
+        }
+      }
+      &_form {
+        float: right;
+        margin-left: 60px;
+        span {
+          height: 28px;
+          text-align: center;
+          line-height: 28px;
+          border-radius: 3px 3px 3px 3px;
+          opacity: 1;
+          border: 1px solid #b3aea9;
+          margin-left: 4px;
+          box-sizing: content-box;
+          padding: 4px 10px;
+        }
+      }
+    }
+  }
+}

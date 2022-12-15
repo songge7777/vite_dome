@@ -1,0 +1,66 @@
+@import "../../layout.scss";
+@import "../../index.scss";
+
+.custom_select {
+  position: relative;
+  &_layout {
+    position: absolute;
+    z-index: 10;
+    border: 1px solid gray;
+    background: #ffffff;
+    &_title {
+      height: 40px;
+      line-height: 40px;
+      padding: 0 12px;
+      border-bottom: 1px solid #ebedf1;
+      @include flex(row);
+      justify-content: space-between;
+      width: 100%;
+    }
+    &_flex {
+      @include flex(row);
+      flex-wrap: nowrap;
+      &_list {
+        @include flex();
+        flex-wrap: nowrap;
+        border-right: 1px solid #ebedf1;
+        &_item {
+          @include flex(row);
+          padding: 0px 10px 0px 20px;
+          justify-content: space-between;
+          box-sizing: content-box;
+          align-items: center;
+          width: 200px;
+          height: 40px;
+          &_name {
+            width: 150px;
+          }
+        }
+        &_active {
+          background: #fef3e6;
+        }
+      }
+      &_select {
+        padding: 16px 16px 0 16px;
+        box-sizing: content-box;
+        width: 290px;
+        span {
+          @include flex(row);
+          height: 32px;
+          line-height: 32px;
+          padding: 9px 12px;
+          background: #f1f2f5;
+          color: #606266;
+          font-size: 14px;
+          text-align: center;
+          margin-left: 12px;
+          box-sizing: content-box;
+          margin-top: 12px;
+        }
+      }
+    }
+  }
+  &_NoSingle {
+    // min-width: 540px;
+  }
+}

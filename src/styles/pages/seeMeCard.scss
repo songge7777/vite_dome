@@ -1,0 +1,86 @@
+@import "../layout.scss";
+.seeMe_home_lists {
+  @include flex(row);
+  border-radius: 8px 8px 8px 0px;
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.04);
+  padding: 0 20px;
+  height: 136px;
+  width: 100%;
+  background: #fff;
+  margin-bottom: 16px;
+  justify-content: space-between;
+  align-items: center;
+  .seeMe_content_layout_lists {
+    &_left {
+    }
+    &_center {
+      @include flex(row);
+      align-items: center;
+      justify-content: space-between;
+      width: 230px;
+      margin-left: 100px;
+      img {
+        width: 48px;
+        height: 48px;
+        border-radius: 3px 3px 3px 3px;
+        border: 1px solid #ebedf1;
+      }
+      &_list {
+        width: 170px;
+        @include flex();
+        &_company {
+          width: 100%;
+          @include textHidden();
+          font-size: 16px;
+          font-weight: 400;
+          color: #343130;
+        }
+      }
+      &_btns {
+        // width: 349px;
+        @include flex(row);
+        span {
+          display: inline-block;
+          height: 24px;
+          border-radius: 3px 3px 3px 3px;
+          opacity: 1;
+          padding: 0 8px;
+          margin-right: 8px;
+          text-align: center;
+          box-sizing: content-box;
+          background: #f1f2f5;
+        }
+      }
+    }
+    &_right {
+      width: 80px;
+      text-align: center;
+      border-radius: 3px 3px 3px 3px;
+      opacity: 1;
+      border: 1px solid #ebedf1;
+      display: flex;
+      font-size: 12px;
+      justify-content: center;
+      align-items: center;
+      img {
+        width: 14px;
+        height: 14px;
+      }
+      span {
+        margin-left: 4px;
+      }
+    }
+    &_personnel {
+      font-weight: 400;
+      color: #606266;
+      @include flex(row);
+      align-items: center;
+      img {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        margin-right: 8px;
+      }
+    }
+  }
+}

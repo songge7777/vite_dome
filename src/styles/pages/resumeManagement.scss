@@ -1,0 +1,54 @@
+@import "../layout.scss";
+@import "../index.scss";
+
+.resumeM {
+}
+@import "../layout.scss";
+.resumeM {
+  &_layout {
+  }
+  &_options {
+    @include flex(row);
+    justify-content: center;
+    width: 100%;
+    background: #fff;
+    &_layout {
+      width: 1200px;
+    }
+  }
+  &_lists {
+    @include flex(row);
+    justify-content: center;
+    width: 100%;
+    background: #fafafa;
+    min-height: 1000px;
+    &_content {
+      @include flex(row);
+      margin-top: 20px;
+      width: 1200px;
+      &_left {
+        width: 904px;
+        @include flex(row);
+        &_anchor {
+          width: 144px;
+          height: 491px;
+          background: #ffffff;
+          box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.08);
+          border-radius: 8px 8px 8px 8px;
+          opacity: 1;
+          border: 1px solid #ebedf1;
+        }
+        &_resume {
+          margin-left: 16px;
+          width: 744px;
+          background: red;
+        }
+      }
+      &_right {
+        width: 280px;
+        height: 300px;
+        margin-left: 16px;
+      }
+    }
+  }
+}

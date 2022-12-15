@@ -1,0 +1,93 @@
+@import "../../layout.scss";
+@import "../../index.scss";
+
+.search {
+  &_header {
+    @include flex(row);
+    justify-content: center;
+    width: 100%;
+    background: #fff;
+    &_layout {
+      width: 100%;
+      @include flex();
+      background: #fff;
+      padding: 20px;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      &_input {
+        width: 992px;
+        height: 48px;
+        margin: 40px 0 32px 100px;
+        border: 2px solid rgba(240, 131, 0, 1);
+        box-sizing: content-box;
+      }
+      &_list {
+        @include flex();
+        &_item {
+          @include flex(row);
+          & > span {
+            display: inline-block;
+            width: 80px;
+            margin-right: 15px;
+            text-align: end;
+          }
+        }
+        &_select {
+          @include flex(row);
+          margin-bottom: 20px;
+          font-size: 14px;
+          cursor: pointer;
+          span {
+            margin-right: 16px;
+            color: #606266;
+          }
+        }
+      }
+      &_bottom {
+        @include flex(row);
+        padding-top: 13px;
+        border-top: 1px solid #ebedf1;
+        margin-bottom: 13px;
+        position: relative;
+        & > span {
+          display: inline-block;
+          width: 80px;
+          font-size: 14px;
+          margin-right: 15px;
+        }
+        &_select {
+          color: #606266;
+          @include flex(row);
+          margin-bottom: 20px;
+          font-size: 14px;
+          span {
+            width: 70px;
+            height: 24px;
+            background: #f1f2f5;
+            border-radius: 3px 3px 3px 3px;
+            opacity: 1;
+            margin-right: 10px;
+            text-align: center;
+            line-height: 24px;
+          }
+        }
+        &_clean {
+          position: absolute;
+          right: 0;
+          top: -32px;
+          color: #9c9e9c;
+        }
+        &_hidden {
+          position: absolute;
+          right: 100px;
+          top: -32px;
+          color: #9c9e9c;
+        }
+      }
+      .fontActive {
+        color: $primaryColor;
+      }
+    }
+  }
+}

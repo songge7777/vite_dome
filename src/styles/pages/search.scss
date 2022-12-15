@@ -1,0 +1,39 @@
+@import "../layout.scss";
+.search {
+  &_layout {
+  }
+  &_options {
+    @include flex(row);
+    justify-content: center;
+    width: 100%;
+    background: #fff;
+    &_layout {
+      width: 1200px;
+    }
+  }
+  &_lists {
+    @include flex(row);
+    justify-content: center;
+    width: 100%;
+    background: #fafafa;
+    min-height: 1000px;
+    &_content {
+      @include flex(row);
+      margin-top: 20px;
+      width: 1200px;
+      &_left {
+        width: 904px;
+        &_top {
+          width: 100%;
+        }
+      }
+      &_right {
+        width: 280px;
+        height: 300px;
+        // background: green;
+        // border: 1px solid red;
+        margin-left: 16px;
+      }
+    }
+  }
+}

@@ -1,0 +1,80 @@
+@import "../layout.scss";
+.browseInformation {
+  &_layout {
+    width: 280px;
+    background: #ffffff;
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.08);
+    border-radius: 8px 8px 8px 8px;
+    opacity: 1;
+    border: 1px solid #ebedf1;
+    padding: 16px 16px 0 16px;
+    @include flex();
+    position: relative;
+  }
+  &_tab {
+    font-size: 18px;
+    font-weight: 400;
+    color: #9c9e9c;
+    margin-bottom: 24px;
+    &_left {
+      margin-right: 40px;
+    }
+    &_right {
+    }
+    &_active {
+      font-size: 18px;
+      font-weight: 400;
+      color: #606266;
+    }
+  }
+  &_list {
+    @include flex();
+    &_item {
+      @include flex();
+      margin-bottom: 20px;
+      &_top {
+        @include flex(row);
+        justify-content: space-between;
+        &_position {
+          width: 123px;
+          @include textHidden();
+          // overflow: hidden;
+          // text-overflow: ellipsis;
+          // white-space: nowrap;
+        }
+        &_money {
+          font-size: 14px;
+          font-weight: 400;
+          color: #f5383a;
+        }
+      }
+      &_bottom {
+        position: relative;
+        @include flex(row);
+        height: 22px;
+        align-items: center;
+        &_company {
+          font-size: 12px;
+          font-weight: 400;
+          color: #9c9e9c;
+          @include textHidden();
+
+          // overflow: hidden;
+          // text-overflow: ellipsis;
+          // white-space: nowrap;
+        }
+        &_img {
+          width: 14px;
+          height: 12px;
+        }
+        &_address {
+          font-size: 12px;
+          font-weight: 400;
+          color: #9c9e9c;
+          position: absolute;
+          right: 0;
+        }
+      }
+    }
+  }
+}

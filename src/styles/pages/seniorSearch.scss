@@ -1,0 +1,36 @@
+@import "../layout.scss";
+.inputSearch {
+  height: 48px;
+  .ant-input-group {
+    @include flex(row);
+  }
+  &_selectOption {
+    width: 100px;
+    height: 48px;
+    background: rgba(255, 255, 255, 1);
+    &_item {
+      width: 100px;
+      height: 48px;
+      @include flex(row);
+      justify-content: center;
+      align-items: center;
+      img {
+        width: 16px;
+        height: 16px;
+      }
+      &_text {
+        padding: 0 10px;
+        width: 100px;
+        @include textHidden();
+      }
+    }
+  }
+  &_input {
+    height: 48px;
+    flex: 1;
+  }
+  &_btn {
+    width: 100px;
+    height: 48px;
+  }
+}

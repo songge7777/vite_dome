@@ -1,0 +1,106 @@
+@import "../layout.scss";
+.personalInfo {
+  &_layout {
+    width: 280px;
+    height: 248px;
+    background: #ffffff;
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.08);
+    border-radius: 8px 8px 8px 8px;
+    opacity: 1;
+    border: 1px solid #ebedf1;
+    padding-top: 16px;
+    @include flex();
+    position: relative;
+  }
+  &_header {
+    @include flex(row);
+    margin-left: 20px;
+    &_img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+    }
+    &_name {
+      font-size: 18px;
+      font-weight: 400;
+      color: #606266;
+      line-height: 32px;
+      margin-left: 12px;
+      height: 32px;
+    }
+  }
+  &_tip {
+    @include flex(row);
+    margin-left: 61px;
+    width: 148px;
+    color: #9c9e9c;
+    justify-content: space-between;
+    &_age {
+    }
+    &_experience {
+    }
+    &_education {
+    }
+  }
+  &_offer {
+    @include flex(row);
+    justify-content: space-between;
+    width: 162px;
+    margin-left: 46px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #606266;
+    margin-top: 20px;
+    &_left {
+      width: 56px;
+      @include flex();
+      justify-content: center;
+      align-items: center;
+      &_num {
+        font-size: 24px;
+        font-weight: 500;
+        color: #f08300;
+      }
+    }
+    &_right {
+      width: 56px;
+      @include flex();
+      justify-content: center;
+      align-items: center;
+      &_num {
+        font-size: 24px;
+        font-weight: 500;
+        color: #f08300;
+      }
+    }
+  }
+  &_bottom {
+    position: absolute;
+    bottom: 0px;
+    width: 278px;
+    height: 70px;
+    background: #f8f9fd;
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.08);
+    @include flex(row);
+    align-items: center;
+    justify-content: space-between;
+    &_div {
+      width: 84px;
+      @include flex();
+      align-items: center;
+      justify-content: center;
+
+      &_num {
+        font-size: 16px;
+        font-weight: 400;
+        color: #343130;
+        line-height: 24px;
+      }
+      &_title {
+        font-size: 14px;
+        font-weight: 400;
+        color: #9c9e9c;
+      }
+    }
+  }
+}

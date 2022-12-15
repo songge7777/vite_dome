@@ -1,0 +1,127 @@
+@import "../layout.scss";
+.trenching_home_lists {
+  @include flex(row);
+  border-radius: 8px 8px 8px 0px;
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.04);
+  height: 136px;
+  width: 100%;
+  background: #fff;
+  margin-bottom: 16px;
+  .trenching_content_layout_lists {
+    &_left {
+    }
+    &_center {
+      @include flex(row);
+      align-items: center;
+      justify-content: space-between;
+      width: 240px;
+      margin-left: 100px;
+      img {
+        width: 48px;
+        height: 48px;
+        border-radius: 3px 3px 3px 3px;
+        border: 1px solid #ebedf1;
+      }
+      div {
+        width: 170px;
+        @include textHidden();
+      }
+    }
+    &_right {
+      width: 100px;
+      height: 100%;
+      margin-left: 40px;
+      @include flex();
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      &_top {
+        width: 300px;
+        position: absolute;
+        top: 16px;
+        font-size: 14px;
+        font-weight: 400;
+        color: #606266;
+        right: 10px;
+        text-align: end;
+        span {
+          margin-left: 20px;
+        }
+      }
+      &_call {
+        width: 80px;
+        text-align: center;
+        border-radius: 3px 3px 3px 3px;
+        opacity: 1;
+        border: 1px solid #ebedf1;
+        display: flex;
+        font-size: 12px;
+        justify-content: center;
+        align-items: center;
+        img {
+          width: 12px;
+          height: 12px;
+        }
+      }
+    }
+    &_div {
+      width: 389px;
+      height: 136px;
+      padding: 16px 0 0 20px;
+      &_title {
+        width: 349px;
+        margin-bottom: 13px;
+        @include flex(row);
+        &_left {
+          height: 24px;
+          font-size: 16px;
+          font-weight: 400;
+          color: #343130;
+        }
+        &_right {
+          font-size: 16px;
+          font-weight: 400;
+          color: #f5383a;
+          line-height: 24px;
+          margin-left: 40px;
+        }
+      }
+      &_btns {
+        width: 349px;
+        margin-bottom: 13px;
+        @include flex(row);
+        &_item {
+          width: 48px;
+          height: 24px;
+          border-radius: 3px 3px 3px 3px;
+          opacity: 1;
+          margin-right: 8px;
+          text-align: center;
+          padding: 4px;
+          box-sizing: content-box;
+          background: #f1f2f5;
+        }
+      }
+      &_personnel {
+        font-weight: 400;
+        color: #606266;
+        @include flex(row);
+        align-items: center;
+        img {
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          margin-right: 8px;
+        }
+      }
+      &_bottom {
+        width: 349px;
+        &_name {
+          font-size: 14px;
+          color: #9c9e9c;
+          margin-right: 16px;
+        }
+      }
+    }
+  }
+}
