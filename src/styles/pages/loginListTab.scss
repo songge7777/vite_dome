@@ -1,0 +1,153 @@
+@import "../layout.scss";
+.search {
+  &_layout {
+  }
+  &_options {
+    @include flex(row);
+    justify-content: center;
+    width: 100%;
+    background: #fff;
+    &_layout {
+      width: 1200px;
+    }
+  }
+}
+
+// MessagePostChildren
+.messagePostChildren {
+  @include flex(row);
+  &_checkbox {
+  }
+  &_list {
+    margin-left: 10px;
+    &_title {
+      font-size: 14px;
+      font-weight: 400;
+      color: #343130;
+      line-height: 22px;
+    }
+    &_tip {
+      margin-top: 5px;
+      font-size: 14px;
+      font-weight: 400;
+      color: #9c9e9c;
+    }
+  }
+}
+// accountSecurityCenter
+.accountSecurityCenter {
+  width: 100%;
+  @include flex();
+  &_title {
+    margin: 16px 20px;
+
+    &_name {
+      font-size: 18px;
+      font-weight: 400;
+      color: #343130;
+    }
+    &_tip {
+      font-size: 14px;
+      font-family: Alibaba PuHuiTi-Regular, Alibaba PuHuiTi;
+      font-weight: 400;
+      color: #9c9e9c;
+      line-height: 22px;
+    }
+    &_btn {
+      @include flex(row);
+      flex-wrap: nowrap;
+    }
+    button {
+      width: 100px;
+      margin-left: 10px;
+    }
+  }
+  .line {
+    padding-bottom: 14px;
+    width: 100%;
+    border-bottom: 1px solid #e7e7e7;
+  }
+}
+
+.privacyProtection {
+  width: 100%;
+  @include flex();
+  &_title {
+    margin: 16px 0;
+
+    &_name {
+      font-size: 18px;
+      font-weight: 400;
+      color: #343130;
+    }
+    &_tip {
+      font-size: 14px;
+      font-family: Alibaba PuHuiTi-Regular, Alibaba PuHuiTi;
+      font-weight: 400;
+      color: #9c9e9c;
+      line-height: 22px;
+    }
+  }
+  .line {
+    padding-bottom: 14px;
+    width: 100%;
+    border-bottom: 1px solid #e7e7e7;
+  }
+  &_search {
+    margin: 16px 0;
+    width: 100%;
+    @include flex(row);
+    justify-content: space-between;
+    &_input {
+      width: 288px;
+    }
+  }
+  &_btn {
+    width: 600px;
+    @include flex(row);
+    justify-content: space-between;
+    &_name {
+      font-size: 16px;
+      font-weight: 400;
+      color: #343130;
+    }
+    &_item {
+      font-size: 14px;
+      font-weight: 400;
+      color: #f08300;
+    }
+  }
+  &_list {
+    position: relative;
+    width: 600px;
+    background: #f8f9fd;
+    border-radius: 8px 8px 8px 8px;
+    padding: 20px;
+    @include flex();
+    justify-content: space-between;
+    &_clean {
+      top: 20px;
+      right: 20px;
+      font-size: 14px;
+      font-weight: 400;
+      color: #9c9e9c;
+    }
+    &_name {
+      margin-bottom: 10px;
+    }
+    &_item {
+      @include flex(row);
+      justify-content: space-between;
+    }
+  }
+  &_switch {
+    @include flex();
+    &_layout {
+      @include flex(row);
+      margin-top: 20px;
+      &_name {
+        margin-left: 20px;
+      }
+    }
+  }
+}
