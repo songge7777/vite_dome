@@ -56,7 +56,7 @@ app.put("/eps/nds_resume", (req, res, next) => {
 });
 
 
-// data3 
+// 期望职位
 // 列表
 app.post("/eps/nds_resume_post/list", (req, res, next) => {
   console.log("params", req.body);
@@ -64,11 +64,13 @@ app.post("/eps/nds_resume_post/list", (req, res, next) => {
     "ok": true,
     data: [
       {
+        id: "1",
+        resumeId: "333",
         wantedType: "1",
         workCityCode: "420100",
         postCategoryCode: "125262",
         industryCategoryCode: "100101",
-        industryCategoryName: "计算机",
+        industryCategoryName: "计算机1",
         salaryExpectation: [1, 2],
         postCategoryName: "项目经理",
         workCityName: "武汉",
@@ -76,6 +78,8 @@ app.post("/eps/nds_resume_post/list", (req, res, next) => {
         salaryMax: "3"
       },
       {
+        id: "2",
+        resumeId: "444",
         wantedType: "2",
         workCityCode: "420100",
         postCategoryCode: "125262",
@@ -112,9 +116,9 @@ app.put("/eps/nds_resume/nds_resume_post", (req, res, next) => {
 });
 // 删除
 app.delete("/eps/nds_resume/nds_resume_post", (req, res, next) => {
-  console.log("params", req.body);
+  console.log("params", req.body, req.query);
   const data = {
-    "ok": true,
+    "ok": "删除成功",
   };
   res.json(data);
   next();
@@ -128,18 +132,30 @@ app.post("/eps/nds_resume_work/list", (req, res, next) => {
     "ok": true,
     data: [
       {
+        id: 11,
+        resumeId: 22,
         companyName: "公司名字1",
         workDateStart: "2000-1-1",
         workDateEnd: "2000-12-12",
         postCategoryName: "JAVA",
-        workContent: "工作内容1"
+        postCategoryCode: "1111",
+        industryCategoryName: "xxx1",
+        industryCategoryCode: "4444",
+        workContent: "工作内容1",
+        reportingObject: "laowang",
       },
       {
+        id: 222,
+        resumeId: 44,
         companyName: "公司名字2",
         workDateStart: "2000-1-1",
         workDateEnd: "2000-12-12",
+        postCategoryCode: "2222",
         postCategoryName: "前端",
-        workContent: "工作内容2"
+        industryCategoryCode: "55555",
+        industryCategoryName: "xx2222",
+        workContent: "工作内容2",
+        reportingObject: "laowang2",
       }
     ]
   };
@@ -148,9 +164,9 @@ app.post("/eps/nds_resume_work/list", (req, res, next) => {
 });
 // 删除
 app.delete("/eps/nds_resume_work", (req, res, next) => {
-  console.log("params", req.body);
+  console.log("params", req.body, req.query);
   const data = {
-    "ok": true,
+    "ok": "删除成功",
   };
   res.json(data);
   next();
@@ -160,7 +176,7 @@ app.delete("/eps/nds_resume_work", (req, res, next) => {
 app.put("/eps/nds_resume_work", (req, res, next) => {
   console.log("params", req.body);
   const data = {
-    "ok": true,
+    "ok": "修改成功",
   };
   res.json(data);
   next();
@@ -170,7 +186,7 @@ app.put("/eps/nds_resume_work", (req, res, next) => {
 app.post("/eps/nds_resume_work", (req, res, next) => {
   console.log("params", req.body);
   const data = {
-    "ok": true,
+    "ok": "增加成功",
   };
   res.json(data);
   next();
@@ -184,18 +200,24 @@ app.post("/eps/nds_resume_project/list", (req, res, next) => {
     "ok": true,
     data: [
       {
+        resumeId: "xxx",
+        id: 111,
         projectName: "项目名字1",
         projectDateStart: "2000-1-1",
         projectDateEnd: "2000-12-12",
-        projectPost: "JAVA",
-        projectDesc: "工作内容1"
+        projectPost: "c#",
+        projectPostId: "xxx",
+        projectDesc: "工作内容1",
       },
       {
+        resumeId: "11xxx",
+        id: 222,
         projectName: "项目名字2",
         projectDateStart: "2000-1-1",
         projectDateEnd: "2000-12-12",
+        projectPostId: "rrr",
         projectPost: "JAVA",
-        projectDesc: "工作内容2"
+        projectDesc: "工作内容2",
       }
     ]
   };
@@ -240,22 +262,15 @@ app.post("/eps/nds_resume_education/list", (req, res, next) => {
   console.log("params", req.body);
   const data = {
     "ok": true,
-    data: [
-      {
-        schoolName: "学校名字",
-        educationDataStart: "2000-1-1",
-        educationDataEnd: "2000-12-12",
-        major: "JAVA",
-        educationType: "1"// 全日制
-      },
-      {
-        schoolName: "学校名字",
-        educationDataStart: "2000-1-1",
-        educationDataEnd: "2000-12-12",
-        major: "JAVA",
-        educationType: "2"// 非全日制
-      }
-    ]
+    data: {
+      schoolName: "学校名字",
+      educationDataStart: "2000-1-1",
+      educationDataEnd: "2000-12-12",
+      education: "本科",
+      major: "JAVA",
+      educationType: "1",// 全日制
+      career: "xxxxxxxx"
+    }
   };
   res.json(data);
   next();

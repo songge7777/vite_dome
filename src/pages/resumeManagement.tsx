@@ -133,39 +133,29 @@ const ResumeManagement = () => {
   const [merit, setMerit] = React.useState(""); 
 
   // 期望职位
-  const [formTwoData,setFormTwoData] = React.useState({
-    // 求职类型
-    wantedType:"1",
-    // 期望城市
-    workCityCode:2,
-    // 期望职位-code
-    postCategoryCode:3,
-    // 期望行业
-    industryCategoryCode:4,
-    salaryExpectation:[],
-  });
+  const [formTwoData,setFormTwoData] = React.useState({});
   const [formTwoDataList,setFormTwoDataList] = React.useState([]);
   // 工作经历
   const [formThreeDataList,setFormThreeDataList] = React.useState([]);
-  const [formThreeData,setFormThreeData] = React.useState({companyName:"xxx"});
+  const [formThreeData,setFormThreeData] = React.useState({});
 
   // 项目经历
   const [formFourDataList,setFormFourDataList] = React.useState([]);
 
-  const [formFourData,setFormFourData] = React.useState({
-    companyName:undefined,
-    projectPost	:undefined,
-    workDate:[],
-    projectDesc:undefined,
-  });
+  // 项目经历
+  const [formFourData,setFormFourData] = React.useState({});
   const [formFiveData,setFormFiveData] = React.useState({
-    schoolName:undefined,
-    educationType:undefined,
-    education:undefined,
-    major:undefined,
-    workDate:[],
-    career:undefined,
+    // schoolName:undefined,
+    // educationType:undefined,
+    // education:undefined,
+    // major:undefined,
+    // workDate:[],
+    // career:undefined,
   });
+
+  // 教育经历
+  const [formFiveDataList,setFormFiveDataList] = React.useState({});
+
   const [currentIndex,setCurrentIndex] = React.useState(0);
   const [postCategoryData, setPostCategoryData]=React.useState([]);
   const [industryCategoryData, setIndustryCategoryData]=React.useState([]);
@@ -231,6 +221,10 @@ const ResumeManagement = () => {
   const submitFormData3 = async(id?: number | string)=>{
     const data = await formTwo.getFieldsValue();
     console.log(data);
+    if(data.salaryExpectation){
+      data["salaryMin"] = data.salaryExpectation[0];
+      data["salaryMax"] = data.salaryExpectation[1];
+    }
     // 新增
     if(!id){
       const rs = await axios.post("/eps/nds_resume/nds_resume_post",data);
@@ -243,13 +237,13 @@ const ResumeManagement = () => {
       console.log("rs",rs);
     }
     // 刷新
-    getData3();
-    setEdit3(false);
+    // getData3();
+    // setEdit3(false);
   };
   const submitFormData4 = async(id?: number | string)=>{
     const data = await formThree.getFieldsValue();
-    data.workDate = [dayjs(data.workDate[0]).format("YYYY-MM-DD"),dayjs(data.workDate[1]).format("YYYY-MM-DD")];
-    console.log(data);
+    data.workDateStart = dayjs(data.workDate[0]).format("YYYY-MM-DD");
+    data.workDateEnd = dayjs(data.workDate[1]).format("YYYY-MM-DD");
     // 新增
     if(!id){
       const rs = await axios.post("/eps/nds_resume_work",data);
@@ -261,6 +255,30 @@ const ResumeManagement = () => {
       });
       console.log("rs",rs);
     }
+  };
+  const remoteDelete3 = async(id?:number | string,resumeId?:number | string) => {
+    const data = {
+      id,
+      resumeId,
+    };
+    const rs = await axios.delete(`/eps/nds_resume/nds_resume_post?id=${id}&resumeId=${resumeId}`);
+    console.log("remoteDelete",rs);
+  };
+  const remoteDelete4 = async(id?:number | string,resumeId?:number | string) => {
+    const data = {
+      id,
+      resumeId,
+    };
+    const rs = await axios.delete(`/eps/nds_resume_work?id=${id}&resumeId=${resumeId}`);
+    console.log("remoteDelete",rs);
+  };
+  const remoteDelete5 = async(id?:number | string,resumeId?:number | string) => {
+    const data = {
+      id,
+      resumeId,
+    };
+    const rs = await axios.delete(`/eps/nds_resume_project?id=${id}&resumeId=${resumeId}`);
+    console.log("remoteDelete",rs);
   };
   const submitFormData5 = async(id?: number | string)=>{
     const data = await formFour.getFieldsValue();
@@ -382,6 +400,10 @@ const ResumeManagement = () => {
     setFormFourDataList(rs);
   };
   const getData6 = async()=>{
+    const {data:_rs} = await axios.post("/eps/nds_resume_education/list");
+    const rs = _rs.data;
+    console.log("getData6", rs);
+    setFormFiveDataList(rs);
   };
   const getData7 = async()=>{
   };
@@ -570,12 +592,21 @@ const ResumeManagement = () => {
                             <div className="resumeM_lists_content_left_resume_card_right right_absolute">
                               <div className="part-3_list">
                                 <div className="part-3_list_span" onClick={()=>{
-                                  // setEdit3Item(item);
-                                  console.log("workCityCode",item);
-                                  setFormTwoData(item);
                                   setEdit3(true);
+                                  formTwo.setFieldsValue({
+                                    wantedType:item.wantedType,
+                                    workCityCode:item.workCityCode,
+                                    industryCategoryCode: item.industryCategoryCode,
+                                    postCategoryCode:item.postCategoryCode,
+                                    salaryExpectation:item.salaryExpectation
+                                  });
+                                  setFormTwoData(item);
                                 }}><img className="part-3_icon" src={LOGO} alt="" />编辑</div>
-                                <div className="part-3_list_span"><img className="part-3_icon" src={LOGO} alt="" />删除</div>
+                                <div className="part-3_list_span"
+                                  onClick={()=>{
+                                    remoteDelete3(item.id,item.resumeId);
+                                  }}
+                                ><img className="part-3_icon" src={LOGO} alt="" />删除</div>
                               </div>
                             </div>
                           </div>;
@@ -585,12 +616,17 @@ const ResumeManagement = () => {
                     <div className="resumeM_lists_content_left_resume_card_right">
                       <div className="part-3_span" onClick={()=>{
                         setFormTwoData({});
+                        formTwo.setFieldsValue({
+                          wantedType:undefined,
+                          workCityCode:undefined,
+                          industryCategoryCode: undefined,
+                          postCategoryCode:undefined,
+                          salaryExpectation:undefined,
+                          salaryMin:undefined,
+                          salaryMax:undefined,
+                        });
                         setEdit3(true);
                       }}><img className="part-3_icon" src={LOGO} alt="" />添加</div>
-                      {/* <div className="part-3_list">
-                        <div className="part-3_list_span" onClick={()=>setEdit3(true)}><img className="part-3_icon" src={LOGO} alt="" />编辑</div>
-                        <div className="part-3_list_span"><img className="part-3_icon" src={LOGO} alt="" />删除</div>
-                      </div> */}
                     </div>
                   </React.Fragment>
                 }
@@ -653,7 +689,17 @@ const ResumeManagement = () => {
                 <div className="part-4_title">
                   <span>工作经历</span>
                   {!edit4 && <div className="part-4_title_span" onClick={()=>{
-                    setFormThreeData(initData4());
+                    formThree.setFieldsValue({
+                      companyName:undefined,
+                      industryCategoryCode:undefined,
+                      postCategoryCode:undefined,
+                      workContent:undefined,
+                      reportingObject:undefined,
+                      workDate:[],
+                      workDateEnd:undefined,
+                      workDateStart:undefined,
+                    });
+                    setFormThreeData({});
                     setEdit4(true);
                   }}><img className="part-4_title_span_icon" src={LOGO} alt="" />添加</div>}
                 </div>
@@ -669,21 +715,27 @@ const ResumeManagement = () => {
                             onClick={()=>{
                               console.log("item",item);
                               setEdit4(true);
-                              setFormThreeData({
-                                companyName:item.companyName
+                              formThree.setFieldsValue({
+                                companyName:item.companyName,
+                                postCategoryName:item.postCategoryName,
+                                workContent:item.workContent,
+                                reportingObject:item.reportingObject,
+                                workDate:[dayjs(item.workDateStart),dayjs(item.workDateEnd)],
                               });
-                              // setTimeout(()=>{
-                              //   console.log(formThreeData);
-                              // },1000);
+                              setFormThreeData(item);
                             }}
                           ><img className="part-4_card_title_list_span_icon" src={LOGO} alt="" />编辑</div>
-                          <div className="part-4_card_title_list_span"><img className="part-4_card_title_list_span_icon" src={LOGO} alt="" />删除</div>
+                          <div className="part-4_card_title_list_span"
+                            onClick={()=>{
+                              remoteDelete4(item.id,item.resumeId);
+                            }}
+                          ><img className="part-4_card_title_list_span_icon" src={LOGO} alt="" />删除</div>
                         </div>
                       </div>
                       <div className="part-4_card_post">{item.postCategoryName}</div>
-                      <div className="part-4_card_workList">{item.workContent}</div>
+                      <div className="part-4_card_workList">工作内容</div>
                       <div className="part-4_card_workContent">
-                        123
+                        {item.workContent}
                       </div>
                     </div>
                     )}
@@ -702,11 +754,11 @@ const ResumeManagement = () => {
                         <Form.Item label="公司名称	" name="companyName" rules={[{ required: true, message:"请输入姓名"},{validator:inputValidator }]}>
                           <Input placeholder="请输入姓名" />
                         </Form.Item>
-                        <Form.Item label="期望行业" name="industryCategoryCode"  rules={[{ required: true, message:"请选择行业"}]}>
-                          <SingleTree data={industryCategoryData} cb={industryCategoryDataCb} />
+                        <Form.Item label="所属行业" name="industryCategoryCode"  rules={[{ required: true, message:"请选择行业"}]}>
+                          <SingleTree data={industryCategoryData} cb={industryCategoryDataCb} name={formThreeData.postCategoryName}/>
                         </Form.Item>
                         <Form.Item label="担任职位" name="postCategoryCode" rules={[{ required: true, message:"请选择期望职位"}]}>
-                          <DoubleTree data={postCategoryData} cb={postCategoryDataCb} />
+                          <DoubleTree data={postCategoryData} cb={postCategoryDataCb} name={formThreeData.postCategoryName}/>
                         </Form.Item>
                         <Form.Item label="在职时间" name="workDate" rules={[{ required: true, message:"请选择期望职位"}]}>
                           <RangePicker />
@@ -719,7 +771,9 @@ const ResumeManagement = () => {
                         </Form.Item>
                       </Form>
                       <Button onClick={()=>setEdit4(false)}>取消</Button>
-                      <Button onClick={()=>submitFormData4()}>完成</Button>
+                      <Button onClick={()=>{
+                        submitFormData4(formThreeData.id);
+                      }}>完成</Button>
                     </div>
                   </div>
                 }
@@ -728,7 +782,17 @@ const ResumeManagement = () => {
               <section id="part-5" className="resumeM_lists_content_left_resume_work">
                 <div className="part-5_title">
                   <span>项目经历</span>
-                  {!edit5 && <div className="part-4_title_span" onClick={()=>setEdit5(true)}><img className="part-4_title_span_icon" src={LOGO} alt="" />添加</div>}
+                  {!edit5 && <div className="part-4_title_span" onClick={()=>{
+                    formFour.setFieldsValue({
+                      projectName:undefined,
+                      projectPost:undefined,
+                      projectDesc:undefined,
+                      projectPostId:undefined,
+                      workDate:[]
+                    });
+                    setFormFourData({});
+                    setEdit5(true);
+                  }}><img className="part-4_title_span_icon" src={LOGO} alt="" />添加</div>}
                 </div>
                 {!edit5  && <React.Fragment>
                   {/* list */}
@@ -740,12 +804,21 @@ const ResumeManagement = () => {
                         <div className="resumeM_lists_content_left_resume_card_right right_absolute">
                           <div className="part-3_list">
                             <div className="part-3_list_span" onClick={()=>{
-                            // setEdit3Item(item);
-                              console.log("workCityCode",item);
+                              formFour.setFieldsValue({
+                                projectName:item.projectName,
+                                projectPost:item.projectPost,
+                                projectDesc:item.projectDesc,
+                              });
+                              item["workDate"] = [dayjs(item.projectDateStart),dayjs(item.projectDateEnd)];
                               setFormFourData(item);
                               setEdit5(true);
                             }}><img className="part-3_icon" src={LOGO} alt="" />编辑</div>
-                            <div className="part-3_list_span"><img className="part-3_icon" src={LOGO} alt="" />删除</div>
+                            <div
+                              className="part-3_list_span"
+                              onClick={()=>{
+                                remoteDelete5(item.id,item.resumeId);
+                              }}
+                            ><img className="part-3_icon" src={LOGO} alt="" />删除</div>
                           </div>
                         </div>
                       </div>
@@ -768,8 +841,8 @@ const ResumeManagement = () => {
                     <Form.Item label="项目名称" name="projectName" rules={[{ required: true, message:"请输入姓名"},{validator:inputValidator }]}>
                       <Input placeholder="请输入姓名" />
                     </Form.Item>
-                    <Form.Item label="项目角色" name="projectPost"  rules={[{ required: true, message:"请选择行业"}]}>
-                      <DoubleTree data={postCategoryData} cb={postCategoryDataCb} />
+                    <Form.Item label="项目角色" name="projectPostId"  rules={[{ required: true, message:"请选择行业"}]}>
+                      <DoubleTree data={postCategoryData} cb={postCategoryDataCb} name={formFourData.projectPost}/>
                     </Form.Item>
                     <Form.Item label="项目时间" name="workDate" rules={[{ required: true, message:"请选择期望职位"}]}>
                       <RangePicker placeholder="请选择出生日期" />
@@ -785,18 +858,28 @@ const ResumeManagement = () => {
               <section id="part-6" className="resumeM_lists_content_left_resume_work">
                 <div className="part-6_title">
                   <span>教育经历</span>
-                  {!edit6 && <div className="part-4_title_span" onClick={()=>setEdit6(true)}><img className="part-4_title_span_icon" src={LOGO} alt="" />编辑</div>}
+                  {!edit6 && <div className="part-4_title_span" onClick={()=>{
+                    formFive.setFieldsValue({
+                      schoolName:formFiveDataList.schoolName,
+                      workDate:[dayjs(formFiveDataList.educationDataStart), dayjs(formFiveDataList.educationDataEnd)],
+                      education: formFiveDataList.education,
+                      major: formFiveDataList.major,
+                      educationType: formFiveDataList.educationType,// 全日制
+                      career:formFiveDataList.career
+                    });
+                    setEdit6(true);
+                  }}><img className="part-4_title_span_icon" src={LOGO} alt="" />编辑</div>}
                 </div>
                 {!edit6  && <React.Fragment>
                   {/* list */}
                   <div className="part-6_card">
                     <div className="part-6_card_title">
-                      <span className="part-6_card_title_name">数字人才服务平台</span>
-                      <span className="part-6_card_title_time">2018-10 至 今</span>
+                      <span className="part-6_card_title_name">{formFiveDataList.schoolName}</span>
+                      <span className="part-6_card_title_time">{formFiveDataList.educationDataStart}至{formFiveDataList.educationDataEnd}</span>
                     </div>
                     <div className="part-6_card_title">
-                      <span className="part-6_card_title_major">软件工程</span>
-                      <span className="part-6_card_title_time">本科-全日制</span>
+                      <span className="part-6_card_title_major">{formFiveDataList.major}</span>
+                      <span className="part-6_card_title_time">{formFiveDataList.education} {formFiveDataList.educationType ===1?"全日制":"非全日制"}</span>
                     </div>
                   </div>
                 </React.Fragment>
@@ -816,7 +899,7 @@ const ResumeManagement = () => {
                         <div
                           className={classnames("formRadio_item",
                             {
-                              formRadio_active:formFiveData.educationType === "1"
+                              formRadio_active:formFiveDataList.educationType === "1"
                             }
                           )}
                           onClick={()=>setFormData6("educationType","1")}
@@ -825,7 +908,7 @@ const ResumeManagement = () => {
                         <div
                           className={classnames("formRadio_item",
                             {
-                              formRadio_active:formFiveData.educationType === "2"
+                              formRadio_active:formFiveDataList.educationType === "2"
                             }
                           )}
                           onClick={()=>setFormData6("educationType","2")}
@@ -845,7 +928,7 @@ const ResumeManagement = () => {
                       <RangePicker placeholder="请选择出生日期" />
                     </Form.Item>
                     <Form.Item className="career"> </Form.Item>
-                    <Form.Item label="在校经历" name="projectDesc" rules={[{ required: true, message:"请输入姓名"},{validator:inputValidator }]}>
+                    <Form.Item label="在校经历" name="career" rules={[{ required: true, message:"请输入姓名"},{validator:inputValidator }]}>
                       <TextArea />
                     </Form.Item>
                   </Form>
