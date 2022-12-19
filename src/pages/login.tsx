@@ -8,24 +8,28 @@ import bgLogin from "@/img/bg-login.png";
 import { Button, Checkbox, Form, Input,message } from "antd";
 import "@/styles/pages/login.scss";
 import type { FormInstance } from "antd/es/form";
-
+import config from "@/config";
 import axios from "@/api/axios";
+import { useLocation,useNavigate } from "react-router-dom";
 
+const {wxConfig} = config;
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof actions;
 type Props = StateProps & DispatchProps
 type SwtichType = 0 | 1
 const Login = () =>{
-  const [swtichType, setSwitchType] = React.useState<SwtichType>(1);
+  const [swtichType, setSwitchType] = React.useState<SwtichType>(0);
   const [validCodeReqNo, setValidCodeReqNo] = React.useState("");
   const [formRef] = Form.useForm();
+  const routeConfig = useLocation();
+  const navigate = useNavigate();
   /**
- * 
- * appId  wx2fd5d6ce6fe56d61 
- * redirect_uri http%3A%2F%2Fcy.test.whdt.com.cn
- * response_type=code&scope=snsapi_login
- * 
- */
+   * 
+   * appId  wx2fd5d6ce6fe56d61 
+   * redirect_uri http%3A%2F%2Fcy.test.whdt.com.cn
+   * response_type=code&scope=snsapi_login
+   * 
+   */
   const onFinish =async (values: any) => {
     const {validCode,phone} = values;
     const param = {
@@ -36,9 +40,10 @@ const Login = () =>{
     };
     const {data:rsData} = await axios.post("/auth/client/login",param);
     if(rsData.code === 200){
-      const { accessToken } = rsData;
+      const { data:{accessToken} } = rsData;
       sessionStorage.setItem("accessToken",accessToken);
       message.success("登录成功");
+      navigate("/search");
     }else{
       message.error(`${rsData.error}`);
     }
@@ -48,11 +53,20 @@ const Login = () =>{
     console.log("Failed:", errorInfo);
   };
   const init = async ()=>{
-    const rs =  await axios.get(`
-    https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2fd5d6ce6fe56d61&redirect_uri=http%3A%2F%2Fcy.test.whdt.com.cn&response_type=code&scope=snsapi_login&state=STATE&connect_redirect=1#wechat_redirect
-    `
-    );
-    console.log("rs",rs);
+    const { search } = routeConfig;
+    const code = search.slice(1,).split("=")[1];
+    if(code){
+      // 跳转登录
+      const {data:rsData} =   await axios.get(`/auth/client?code=${code}`);
+      if(rsData.code === 200){
+        const { accessToken } = rsData;
+        sessionStorage.setItem("accessToken",accessToken);
+        message.success("登录成功");
+        navigate("/search");
+      }else{
+        message.error(`${rsData.error}`);
+      }
+    }
   };
   const getCode = async() => {
     const {phone} =await formRef.validateFields(["phone"]);
@@ -62,12 +76,12 @@ const Login = () =>{
       smsType:"loginSms"
     };
     const {data:getCodeRs} =  await axios.post("/auth/verify/code",data);
-    console.log("getCodeRs",getCodeRs);
+    console.log("getCodeRs",getCodeRs.data);
     if(getCodeRs.code === 200){
       setValidCodeReqNo(getCodeRs.data);
       message.success("成功获取验证码");
     }else{
-      message.error(`${getCode.error}`);
+      message.error(`${getCodeRs.error}`);
     }
   };
   React.useEffect(()=>{
@@ -79,7 +93,7 @@ const Login = () =>{
       <section className="login_layout_div">
         {/* 切换 */}
         <div className="login_layout_div_switch" onClick={()=>setSwitchType((swtichType^1) as SwtichType)}>
-          <span>{"微信登录>"}</span>
+          <span>{swtichType === 0 ? "微信登录>" : "手机登录>"}</span>
           <img src={loginVx} alt="" />
         </div>
         { swtichType === 0 ? 
@@ -128,11 +142,9 @@ const Login = () =>{
           </React.Fragment>
           :
           <section className="login_layout_register">
-            <div className="login_layout_register_title">扫码登录</div>
-            <div className="login_layout_register_tip">请使用微信扫描二维码</div>
-            <div className={"login_container"} id="login_container"></div>
-            {/* https://open.weixin.qq.com/connect/qrconnect?appid=wx2fd5d6ce6fe56d61&redirect_uri=http%3A%2F%2Fcy.test.whdt.com.cn&response_type=code&scope=snsapi_login */}
-            <img  className="login_layout_register_img" src={"https://open.weixin.qq.com/connect/qrconnect/connect/qrcode/041cthFn2eqh0w3Z"} alt="" />
+            <iframe scrolling="no" width="300" height="400" frameBorder="0"
+              src={`https://open.weixin.qq.com/connect/qrconnect?appid=${wxConfig.appid}&scope=${wxConfig.scope}&redirect_uri=${wxConfig.redirect_uri}&state=${wxConfig.state}&login_type=jssdk&self_redirect=default&style=${wxConfig.theme}&href=${wxConfig.href}`}
+            ></iframe>
           </section>
         }
       </section>

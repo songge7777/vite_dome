@@ -15,6 +15,8 @@ import LOGO from "@/img/LOGO.png";
 import classnames from "classnames";
 import { FormInstance, RuleObject } from "antd/es/form";
 import axios from "@/api/axios";
+import Axios from "axios";
+
 import {
   moneyList,
   expectedIndustryData,
@@ -60,7 +62,7 @@ const SalaryExpectation: React.FC = (props:TestProps) => {
           onChange(oldArr);
           setIsShow([]);
         }}
-        value={value[0]}>
+        value={formData.getFieldValue("salaryMin")}>
         {moneyList().map(item => <Select.Option key={`&0_${item.id}`} value={item.id}>{item.value}</Select.Option>)}
       </Select>
     </Form.Item>
@@ -73,7 +75,7 @@ const SalaryExpectation: React.FC = (props:TestProps) => {
           onChange(oldArr);
           setIsShow([]);
         }}
-        value={value[1]}
+        value={formData.getFieldValue("salaryMax")}
       >
         {moneyList().map(item => <Select.Option key={`&1_${item.id}`} value={item.id}>{item.value}</Select.Option>)}
       </Select>
@@ -82,23 +84,54 @@ const SalaryExpectation: React.FC = (props:TestProps) => {
 };
 
 
+const initData1 = () => ({
+  name:undefined,
+  jobMent:undefined,
+  birthday:undefined,
+  sex:undefined,
+  wx:undefined,
+  email:undefined,
+  phone:undefined,
+  workTime:undefined,
+  jobIdentity:undefined,
+  educationName:undefined,
+  stampdiffTime:undefined,
+  educationDesc:undefined,
+  jobMentName:undefined,
+  picture:undefined,
+});
+
+
+const initData3= () => ({
+  wantedType: undefined,
+  workCityCode: undefined,
+  postCategoryCode: undefined,
+  industryCategoryCode: undefined,
+  salaryExpectation: [undefined,undefined],
+  postCategoryName: undefined,
+  workCityName: undefined,
+});
+
+const initData4 = () => ({
+  companyName:undefined,
+  industryCategoryCode:undefined,
+  postCategoryCode:undefined,
+  workDate:[],
+  postCategoryName:undefined,
+  workDateEnd:undefined,
+  workDateStart:undefined,
+  reportingObject:undefined,
+  workContent:undefined,
+});
+
 const ResumeManagement = () => {
-  // keng
-  const [formOneData,setFormOneData] = React.useState({
-    name:undefined,
-    jobMent:undefined,
-    // birthday:[dayjs("2022-12-08"),dayjs("2022-12-11")],
-    birthday:dayjs("2022-12-08"),
-    // salaryExpectation:["1","3"],
-    sex:"1",
-    wx:1,
-    email:2,
-    phone:3,
-    workTime:dayjs("2022-12-08"),
-    jobIdentity:"1",
-    // 学历
-    educationName:"",
-  });
+  const [OnlyShowFormOneData,setOnlyShowFormOneData] = React.useState(initData1());
+
+  const [formOneData,setFormOneData] = React.useState(initData1());
+  
+  // 个人优势
+  const [merit, setMerit] = React.useState(""); 
+
   // 期望职位
   const [formTwoData,setFormTwoData] = React.useState({
     // 求职类型
@@ -111,38 +144,14 @@ const ResumeManagement = () => {
     industryCategoryCode:4,
     salaryExpectation:[],
   });
-  const [formTwoDataList,setFormTwoDataList] = React.useState(
-    [
-      {
-        wantedType:"1",
-        workCityCode:2,
-        postCategoryCode:3,
-        industryCategoryCode:4,
-        salaryExpectation:[1,2],
-        postCategoryName:"111",
-        workCityName:"222",
-      },
-      {
-        wantedType:"1",
-        workCityCode:2,
-        postCategoryCode:3,
-        industryCategoryCode:4,
-        salaryExpectation:[],
-        postCategoryName:"44",
-        workCityName:"555",
-      }
-    ]
-  );
-  // 个人优势
-  const [merit, setMerit] = React.useState(""); 
-  const [formThreeData,setFormThreeData] = React.useState({
-    companyName:undefined,
-    industryCategoryCode:undefined,
-    postCategoryCode:undefined,
-    workDate:[],
-    reportingObject:undefined,
-    workContent:undefined,
-  });
+  const [formTwoDataList,setFormTwoDataList] = React.useState([]);
+  // 工作经历
+  const [formThreeDataList,setFormThreeDataList] = React.useState([]);
+  const [formThreeData,setFormThreeData] = React.useState({companyName:"xxx"});
+
+  // 项目经历
+  const [formFourDataList,setFormFourDataList] = React.useState([]);
+
   const [formFourData,setFormFourData] = React.useState({
     companyName:undefined,
     projectPost	:undefined,
@@ -166,17 +175,22 @@ const ResumeManagement = () => {
   const [edit4,setEdit4] = React.useState<boolean>(false);
   const [edit5,setEdit5] = React.useState<boolean>(false);
   const [edit6,setEdit6] = React.useState<boolean>(false);
+
+  const [edit3Item, setEdit3Item] = React.useState<{}>({});
+
   const [formOne] = Form.useForm();
   const [formTwo] = Form.useForm();
   const [formThree] = Form.useForm();
   const [formFour] = Form.useForm();
   const [formFive] = Form.useForm();
   const getIndustryCategory = async() => {
-    const {data} = await axios.get("/sys/industry_category/get_cache_tree");
+    // const {data} = await axios.get("/sys/industry_category/get_cache_tree");
+    const {data} = await Axios.get("http://192.168.0.139:8088/sys/industry_category/get_cache_tree");
     setIndustryCategoryData(data.data);
   };
   const getPostCategory = async() => {
-    const {data} = await axios.get("/sys/post_category/cache_tree");
+    // const {data} = await axios.get("/sys/post_category/cache_tree");
+    const {data} = await Axios.get("http://192.168.0.139:8088/sys/post_category/cache_tree");
     setPostCategoryData(data.data);
   };
   // 获取数据
@@ -203,14 +217,16 @@ const ResumeManagement = () => {
     data.birthday = dayjs(data.birthday).format("YYYY-MM-DD");
     data.workTime = dayjs(data.workTime).format("YYYY-MM-DD");
     const rs =await axios.put("/eps/nds_resume",data);
-    console.log("data",rs);
     // 清空 没写
+    setEdit1(false);
+    getData1();
   };
   const submitFormData2 = async () => {
     const rs =await axios.put("/eps/nds_resume",{merit});
-    console.log("data",rs);
-    // 清空
+    // 清空 
     setMerit("");
+    getData2();
+    setEdit2(false);
   };
   const submitFormData3 = async(id?: number | string)=>{
     const data = await formTwo.getFieldsValue();
@@ -226,6 +242,9 @@ const ResumeManagement = () => {
       });
       console.log("rs",rs);
     }
+    // 刷新
+    getData3();
+    setEdit3(false);
   };
   const submitFormData4 = async(id?: number | string)=>{
     const data = await formThree.getFieldsValue();
@@ -302,49 +321,69 @@ const ResumeManagement = () => {
     });
   };
   const getInit = ()=>{
-    data1();
+    getData1();
+    getData2();
+    getData3();
+    getData4();
+    getData5();
+    getData6();
+    getData7();
   };
   React.useEffect(()=>{
     getInit();
   },[]);
   // 查看个人
-  const data1 = async()=>{
-    const data = {
-      pageNum:1,
-      pageSize:10,
-      param:{
-        resumeIds:["1601142715991904258"]
-      }
-    };
-    const {data:_rs} = await axios.post("/eps/nds_resume/list",data);
-    const rs = _rs.data[0];
+  const getData1 = async()=>{
+    const {data:_rs} = await axios.get("/eps/personResume/resumeList");
+    const rs = _rs.data;
+    console.log("rs", rs);
     const newR = {
       name:rs.name,
       jobMent:rs.jobMent,
       // birthday:,dayjs("2022-12-11")],
-      birthday:dayjs("2022-12-08"),
+      birthday:dayjs(`${rs.workTime}`),
       // salaryExpectation:["1","3"],
-      sex:rs.name,
-      wx:rs.name,
+      sex:rs.sex,
+      wx:rs.wx,
       email:rs.email,
       phone:rs.phone,
-      workTime:dayjs("2022-12-08"),
-      jobIdentity:"1",
-      educationName:rs.educationName
+      workTime:dayjs(`${rs.workTime}`),
+      jobIdentity:rs.jobIdentity,
+      educationName:rs.educationName,
+      stampdiffTime:rs.stampdiffTime,
+      educationDesc:rs.educationDesc,
+      picture:rs.picture,
     };
-    console.log("-*--->",newR);
+    console.log("查看个人",newR);
     setFormOneData(newR);
+    setOnlyShowFormOneData(newR);
   };
-  const data2 = async()=>{
-    const data = {
-      pageNum:1,
-      pageSize:10,
-      param:{
-        
-      }
-    };
-    const rs = await axios.post("/eps/nds_resume/list",data);
-    console.log("rs",rs);
+  const getData2 = async()=>{
+    const {data:_rs} = await axios.get("/eps/personResume/resumeList");
+    const rs = _rs.data;
+    setMerit(rs.merit);
+  };
+  const getData3 = async()=>{
+    const {data:_rs} = await axios.post("/eps/nds_resume_post/list");
+    const rs = _rs.data;
+    console.log("getData3", rs);
+    setFormTwoDataList(rs);
+  };
+  const getData4 = async()=>{
+    const {data:_rs} = await axios.post("/eps/nds_resume_work/list");
+    const rs = _rs.data;
+    console.log("getData4", rs);
+    setFormThreeDataList(rs);
+  };
+  const getData5 = async()=>{
+    const {data:_rs} = await axios.post("/eps/nds_resume_project/list");
+    const rs = _rs.data;
+    console.log("getData5", rs);
+    setFormFourDataList(rs);
+  };
+  const getData6 = async()=>{
+  };
+  const getData7 = async()=>{
   };
   return (
     <div className="resumeM_layout1">
@@ -375,25 +414,25 @@ const ResumeManagement = () => {
                   !edit1 && <React.Fragment>
                     <div className="resumeM_lists_content_left_resume_card_left">
                       {/* keng */}
-                      <span className="part-1_title">{formOneData.name}</span>
+                      <span className="part-1_title">{OnlyShowFormOneData.name}</span>
                       <div className="part-1_workInfo">
-                        <span>5年工作经验</span>
-                        <span>本科-全日制</span>
-                        <span>离职-随时到岗</span>
-                        <span>2016-8参加工作</span>
+                        <span>{OnlyShowFormOneData.stampdiffTime}年工作经验</span>
+                        <span>{OnlyShowFormOneData.educationDesc}</span>
+                        <span>{OnlyShowFormOneData.jobMentName}</span>
+                        <span>{ dayjs(OnlyShowFormOneData.workTime).format("YYYY-MM")}参加工作</span>
                       </div>
                       <div  className="part-1_call">
                         <img src={LOGO} alt="" />
-                        <span>13547822899</span>
+                        <span>{OnlyShowFormOneData.phone}</span>
                         <img src={LOGO} alt="" />
-                        <span>1354782</span>
+                        <span>{OnlyShowFormOneData.wx}</span>
                         <img src={LOGO} alt="" />
-                        <span>1354782@qq.com</span>
+                        <span>{OnlyShowFormOneData.email}</span>
                       </div>
                  
                     </div>
                     <div className="resumeM_lists_content_left_resume_card_right">
-                      <img className="part-1_logo" src={LOGO} alt="" />
+                      <img className="part-1_logo" src={OnlyShowFormOneData.picture} alt="" />
                       <div className="part-1_span" onClick={()=>setEdit1(true)}><img className="part-1_icon" src={LOGO} alt="" />编辑</div>
                     </div>
                   </React.Fragment>
@@ -476,7 +515,10 @@ const ResumeManagement = () => {
                         <DatePicker placeholder="请选择时间" />
                       </Form.Item>
                       <Form.Item className="formItemTwo">
-                        <Button onClick={()=>setEdit1(false)}>取消</Button>
+                        <Button onClick={()=>{
+                          setEdit1(false);
+                          formOne.resetFields();
+                        }}>取消</Button>
                         <Button onClick={()=>submitFormData1()}>完成</Button>
                       </Form.Item>
                     </Form>
@@ -485,7 +527,6 @@ const ResumeManagement = () => {
               </section>
               {/* 个人优势 */}
               <section id="part-2" className="resumeM_lists_content_left_resume_card">
-                
                 { 
                   !edit2 &&
                 <React.Fragment>
@@ -522,20 +563,34 @@ const ResumeManagement = () => {
                       {
                         formTwoDataList.map((item,index) => {
                           return <div key={index} className="part-3_workInfo">
-                            <span>{item.postCategoryCode}</span>
-                            <span>{item.salaryExpectation[0]}-{item.salaryExpectation[1]}</span>
                             <span>{item.postCategoryName}</span>
+                            <span>{item.salaryMin}-{item.salaryMax}万</span>
+                            <span>{item.industryCategoryName}</span>
                             <span>{item.workCityName}</span>
+                            <div className="resumeM_lists_content_left_resume_card_right right_absolute">
+                              <div className="part-3_list">
+                                <div className="part-3_list_span" onClick={()=>{
+                                  // setEdit3Item(item);
+                                  console.log("workCityCode",item);
+                                  setFormTwoData(item);
+                                  setEdit3(true);
+                                }}><img className="part-3_icon" src={LOGO} alt="" />编辑</div>
+                                <div className="part-3_list_span"><img className="part-3_icon" src={LOGO} alt="" />删除</div>
+                              </div>
+                            </div>
                           </div>;
                         })
                       }
                     </div>
                     <div className="resumeM_lists_content_left_resume_card_right">
-                      <div className="part-3_span" onClick={()=>setEdit3(true)}><img className="part-3_icon" src={LOGO} alt="" />添加</div>
-                      <div className="part-3_list">
+                      <div className="part-3_span" onClick={()=>{
+                        setFormTwoData({});
+                        setEdit3(true);
+                      }}><img className="part-3_icon" src={LOGO} alt="" />添加</div>
+                      {/* <div className="part-3_list">
                         <div className="part-3_list_span" onClick={()=>setEdit3(true)}><img className="part-3_icon" src={LOGO} alt="" />编辑</div>
                         <div className="part-3_list_span"><img className="part-3_icon" src={LOGO} alt="" />删除</div>
-                      </div>
+                      </div> */}
                     </div>
                   </React.Fragment>
                 }
@@ -573,14 +628,14 @@ const ResumeManagement = () => {
                         </Form.Item>
                         <Form.Item label="期望城市" name="workCityCode" rules={[{ required: true, message:"请选择城市" }]}>
                           <Select placeholder="请选择城市">
-                            {expectedCityData().map(item => <Select.Option key={`&2_${item.id}`} value={item.id}>{item.value}</Select.Option>)}
+                            {expectedCityData().map(item => <Select.Option key={`&2_${item.id}`} value={String(item.id)}>{item.value}</Select.Option>)}
                           </Select>
                         </Form.Item>
-                        <Form.Item label="期望职位" name="postCategoryCode" rules={[{ required: true, message:"请选择期望职位"}]}>
-                          <DoubleTree data={postCategoryData} cb={postCategoryDataCb} />
+                        <Form.Item label="期望岗位" name="postCategoryCode" rules={[{ required: true, message:"请选择期望职位"}]}>
+                          <DoubleTree data={postCategoryData} cb={postCategoryDataCb} name={formTwoData.postCategoryName} />
                         </Form.Item>
                         <Form.Item label="期望行业" name="industryCategoryCode"  rules={[{ required: true, message:"请选择行业"}]}>
-                          <SingleTree data={industryCategoryData} cb={industryCategoryDataCb} />
+                          <SingleTree data={industryCategoryData} cb={industryCategoryDataCb} name={formTwoData.industryCategoryName} />
                         </Form.Item>
                         <Form.Item label="期望薪资" name="salaryExpectation" rules={[{ required: true, message:"请选择期望薪资"}]} >
                           <SalaryExpectation formData={formTwo} onChange={(i:any) => {console.log(i);}}/>
@@ -597,42 +652,41 @@ const ResumeManagement = () => {
               <section id="part-4" className="resumeM_lists_content_left_resume_work">
                 <div className="part-4_title">
                   <span>工作经历</span>
-                  {!edit4 && <div className="part-4_title_span" onClick={()=>setEdit4(true)}><img className="part-4_title_span_icon" src={LOGO} alt="" />编辑</div>}
+                  {!edit4 && <div className="part-4_title_span" onClick={()=>{
+                    setFormThreeData(initData4());
+                    setEdit4(true);
+                  }}><img className="part-4_title_span_icon" src={LOGO} alt="" />添加</div>}
                 </div>
                 {
                   !edit4 && <React.Fragment>
                     {/* list */}
-                    <div className="part-4_card">
+                    {formThreeDataList.map((item,index) =><div key={index} className="part-4_card">
                       <div className="part-4_card_title">
-                        <span className="part-4_card_title_name">武汉德特云才数字科技有限公司</span>
-                        <span className="part-4_card_title_time">2018-10 至 今</span>
+                        <span className="part-4_card_title_name">{item.companyName}</span>
+                        <span className="part-4_card_title_time">{item.workDateStart}-{item.workDateEnd}</span>
                         <div className="part-4_card_title_list">
-                          <div className="part-4_card_title_list_span"><img className="part-4_card_title_list_span_icon" src={LOGO} alt="" />编辑</div>
+                          <div className="part-4_card_title_list_span"
+                            onClick={()=>{
+                              console.log("item",item);
+                              setEdit4(true);
+                              setFormThreeData({
+                                companyName:item.companyName
+                              });
+                              // setTimeout(()=>{
+                              //   console.log(formThreeData);
+                              // },1000);
+                            }}
+                          ><img className="part-4_card_title_list_span_icon" src={LOGO} alt="" />编辑</div>
                           <div className="part-4_card_title_list_span"><img className="part-4_card_title_list_span_icon" src={LOGO} alt="" />删除</div>
                         </div>
                       </div>
-                      <div className="part-4_card_post">高级Java工程师</div>
-                      <div className="part-4_card_workList">工作内容</div>
+                      <div className="part-4_card_post">{item.postCategoryName}</div>
+                      <div className="part-4_card_workList">{item.workContent}</div>
                       <div className="part-4_card_workContent">
-                      123
+                        123
                       </div>
                     </div>
-                    <div className="part-4_card">
-                      <div className="part-4_card_title">
-                        <span className="part-4_card_title_name">武汉德特云才数字科技有限公司</span>
-                        <span className="part-4_card_title_time">2018-10 至 今</span>
-                        <div className="part-4_card_title_list">
-                          <div className="part-4_card_title_list_span"><img className="part-4_card_title_list_span_icon" src={LOGO} alt="" />编辑</div>
-                          <div className="part-4_card_title_list_span"><img className="part-4_card_title_list_span_icon" src={LOGO} alt="" />删除</div>
-                        </div>
-                      </div>
-                      <div className="part-4_card_post">高级Java工程师</div>
-                      <div className="part-4_card_workList">工作内容</div>
-                      <div className="part-4_card_workContent">
-                      123
-                      </div>
-                    </div>
-
+                    )}
                   </React.Fragment>
                 }
                 {
@@ -674,21 +728,34 @@ const ResumeManagement = () => {
               <section id="part-5" className="resumeM_lists_content_left_resume_work">
                 <div className="part-5_title">
                   <span>项目经历</span>
-                  {!edit5 && <div className="part-4_title_span" onClick={()=>setEdit5(true)}><img className="part-4_title_span_icon" src={LOGO} alt="" />编辑</div>}
+                  {!edit5 && <div className="part-4_title_span" onClick={()=>setEdit5(true)}><img className="part-4_title_span_icon" src={LOGO} alt="" />添加</div>}
                 </div>
                 {!edit5  && <React.Fragment>
                   {/* list */}
-                  <div className="part-5_card">
-                    <div className="part-5_card_title">
-                      <span className="part-5_card_title_name">数字人才服务平台</span>
-                      <span className="part-5_card_title_time">2018-10 至 今</span>
+                  {
+                    formFourDataList.map((item,index) => <div key={index} className="part-5_card">
+                      <div className="part-5_card_title">
+                        <span className="part-5_card_title_name">{item.projectName}</span>
+                        <span className="part-5_card_title_time">{item.projectDateStart}-{item.projectDateEnd}</span>
+                        <div className="resumeM_lists_content_left_resume_card_right right_absolute">
+                          <div className="part-3_list">
+                            <div className="part-3_list_span" onClick={()=>{
+                            // setEdit3Item(item);
+                              console.log("workCityCode",item);
+                              setFormFourData(item);
+                              setEdit5(true);
+                            }}><img className="part-3_icon" src={LOGO} alt="" />编辑</div>
+                            <div className="part-3_list_span"><img className="part-3_icon" src={LOGO} alt="" />删除</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="part-5_card_post">{item.projectPost}</div>
+                      <div className="part-5_card_workList">工作内容</div>
+                      <div className="part-5_card_workContent">
+                        {item.projectDesc}
+                      </div>
                     </div>
-                    <div className="part-5_card_post">高级Java工程师</div>
-                    <div className="part-5_card_workList">工作内容</div>
-                    <div className="part-5_card_workContent">
-                      123
-                    </div>
-                  </div>
+                    )} 
                 </React.Fragment>
                 }
                 {edit5 && <div className="part-5_card">
@@ -698,7 +765,7 @@ const ResumeManagement = () => {
                     initialValues={{ layout: "vertical",...formFourData }}
                     className="jobWanted_options_layout_cartTop_content_right_form"
                   >
-                    <Form.Item label="项目名称" name="companyName" rules={[{ required: true, message:"请输入姓名"},{validator:inputValidator }]}>
+                    <Form.Item label="项目名称" name="projectName" rules={[{ required: true, message:"请输入姓名"},{validator:inputValidator }]}>
                       <Input placeholder="请输入姓名" />
                     </Form.Item>
                     <Form.Item label="项目角色" name="projectPost"  rules={[{ required: true, message:"请选择行业"}]}>
@@ -714,7 +781,6 @@ const ResumeManagement = () => {
                   <Button onClick={()=>setEdit5(false)}>取消</Button>
                   <Button onClick={()=>submitFormData5()}>完成</Button>
                 </div>}
-               
               </section>
               <section id="part-6" className="resumeM_lists_content_left_resume_work">
                 <div className="part-6_title">

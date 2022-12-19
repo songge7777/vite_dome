@@ -21,12 +21,13 @@ type TProps = {
   data:baseC[];
   inputNode:React.ReactNode;
   single: boolean;
+  value?:String,
   onChange?:()=>{},
   cb:()=>{}
 }
 
 const DoubleTree:React.FC = (props:TProps) => {
-  const {data,cb,inputNode,single,onChange} = props;
+  const {data,cb,inputNode,single,onChange,name} = props;
   const [show,setShow] = React.useState(false);
   const [secondData,setSecondData] = React.useState([]);
   const [current,setCurrent] = React.useState({});
@@ -48,6 +49,9 @@ const DoubleTree:React.FC = (props:TProps) => {
     setCurrentValue(item.name);
     setShow(false);
   };
+  React.useEffect(()=>{
+    setCurrentValue(name);
+  },[]);
   return <div className="custom_select">
     {/* 下拉 */}
     <div onClick={()=>{setShow(!show);}} >

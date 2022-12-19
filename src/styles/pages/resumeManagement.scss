@@ -121,6 +121,7 @@
                   color: #606266;
                 }
                 &_workInfo {
+                  position: relative;
                   margin-top: 14px;
                   font-size: 14px;
                   font-weight: 400;
@@ -164,6 +165,7 @@
                 margin-right: 40px;
               }
             }
+
             &_right {
               @include flex();
               .part-1 {
@@ -219,7 +221,7 @@
                   @include flex(row);
                   justify-content: flex-end;
                   &_span {
-                    margin-top: 20px;
+                    // margin-top: 20px;
                     @include flex(row);
                     justify-content: flex-end;
                     align-items: center;
@@ -487,6 +489,10 @@
       &_empty {
         margin: 0 5px;
       }
+    }
+    .right_absolute {
+      position: absolute;
+      right: 0;
     }
   }
 }

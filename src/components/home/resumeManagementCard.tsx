@@ -3,11 +3,63 @@ import "@/styles/pages/resumeManagementCard.scss";
 import LOGO from "@/img/LOGO.png";
 import offerp from "@/img/offerp.png";
 import offerw from "@/img/offerw.png";
-
+import type { UploadProps } from "antd";
 import {
   Button,
+  Upload,
+  Modal,
+  message,
 } from "antd";
+
+const { Dragger } = Upload;
+
+const props: UploadProps = {
+  name: "file",
+  multiple: true,
+  action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+  onChange(info) {
+    const { status } = info.file;
+    if (status !== "uploading") {
+      console.log(info.file, info.fileList);
+    }
+    if (status === "done") {
+      message.success(`${info.file.name} file uploaded successfully.`);
+    } else if (status === "error") {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  },
+  onDrop(e) {
+    console.log("Dropped files", e.dataTransfer.files);
+  },
+};
+
+const FileUpload:React.FC = () => {
+  return <Dragger {...props}>
+    <p className="ant-upload-drag-icon">
+      ---
+      {/* <InboxOutlined /> */}
+    </p>
+    <p className="ant-upload-text">上传附件简历，支持文档格式（pdf、word文档） 文件大小不超过10M</p>
+    <p className="ant-upload-hint">
+      <Button>上传附件简历</Button>
+    </p>
+  </Dragger>;
+};
+
 const resumeManagementCard = () => {
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   return (
     <section className="resumeManagement_layout">
       {/* title */}
@@ -33,6 +85,9 @@ const resumeManagementCard = () => {
       <section  className="resumeManagement_bottom">
         <Button>上传简历</Button>
       </section>
+      <Modal title="简历上传" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+        <FileUpload />
+      </Modal>
     </section>
   );
 };

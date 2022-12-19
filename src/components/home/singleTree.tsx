@@ -20,11 +20,12 @@ type baseC  = {
 type TProps = {
   data:baseC[];
   onChange?:()=>{},
+  name:string,
   cb:()=>{}
 }
 
 const SingleTree:React.FC = (props:TProps) => {
-  const {data,cb,onChange} = props;
+  const {data,cb,onChange,name} = props;
   const [show,setShow] = React.useState(false);
   const [current,setCurrent] = React.useState({});
   const [currentValue,setCurrentValue] = React.useState();
@@ -37,6 +38,10 @@ const SingleTree:React.FC = (props:TProps) => {
     setCurrentValue(item.name);
     setShow(false);
   };
+  React.useEffect(()=>{
+    console.log("---value", name);
+    setCurrentValue(name);
+  },[]);
   return <div className="custom_select">
     {/* 下拉 */}
     <Input value={currentValue}  onClick={()=>{setShow(!show);}} />
