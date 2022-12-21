@@ -79,7 +79,7 @@ const Personal = () => {
       pageSize:10,
       param:{}
     };
-    const {data:rs} = await axios.post("/cpe/resume/list/interact",data);
+    const {data:rs} = await axios.post("/cpe/post/all/interact",data);
     console.log("沟通过rs=>>", rs.data);
     setTrenchingData(rs.data);
   }; 
@@ -90,7 +90,7 @@ const Personal = () => {
       pageSize:10,
       param:{}
     };
-    const {data:rs} = await axios.post("/cpe/resume/list/send",data);
+    const {data:rs} = await axios.post("/cpe/post/all/send",data);
     setTrenchingData(rs.data);
     console.log("已投递rs=>>", rs.data);
   }; 
@@ -101,7 +101,7 @@ const Personal = () => {
       pageSize:10,
       param:{}
     };
-    const {data:rs} = await axios.post("/cpe/resume/list/concern",data);
+    const {data:rs} = await axios.post("/cpe/post/all/concern",data);
     setTrenchingData(rs.data);
     console.log("感兴趣的rs=>>", rs.data);
   }; 
@@ -112,7 +112,7 @@ const Personal = () => {
       pageSize:10,
       param:{}
     };
-    const {data:rs} = await axios.post("/cpe/resume/list/browse",data);
+    const {data:rs} = await axios.post("/cpe/post/all/browse",data);
     setTrenchingData(rs.data);
     console.log("我看过的rs=>>", rs.data);
   }; 
@@ -123,12 +123,12 @@ const Personal = () => {
       pageSize:10,
       param:{}
     };
-    const {data:rs} = await axios.post("/cpe/resume/list/me",data);
+    const {data:rs} = await axios.post("/cpe/post/all/me",data);
     console.log("看过我的rs=>>", rs.data);
   }; 
   // 我的面试
   const getTab7List = async () => {
-    const {data:rs} = await axios.get("/cpe/resume/list/interview");
+    const {data:rs} = await axios.get("/cpe/post/all/interview");
     console.log("我的面试rs=>>", rs.data);
   }; 
 

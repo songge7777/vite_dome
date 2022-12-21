@@ -362,7 +362,7 @@ const ResumeManagement = () => {
   },[]);
   // 查看个人
   const getData1 = async()=>{
-    const {data:_rs} = await axios.get("/cpe/personResume/resumeList");
+    const {data:_rs} = await axios.get("/cpe/resume/single");
     const rs = _rs.data;
     console.log("rs", rs);
     if(!rs) return;
@@ -387,7 +387,7 @@ const ResumeManagement = () => {
     setOnlyShowFormOneData(newR);
   };
   const getData2 = async()=>{
-    const {data:_rs} = await axios.get("/cpe/personResume/resumeList");
+    const {data:_rs} = await axios.get("/cpe/resume/resumeList");
     const rs = _rs.data;
     setMerit(rs.merit);
   };

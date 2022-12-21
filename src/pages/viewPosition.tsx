@@ -14,7 +14,7 @@ import Follow from "@/img/follow.png";
 import classnames from "classnames";
 import "@/styles/pages/viewPosition.scss";
 import AMapLoader from "@amap/amap-jsapi-loader";
-import { useLocation } from "react-router-dom";
+import { useNavigate ,useLocation } from "react-router-dom";
 
 import axios from "@/api/axios";
 import { Button } from "antd";
@@ -24,6 +24,9 @@ type Props = StateProps & DispatchProps
 
 const ViewEnterprise = () => {
   const routeConfig = useLocation();
+  const navigate  = useNavigate();
+  const [companySize,setCompanySize] = React.useState([]);
+  const [enterpriseType,setEnterpriseType] = React.useState([]);
   const [recruitPostData,setRecruitPostData] = React.useState([]);
   const [positionData,setPositionData] = React.useState({});
   const initMap = async(data) => {
@@ -44,6 +47,7 @@ const ViewEnterprise = () => {
     setPositionData(data.data);
     return data.data;
   };
+  // 相似岗位
   const geiRecruitPostData = async(recruitPostId) => {
     const {data} = await axios.post("/cpe/post/search/resemble/post",{
       pageNum:1,
@@ -53,12 +57,32 @@ const ViewEnterprise = () => {
     setRecruitPostData(data.data);
     console.log("data", data.data);
   };
+  // 字典 查数据
+  const getT = async(key) => {
+    const {data} = await axios.get(`/sys/dict_item/type/${key}`);
+    return data.data;
+  };
   const getInit = async() => {
+    const rs1 = await getT("company_size");
+    setCompanySize(rs1);
+    const rs2 = await getT("enterprise_type");
+    setEnterpriseType(rs2);
+    console.log(rs1,rs2);
     const rs = await getData(routeConfig.state);
     initMap(rs);
     geiRecruitPostData(rs.recruitPostId);
+  
   };
 
+  const filter = (data,id) => {
+    const r = data.filter(i => Number(i.value)===Number(id))[0];
+    const label =  r ? r.label : "";
+    return label;
+  };
+
+  const goToPageCompany = (data) => {
+    navigate("/viewEnterprise",{state:data.companyId});
+  };
   React.useEffect(()=>{
     getInit();
   },[]);
@@ -134,22 +158,25 @@ const ViewEnterprise = () => {
                 <span>立即沟通</span>
               </div>
             </div>
-            <div className="right_divTip">
+            <div className="right_divTip" onClick={()=>goToPageCompany(positionData)}>
               <img src={positionData.companyLogo} alt="" />
               <span className="span">{positionData.companyName}</span>
               <div>
                 <span className="btn">
-                国企
+                  {/* enterprise_type */}
+                  {filter(enterpriseType,positionData.enterpriseType)}
                 </span>
               </div>
               <div>
                 <span  className="btn">
-                10000人以上
+                  {/* company_size */}
+                  
+                  {filter(companySize,positionData.scale)}
                 </span>
               </div>
               <div>
                 <span  className="btn">
-                汽车
+                  {positionData.companyIndustryCategory}
                 </span>
               </div>
               

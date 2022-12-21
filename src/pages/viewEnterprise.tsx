@@ -6,15 +6,69 @@ import Header from "@/components/home/Header";
 import Axios from "axios";
 import goback from "@/img/goback.png";
 import classnames from "classnames";
+import AMapLoader from "@amap/amap-jsapi-loader";
 import "@/styles/pages/viewEnterprise.scss";
 import axios from "@/api/axios";
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof actions;
 type Props = StateProps & DispatchProps 
+import { useLocation } from "react-router-dom";
 
 const ViewEnterprise = () => {
+  const [companySize,setCompanySize] = React.useState([]);
+  const [enterpriseType,setEnterpriseType] = React.useState([]);
+  const routeConfig = useLocation();
+  const [dataItem,setDataItem] = React.useState({});
+  const [dataList,setDataList] = React.useState([]);
+  const getData = async(companyId) => {
+    const {data} = await  axios.get(`/cpe/post/company/${companyId}`);
+    setDataItem(data.data);
+    return data.data;
+  };
+    // 字典 查数据
+  const getT = async(key) => {
+    const {data} = await axios.get(`/sys/dict_item/type/${key}`);
+    return data.data;
+  };
+  const getInit = async() => {
+    const rs1 = await getT("company_size");
+    setCompanySize(rs1);
+    const rs2 = await getT("enterprise_type");
+    setEnterpriseType(rs2);
+    const id = routeConfig.state;
+    getCompanyPost(id);
+    const rs = await getData(id);
+    initMap(rs);
+  };
+  const filter = (data,id) => {
+    const r = data.filter(i => Number(i.value)===Number(id))[0];
+    const label =  r ? r.label : "";
+    return label;
+  };
+  const initMap = async(data) => {
+    let map = {};
+    const MpInstance = await AMapLoader.load({
+      key: "db1560ddcb7db484b9c65f04f60d04ac", // 申请好的Web端Key，首次调用 load 时必填
+      version: "2.0"
+    });
+    console.log("positionData",data);
+    map = new MpInstance.Map("mapcontainer",{
+      zoom: 15,
+      plugins:["AMap.Scale","AMap.ToolBar"],
+      center:[data.workAddrLongitude,data.workAddrLatitude]
+    });
+  };
 
-  const getInit = () => {
+  const getCompanyPost = async(companyId) => {
+    const {data} = await axios.post("/cpe/post/search/company/post",{
+      pageNum:1,
+      pageSize:10,
+      param:{
+        companyId
+      }
+    });
+    setDataList(data.data);
+    console.log("dat",data.data);
   };
  
   React.useEffect(()=>{
@@ -27,13 +81,13 @@ const ViewEnterprise = () => {
         <div className="enterprise_lists_content">
           <div className="enterprise_lists_content_left">
             <section className="enterprise_lists_content_left_title">
-              <img className="enterprise_lists_content_left_title_img" src={goback} alt="" />
+              <img className="enterprise_lists_content_left_title_img" src={dataItem.companyLogo} alt="" />
               <div className="enterprise_lists_content_left_title_right">
-                <div className="enterprise_lists_content_left_title_right_name">东风汽车</div>
+                <div className="enterprise_lists_content_left_title_right_name">{dataItem.companyName}</div>
                 <div className="enterprise_lists_content_left_title_right_tips">
-                  <span>国企</span>
-                  <span>1000人以上</span>
-                  <span>汽车</span>
+                  <span>{filter(enterpriseType,dataItem.enterpriseType)}</span>
+                  <span>{filter(companySize,dataItem.scale)}</span>
+                  <span>{dataItem.companyIndustryCategory}</span>
                 </div>
               </div>
             </section>
@@ -42,44 +96,51 @@ const ViewEnterprise = () => {
               <div className="enterprise_lists_content_left_content_top">企业介绍</div>
               
               <div className="enterprise_lists_content_left_content_title">企业简介</div>
-              <div className="enterprise_lists_content_left_content_tip">东风汽车集团股份有限公司(以下称“东风汽车集团”)于二零零五年十二月七日在香港联交所上市。东风汽车集团经营业务以整车制造为中心，涵盖汽车研发、零部件及装备生产制造、汽车金融、汽车销售、出行业务等与汽车相关的其他完整业务体系，是我国产业链最为完整的汽车集团之一。</div>
+              <div className="enterprise_lists_content_left_content_tip">{dataItem.introduce}</div>
               
               <div className="enterprise_lists_content_left_content_title">工商信息</div>
               <section className="enterprise_lists_content_left_content_row">
                 <span className="enterprise_lists_content_left_content_row_title">企业名称</span>
-                <span className="enterprise_lists_content_left_content_row_value">东风汽车</span>
+                <span className="enterprise_lists_content_left_content_row_value">{dataItem.companyName}</span>
               </section>
               <section className="enterprise_lists_content_left_content_row">
                 <span className="enterprise_lists_content_left_content_row_title">企业代码（统一社会信用代码）</span>
-                <span className="enterprise_lists_content_left_content_row_value">914200001000115161</span>
+                <span className="enterprise_lists_content_left_content_row_value">{dataItem.creditCode}</span>
               </section>
               <section className="enterprise_lists_content_left_content_row">
                 <span className="enterprise_lists_content_left_content_row_title">企业类型</span>
-                <span className="enterprise_lists_content_left_content_row_value">中央企业</span>
+                <span className="enterprise_lists_content_left_content_row_value">{filter(enterpriseType,dataItem.enterpriseType)}</span>
               </section>
               <section className="enterprise_lists_content_left_content_row">
                 <span className="enterprise_lists_content_left_content_row_title">注册资本</span>
-                <span className="enterprise_lists_content_left_content_row_value">1,560,000万(元)</span>
+                <span className="enterprise_lists_content_left_content_row_value">{dataItem.regCapital}(元)</span>
               </section>
               <section className="enterprise_lists_content_left_content_row">
                 <span className="enterprise_lists_content_left_content_row_title">成立日期</span>
-                <span className="enterprise_lists_content_left_content_row_value">1991年06月25日</span>
+                <span className="enterprise_lists_content_left_content_row_value">{dataItem.incorporationData}</span>
               </section>
               <section className="enterprise_lists_content_left_content_row">
                 <span className="enterprise_lists_content_left_content_row_title">住所</span>
-                <span className="enterprise_lists_content_left_content_row_value">湖北省武汉市武汉经济技术开发区东风大道特1号</span>
+                <span className="enterprise_lists_content_left_content_row_value">{dataItem.residence}</span>
               </section>
               <section className="enterprise_lists_content_left_content_row">
                 <span className="enterprise_lists_content_left_content_row_title">公司规模</span>
-                <span className="enterprise_lists_content_left_content_row_value">10000人以上</span>
+                <span className="enterprise_lists_content_left_content_row_value">{filter(companySize,dataItem.scale)}</span>
               </section>
               <section className="enterprise_lists_content_left_content_row">
                 <span className="enterprise_lists_content_left_content_row_title">营业范围</span>
               </section>
               <div>
-              开发、设计、制造、销售汽车及汽车零部件（包括新能源汽车及其电池、电机、整车控制技术）、电子电器、金属机械、铸金锻件、粉末冶金、设备、工具和模具；进出口业务；组织管理本公司直属企业的生产经营活动；对电力、燃气、汽车……
+                {dataItem.businessScope}
               </div>
               <div className="enterprise_lists_content_left_content_title">公司地址</div>
+              <div className="">
+                {dataItem.provinceName}
+                {dataItem.cityName}
+                {dataItem.countyName}
+                {dataItem.addr}
+              </div>
+              <div id="mapcontainer" />
 
             </div>
           </div>
@@ -88,30 +149,18 @@ const ViewEnterprise = () => {
               <span className="enterprise_lists_content_right_title_name">在招岗位</span>
               <span className="enterprise_lists_content_right_title_more">更多</span>
             </div>
-            <div className="enterprise_lists_content_right_lists">
-              <div className="enterprise_lists_content_right_lists_top">软件项目经理</div>
+            { dataList && dataList.map((item,index) => <div key={index} className="enterprise_lists_content_right_lists">
+              <div className="enterprise_lists_content_right_lists_top">{item.postName}</div>
               <div className="enterprise_lists_content_right_lists_btns">
-                <span>武汉</span>
-                <span>3年</span>
-                <span>硕士</span>
+                {item.postKeywordList && item.postKeywordList.map((i,j) =><span key={j}>{i}</span>) }
               </div>
               <div className="enterprise_lists_content_right_lists_bottom">
-                <span className="enterprise_lists_content_right_lists_bottom_money">1.5万-2.5万*13薪</span>
-                <span className="enterprise_lists_content_right_lists_bottom_address">武汉-洪山区</span>
+                <span className="enterprise_lists_content_right_lists_bottom_money">
+                  {item.salaryMin/10000}万-{item.salaryMax/10000}万*{item.salaryNum}薪</span>
+                <span className="enterprise_lists_content_right_lists_bottom_address">{item.workAddrCityName}-{item.workAddrCountyName}</span>
               </div>
-            </div>
-            <div className="enterprise_lists_content_right_lists">
-              <div className="enterprise_lists_content_right_lists_top">软件项目经理</div>
-              <div className="enterprise_lists_content_right_lists_btns">
-                <span>武汉</span>
-                <span>3年</span>
-                <span>硕士</span>
-              </div>
-              <div className="enterprise_lists_content_right_lists_bottom">
-                <span className="enterprise_lists_content_right_lists_bottom_money">1.5万-2.5万*13薪</span>
-                <span className="enterprise_lists_content_right_lists_bottom_address">武汉-洪山区</span>
-              </div>
-            </div>
+            </div>)}
+            
           </div>
         </div> 
       </div> 
