@@ -41,6 +41,7 @@ const TrenchingCard:React.FC = (props:Props) =>{
         <div className="trenching_content_layout_lists_right_top">
           <span>已投递</span>
           <span>取消感兴趣</span>
+          {/* postStatus  */}
           <span>岗位关闭</span>
         </div>
         <div className="trenching_content_layout_lists_right_call">

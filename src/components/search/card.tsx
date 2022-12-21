@@ -1,14 +1,19 @@
 import * as React from "react";
 import LOGO from "@/img/LOGO.png";
 import "@/styles/pages/searchCard.scss";
+import { useNavigate } from "react-router-dom";
 type Props = {
   data:{}
 }
 const Card:React.FC = (props:Props)=>{
   const {data} = props;
-  console.log("data",data);
+  const navigate = useNavigate();
+  const goToPage = (data:{}) => {
+    const { recruitPostId } = data;
+    navigate("/viewPosition",{state:recruitPostId});
+  };
   return (
-    <div className="search_home_lists">
+    <div className="search_home_lists" onClick={()=>goToPage(data)} >
       <div className="search_content_layout_lists_left">
         <section className="search_content_layout_lists_div">
           <div className="search_content_layout_lists_div_title">

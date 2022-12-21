@@ -1,0 +1,144 @@
+@import "../layout.scss";
+.enterprise {
+  &_layout {
+  }
+  &_lists {
+    @include flex(row);
+    justify-content: center;
+    width: 100%;
+    background: #fafafa;
+    min-height: 1000px;
+    &_content {
+      @include flex(row);
+      margin-top: 20px;
+      width: 1200px;
+      &_left {
+        width: 904px;
+        &_title {
+          width: 100%;
+          height: 132px;
+          background: #ebedf1;
+          padding: 32px 0 0 20px;
+          @include flex(row);
+          &_img {
+            width: 56px;
+            height: 56px;
+          }
+          &_right {
+            @include flex();
+            margin-left: 12px;
+            &_name {
+              font-size: 20px;
+              font-weight: 500;
+              color: #343130;
+            }
+            &_tips {
+              span {
+                margin-right: 5px;
+                font-size: 14px;
+                font-weight: 400;
+                color: #606266;
+              }
+            }
+          }
+        }
+        &_content {
+          @include flex();
+          padding: 20px 0 0 66px;
+          &_top {
+            font-size: 16px;
+            font-weight: 500;
+            color: #9c9e9c;
+          }
+          &_title {
+            margin-top: 16px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #343130;
+          }
+          &_row {
+            @include flex(row);
+            margin-top: 12px;
+            &_title {
+              width: 112px;
+              font-size: 14px;
+              font-weight: 400;
+              color: #9c9e9c;
+              text-align: start;
+              line-height: 22px;
+              text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            }
+            &_value {
+              margin-left: 40px;
+              font-size: 14px;
+              font-weight: 400;
+              color: #606266;
+              line-height: 22px;
+            }
+          }
+        }
+      }
+      &_right {
+        width: 280px;
+        height: 300px;
+        margin-left: 16px;
+        background: #ffffff;
+        padding: 18px 20px 0 20px;
+        &_title {
+          width: 100%;
+          @include flex(row);
+          justify-content: space-between;
+          &_name {
+            font-size: 18px;
+            font-family: Alibaba PuHuiTi-Regular, Alibaba PuHuiTi;
+            font-weight: 400;
+            color: #606266;
+          }
+          &_more {
+            font-size: 14px;
+            font-weight: 400;
+            color: #9c9e9c;
+          }
+        }
+        &_lists {
+          margin-top: 20px;
+          &_top {
+            font-size: 16px;
+            font-weight: 400;
+            color: #343130;
+          }
+          &_btns {
+            @include flex(row);
+            span {
+              display: inline-block;
+              width: 48px;
+              height: 24px;
+              background: #f1f2f5;
+              border-radius: 3px 3px 3px 3px;
+              line-height: 24px;
+              text-align: center;
+              margin-right: 8px;
+              margin-top: 12px;
+              margin-bottom: 12px;
+            }
+          }
+          &_bottom {
+            width: 100%;
+            @include flex(row);
+            justify-content: space-between;
+            &_money {
+              font-size: 16px;
+              font-weight: 400;
+              color: #f5383a;
+            }
+            &_address {
+              font-size: 14px;
+              font-weight: 400;
+              color: #606266;
+            }
+          }
+        }
+      }
+    }
+  }
+}

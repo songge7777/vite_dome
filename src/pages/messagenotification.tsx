@@ -6,8 +6,7 @@ import "@/styles/pages/messagenotification.scss";
 import Card from "@/components/search/card";
 import SearchHeader from "@/components/home/searchHeader";
 import Header from "@/components/home/Header";
-import Login from "@/components/home/login";
-import PersonalInfoCard from "@/components/home/personalInfoCard";
+import Login from "@/components/home/loginCard";
 import ResumeManagementCard from "@/components/home/resumeManagementCard";
 import BrowseInformationCard from "@/components/home/BrowseInformationCard";
 type StateProps = ReturnType<typeof mapStateToProps>;
@@ -96,7 +95,7 @@ const Counter:React.FC = () =>{
       pageNum:1,
       pageSize:10
     };
-    const {data:rs} = await axios.post("/cpe/resume/search",data);
+    const {data:rs} = await axios.post("/cpe/post/search",data);
     console.log("==>",rs.data);
     setGetListData(rs.data);
   };

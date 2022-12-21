@@ -305,7 +305,27 @@ app.post("/eps/nds_resume_education", (req, res, next) => {
   next();
 });
 
-
+// 个人信息 
+app.get("/cpe/resume/info", (req, res, next) => {
+  console.log("params", req.body);
+  const data = {
+    "ok": true,
+    data: {
+      "name": "张三",
+      "workExperience": "5",
+      "age": "20",
+      "interactNum": "33",// 已沟通
+      "picture": "https://img2.baidu.com/it/u=1280245269,1605538650&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1671555600&t=0cdca854ed0783abebe52e44a4d1bb53",
+      "offerNum": "55",
+      "interviewNum": "666",
+      "concernNum": "42",// 感兴趣	
+      "sendNum": "44",// 已投递	
+      "education": "大专"// 学历
+    }
+  };
+  res.json(data);
+  next();
+});
 
 app.listen("8088", () => {
   console.log("start");

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { CombinedState, CounterState } from "../store/reducers";
 import * as actions from "@/store/actions/counter";
 import Header from "@/components/home/Header";
-import Login from "@/components/home/login";
+import Login from "@/components/home/loginCard";
 import PersonalInfoCard from "@/components/home/personalInfoCard";
 import ResumeManagementCard from "@/components/home/resumeManagementCard";
 import BrowseInformationCard from "@/components/home/BrowseInformationCard";
@@ -125,6 +125,8 @@ const initData4 = () => ({
 });
 
 const ResumeManagement = () => {
+  const [info, setInfo] = React.useState({});
+
   const [OnlyShowFormOneData,setOnlyShowFormOneData] = React.useState(initData1());
 
   const [formOneData,setFormOneData] = React.useState(initData1());
@@ -206,13 +208,13 @@ const ResumeManagement = () => {
     const data = await formOne.getFieldsValue();
     data.birthday = dayjs(data.birthday).format("YYYY-MM-DD");
     data.workTime = dayjs(data.workTime).format("YYYY-MM-DD");
-    const rs =await axios.put("/eps/nds_resume",data);
+    const rs =await axios.put("/cpe/nds_resume",data);
     // 清空 没写
     setEdit1(false);
     getData1();
   };
   const submitFormData2 = async () => {
-    const rs =await axios.put("/eps/nds_resume",{merit});
+    const rs =await axios.put("/cpe/nds_resume",{merit});
     // 清空 
     setMerit("");
     getData2();
@@ -227,10 +229,10 @@ const ResumeManagement = () => {
     }
     // 新增
     if(!id){
-      const rs = await axios.post("/eps/nds_resume/nds_resume_post",data);
+      const rs = await axios.post("/cpe/nds_resume/nds_resume_post",data);
       console.log("rs",rs);
     } else {
-      const rs = await axios.put("/eps/nds_resume/nds_resume_post",{
+      const rs = await axios.put("/cpe/nds_resume/nds_resume_post",{
         ...data,
         id
       });
@@ -246,10 +248,10 @@ const ResumeManagement = () => {
     data.workDateEnd = dayjs(data.workDate[1]).format("YYYY-MM-DD");
     // 新增
     if(!id){
-      const rs = await axios.post("/eps/nds_resume_work",data);
+      const rs = await axios.post("/cpe/nds_resume_work",data);
       console.log("rs",rs);
     } else {
-      const rs = await axios.put("/eps/nds_resume_work",{
+      const rs = await axios.put("/cpe/nds_resume_work",{
         ...data,
         id
       });
@@ -261,7 +263,7 @@ const ResumeManagement = () => {
       id,
       resumeId,
     };
-    const rs = await axios.delete(`/eps/nds_resume/nds_resume_post?id=${id}&resumeId=${resumeId}`);
+    const rs = await axios.delete(`/cpe/nds_resume/nds_resume_post?id=${id}&resumeId=${resumeId}`);
     console.log("remoteDelete",rs);
   };
   const remoteDelete4 = async(id?:number | string,resumeId?:number | string) => {
@@ -269,7 +271,7 @@ const ResumeManagement = () => {
       id,
       resumeId,
     };
-    const rs = await axios.delete(`/eps/nds_resume_work?id=${id}&resumeId=${resumeId}`);
+    const rs = await axios.delete(`/cpe/nds_resume_work?id=${id}&resumeId=${resumeId}`);
     console.log("remoteDelete",rs);
   };
   const remoteDelete5 = async(id?:number | string,resumeId?:number | string) => {
@@ -277,7 +279,7 @@ const ResumeManagement = () => {
       id,
       resumeId,
     };
-    const rs = await axios.delete(`/eps/nds_resume_project?id=${id}&resumeId=${resumeId}`);
+    const rs = await axios.delete(`/cpe/nds_resume_project?id=${id}&resumeId=${resumeId}`);
     console.log("remoteDelete",rs);
   };
   const submitFormData5 = async(id?: number | string)=>{
@@ -286,10 +288,10 @@ const ResumeManagement = () => {
     console.log(data);
     // 新增
     if(!id){
-      const rs = await axios.post("/eps/nds_resume_project",data);
+      const rs = await axios.post("/cpe/nds_resume_project",data);
       console.log("rs",rs);
     } else {
-      const rs = await axios.put("/eps/nds_resume_project",{
+      const rs = await axios.put("/cpe/nds_resume_project",{
         ...data,
         id
       });
@@ -302,10 +304,10 @@ const ResumeManagement = () => {
     console.log(data);
     // 新增
     if(!id){
-      const rs = await axios.post("/eps/nds_resume_education",data);
+      const rs = await axios.post("/cpe/nds_resume_education",data);
       console.log("rs",rs);
     } else {
-      const rs = await axios.put("/eps/nds_resume_education",{
+      const rs = await axios.put("/cpe/nds_resume_education",{
         ...data,
         id
       });
@@ -338,6 +340,13 @@ const ResumeManagement = () => {
       [type]:value
     });
   };
+  
+  const init = async()=>{
+    const {data} = await axios.get("/cpe/post/info");
+    setInfo(data.data);
+    console.log("个人信息",data.data);
+  };
+
   const getInit = ()=>{
     getData1();
     getData2();
@@ -346,21 +355,21 @@ const ResumeManagement = () => {
     getData5();
     getData6();
     getData7();
+    init();
   };
   React.useEffect(()=>{
     getInit();
   },[]);
   // 查看个人
   const getData1 = async()=>{
-    const {data:_rs} = await axios.get("/eps/personResume/resumeList");
+    const {data:_rs} = await axios.get("/cpe/personResume/resumeList");
     const rs = _rs.data;
     console.log("rs", rs);
+    if(!rs) return;
     const newR = {
       name:rs.name,
       jobMent:rs.jobMent,
-      // birthday:,dayjs("2022-12-11")],
       birthday:dayjs(`${rs.workTime}`),
-      // salaryExpectation:["1","3"],
       sex:rs.sex,
       wx:rs.wx,
       email:rs.email,
@@ -370,6 +379,7 @@ const ResumeManagement = () => {
       educationName:rs.educationName,
       stampdiffTime:rs.stampdiffTime,
       educationDesc:rs.educationDesc,
+      jobMentName:rs.jobMentName,
       picture:rs.picture,
     };
     console.log("查看个人",newR);
@@ -377,30 +387,30 @@ const ResumeManagement = () => {
     setOnlyShowFormOneData(newR);
   };
   const getData2 = async()=>{
-    const {data:_rs} = await axios.get("/eps/personResume/resumeList");
+    const {data:_rs} = await axios.get("/cpe/personResume/resumeList");
     const rs = _rs.data;
     setMerit(rs.merit);
   };
   const getData3 = async()=>{
-    const {data:_rs} = await axios.post("/eps/nds_resume_post/list");
+    const {data:_rs} = await axios.post("/cpe/nds_resume_post/list");
     const rs = _rs.data;
     console.log("getData3", rs);
     setFormTwoDataList(rs);
   };
   const getData4 = async()=>{
-    const {data:_rs} = await axios.post("/eps/nds_resume_work/list");
+    const {data:_rs} = await axios.post("/cpe/nds_resume_work/list");
     const rs = _rs.data;
     console.log("getData4", rs);
     setFormThreeDataList(rs);
   };
   const getData5 = async()=>{
-    const {data:_rs} = await axios.post("/eps/nds_resume_project/list");
+    const {data:_rs} = await axios.post("/cpe/nds_resume_project/list");
     const rs = _rs.data;
     console.log("getData5", rs);
     setFormFourDataList(rs);
   };
   const getData6 = async()=>{
-    const {data:_rs} = await axios.post("/eps/nds_resume_education/list");
+    const {data:_rs} = await axios.post("/cpe/nds_resume_education/list");
     const rs = _rs.data;
     console.log("getData6", rs);
     setFormFiveDataList(rs);
@@ -583,7 +593,7 @@ const ResumeManagement = () => {
                     <div className="resumeM_lists_content_left_resume_card_left">
                       <span className="part-3_title">期望职位</span>
                       {
-                        formTwoDataList.map((item,index) => {
+                        formTwoDataList && formTwoDataList.map((item,index) => {
                           return <div key={index} className="part-3_workInfo">
                             <span>{item.postCategoryName}</span>
                             <span>{item.salaryMin}-{item.salaryMax}万</span>
@@ -706,7 +716,7 @@ const ResumeManagement = () => {
                 {
                   !edit4 && <React.Fragment>
                     {/* list */}
-                    {formThreeDataList.map((item,index) =><div key={index} className="part-4_card">
+                    {formThreeDataList && formThreeDataList.map((item,index) =><div key={index} className="part-4_card">
                       <div className="part-4_card_title">
                         <span className="part-4_card_title_name">{item.companyName}</span>
                         <span className="part-4_card_title_time">{item.workDateStart}-{item.workDateEnd}</span>
@@ -797,7 +807,7 @@ const ResumeManagement = () => {
                 {!edit5  && <React.Fragment>
                   {/* list */}
                   {
-                    formFourDataList.map((item,index) => <div key={index} className="part-5_card">
+                    formFourDataList && formFourDataList.map((item,index) => <div key={index} className="part-5_card">
                       <div className="part-5_card_title">
                         <span className="part-5_card_title_name">{item.projectName}</span>
                         <span className="part-5_card_title_time">{item.projectDateStart}-{item.projectDateEnd}</span>
@@ -872,7 +882,7 @@ const ResumeManagement = () => {
                 </div>
                 {!edit6  && <React.Fragment>
                   {/* list */}
-                  <div className="part-6_card">
+                  {formFiveDataList &&<div className="part-6_card">
                     <div className="part-6_card_title">
                       <span className="part-6_card_title_name">{formFiveDataList.schoolName}</span>
                       <span className="part-6_card_title_time">{formFiveDataList.educationDataStart}至{formFiveDataList.educationDataEnd}</span>
@@ -881,7 +891,7 @@ const ResumeManagement = () => {
                       <span className="part-6_card_title_major">{formFiveDataList.major}</span>
                       <span className="part-6_card_title_time">{formFiveDataList.education} {formFiveDataList.educationType ===1?"全日制":"非全日制"}</span>
                     </div>
-                  </div>
+                  </div>}
                 </React.Fragment>
                 }
                 {edit6 && <div className="part-6_card">
@@ -955,10 +965,15 @@ const ResumeManagement = () => {
             </div>
           </div>
           <div className="resumeM_lists_content_right">
-            <PersonalInfoCard />
-            <Login />
-            <ResumeManagementCard />
-            <BrowseInformationCard />
+            {
+              info ? <React.Fragment>
+                <PersonalInfoCard info={info} />
+                <ResumeManagementCard />
+                <BrowseInformationCard />
+              </React.Fragment>
+                :
+                <Login />
+            }
           </div>
         </div> 
       </div> 

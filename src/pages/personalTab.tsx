@@ -2,15 +2,15 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { CombinedState, CounterState } from "../store/reducers";
 import * as actions from "@/store/actions/counter";
-import Card from "@/components/search/card";
 import TrenchingCard from "@/components/home/trenchingCard";
 import InterviewListCard from "@/components/home/interviewListCard";
 import SeeMeCard from "@/components/home/seeMeCard";
 import Header from "@/components/home/Header";
-import Login from "@/components/home/login";
+import Login from "@/components/home/loginCard";
 import PersonalInfoCard from "@/components/home/personalInfoCard";
 import ResumeManagementCard from "@/components/home/resumeManagementCard";
 import BrowseInformationCard from "@/components/home/BrowseInformationCard";
+import Axios from "axios";
 import goback from "@/img/goback.png";
 import classnames from "classnames";
 import "@/styles/pages/personalTab.scss";
@@ -20,6 +20,7 @@ type DispatchProps = typeof actions;
 type Props = StateProps & DispatchProps 
 
 const Personal = () => {
+  const [info, setInfo] = React.useState({});
   const [tab,setTab] = React.useState([
     {
       id:0,
@@ -34,20 +35,43 @@ const Personal = () => {
       value:"我的面试"
     },
     {
-      id:5,
+      id:3,
       value:"感兴趣"
     },
     {
-      id:6,
+      id:4,
       value:"我看过"
     },
     {
-      id:7,
+      id:5,
       value:"看过我"
     },
   ]);
   const [currentIndex,setCurrentIndex] = React.useState(0);
   const [trenchingData,setTrenchingData] = React.useState([]);
+  const switchTab = () => {
+    switch(currentIndex){
+      // 沟通过
+      case 0:
+        return trenchingData ? trenchingData.map((item,index)=><TrenchingCard data={item} key={index}/>): <div>暂无数据</div>;
+      // 已投递
+      case 1:
+        return trenchingData ? trenchingData.map((item,index)=><TrenchingCard data={item} key={index}/>): <div>暂无数据</div>;
+      // 我得面试
+      case 2:
+        return <InterviewListCard/>;
+      // 感兴趣
+      case 3:
+        return trenchingData ? trenchingData.map((item,index)=><TrenchingCard data={item} key={index}/>): <div>暂无数据</div>;
+      // 我看过
+      case 4:
+        return trenchingData ? trenchingData.map((item,index)=><TrenchingCard data={item} key={index}/>): <div>暂无数据</div>;
+      // 看过我
+      case 5:
+        return <SeeMeCard/>;
+    }
+  };
+
   // 沟通过-列表
   const getTab1List = async () => {
     const data = {
@@ -67,31 +91,33 @@ const Personal = () => {
       param:{}
     };
     const {data:rs} = await axios.post("/cpe/resume/list/send",data);
+    setTrenchingData(rs.data);
     console.log("已投递rs=>>", rs.data);
   }; 
- 
   // 感兴趣的-列表
-  const getTab3List = async () => {
-    const data = {
-      pageNum:1,
-      pageSize:10,
-      param:{}
-    };
-    const {data:rs} = await axios.post("/cpe/resume/list/concern",data);
-    console.log("感兴趣的rs=>>", rs.data);
-  }; 
-  // 我看过的-列表
   const getTab4List = async () => {
     const data = {
       pageNum:1,
       pageSize:10,
       param:{}
     };
+    const {data:rs} = await axios.post("/cpe/resume/list/concern",data);
+    setTrenchingData(rs.data);
+    console.log("感兴趣的rs=>>", rs.data);
+  }; 
+  // 我看过的-列表
+  const getTab5List = async () => {
+    const data = {
+      pageNum:1,
+      pageSize:10,
+      param:{}
+    };
     const {data:rs} = await axios.post("/cpe/resume/list/browse",data);
+    setTrenchingData(rs.data);
     console.log("我看过的rs=>>", rs.data);
   }; 
   // 看过我的-列表
-  const getTab5List = async () => {
+  const getTab6List = async () => {
     const data = {
       pageNum:1,
       pageSize:10,
@@ -101,23 +127,58 @@ const Personal = () => {
     console.log("看过我的rs=>>", rs.data);
   }; 
   // 我的面试
-  const getTab6List = async () => {
+  const getTab7List = async () => {
     const {data:rs} = await axios.get("/cpe/resume/list/interview");
     console.log("我的面试rs=>>", rs.data);
   }; 
 
   const clickChange = (i:number) => {
     setCurrentIndex(i);
+    switch(i){
+      // 沟通过
+      case 0:
+        getTab1List();
+        return;
+      // 已投递
+      case 1:
+        getTab2List();
+        return;
+      // 我得面试
+      case 2:
+        // getTab3List();
+        return;
+      // 感兴趣
+      case 3:
+        getTab4List();
+        return;
+      // 我看过
+      case 4:
+        getTab5List();
+        return;
+      // 看过我
+      case 5:
+        getTab6List();
+        return;
+    }
     console.log("i",i);
   };
-  const getInit = () => {
-    getTab1List();
-    getTab2List();
-    getTab3List();
-    getTab4List();
-    getTab5List();
-    getTab6List();
+
+  const init = async()=>{
+    const {data} = await axios.get("/cpe/post/info");
+    setInfo(data.data);
+    console.log("个人信息",data.data);
   };
+
+  const getInit = () => {
+    init();
+    getTab1List();
+    // getTab2List();
+    // getTab3List();
+    // getTab4List();
+    // getTab5List();
+    // getTab6List();
+  };
+ 
   React.useEffect(()=>{
     getInit();
   },[]);
@@ -148,17 +209,23 @@ const Personal = () => {
               感兴趣
               已投递
               沟通过
-              我看过 
+              我看过
+              currentIndex
             */}
-            {trenchingData.map((item,index)=><TrenchingCard data={item} key={index}/>)}
-            <SeeMeCard/>
-            <InterviewListCard/>
+            {
+              switchTab()
+            }
           </div>
           <div className="search_lists_content_right">
-            <PersonalInfoCard />
-            <Login />
-            <ResumeManagementCard />
-            <BrowseInformationCard />
+            {
+              info ? <React.Fragment>
+                <PersonalInfoCard info={info} />
+                <ResumeManagementCard />
+                <BrowseInformationCard />
+              </React.Fragment>
+                :
+                <Login />
+            }
           </div>
         </div> 
       </div> 

@@ -6,16 +6,18 @@ import "@/styles/pages/search.scss";
 import Card from "@/components/search/card";
 import SearchHeader from "@/components/home/searchHeader";
 import Header from "@/components/home/Header";
-import Login from "@/components/home/login";
+import Login from "@/components/home/loginCard";
 import PersonalInfoCard from "@/components/home/personalInfoCard";
 import ResumeManagementCard from "@/components/home/resumeManagementCard";
 import BrowseInformationCard from "@/components/home/BrowseInformationCard";
 import axios from "@/api/axios";
+import Axios from "axios";
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof actions;
 type Props = StateProps & DispatchProps 
 
 const Personal = () => { 
+  const [info, setInfo] = React.useState({});
   const [listData,setListData] = React.useState([]);
   const getList = async() => {
     // 获取首页列表数据
@@ -29,7 +31,7 @@ const Personal = () => {
   };
   const searchList = async(data)=> {
     const {code:workAddrCityCode,value:search} = data;
-    const {data: rs} = await axios.post("/cpe/resume/search",{
+    const {data: rs} = await axios.post("/cpe/post/search",{
       pageNum:1,
       pageSize:10,
       param:{
@@ -42,7 +44,13 @@ const Personal = () => {
   };
   React.useEffect(()=>{
     getList();
+    init();
   },[]);
+  const init = async()=>{
+    const {data} = await axios.get("/cpe/post/info");
+    setInfo(data.data);
+    console.log("个人信息",data.data);
+  };
   return (
     <div className="search_layout">
       <Header />
@@ -55,14 +63,19 @@ const Personal = () => {
             <div className="search_lists_content_left_top">
               <SearchHeader />
             </div>
-            {listData.map((item,index) => <Card key={index} data={item} />)}
+            {listData && listData.map((item,index) => <Card key={index} data={item} />)}
 
           </div>
           <div className="search_lists_content_right">
-            <PersonalInfoCard />
-            <Login />
-            <ResumeManagementCard />
-            <BrowseInformationCard />
+            {
+              info ? <React.Fragment>
+                <PersonalInfoCard info={info} />
+                <ResumeManagementCard />
+                <BrowseInformationCard />
+              </React.Fragment>
+                :
+                <Login />
+            }
           </div>
         </div> 
       </div> 

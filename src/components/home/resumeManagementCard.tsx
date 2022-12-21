@@ -15,8 +15,9 @@ const { Dragger } = Upload;
 
 const props: UploadProps = {
   name: "file",
+  accept: ".word,.pfd",
   multiple: true,
-  action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+  action: "http://192.168.0.139:8088/sys/file/upload",
   onChange(info) {
     const { status } = info.file;
     if (status !== "uploading") {
@@ -36,7 +37,6 @@ const props: UploadProps = {
 const FileUpload:React.FC = () => {
   return <Dragger {...props}>
     <p className="ant-upload-drag-icon">
-      ---
       {/* <InboxOutlined /> */}
     </p>
     <p className="ant-upload-text">上传附件简历，支持文档格式（pdf、word文档） 文件大小不超过10M</p>
@@ -83,7 +83,7 @@ const resumeManagementCard = () => {
       </section>
       {/* 按钮 */}
       <section  className="resumeManagement_bottom">
-        <Button>上传简历</Button>
+        <Button onClick={()=>showModal()}>上传简历</Button>
       </section>
       <Modal title="简历上传" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <FileUpload />

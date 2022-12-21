@@ -28,7 +28,7 @@ import {
   Select,
   DatePicker,
 } from "antd";
-
+import Axios from "axios";
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof actions;
@@ -82,31 +82,32 @@ const { TextArea } = Input;
 
 const {useState} = React;
 const jobWanted: React.FC = () => {
+  const [update,setUpdate] = useState(false);
   const [formMust] = Form.useForm();
   const [_, setIsShow] = useState<[]>();
   const [formMustData,setFormMustData] = React.useState({
     // 姓名
-    name:"1",
+    name:undefined,
     // 期望职位
-    expectedPosition:"2",
+    expectedPosition:undefined,
     // 出生日期
-    birthday:[dayjs("2022-12-08"),dayjs("2022-12-11")],
+    birthday:[],
     // 期望薪资
-    salaryExpectation:["1","3"],
+    salaryExpectation:[],
     // 性别
-    sex:"",
+    sex:"2",
     // 期望行业
-    expectedIndustry:"",
+    expectedIndustry:undefined,
     // 当前状态
-    identityStatus: "",
+    identityStatus: undefined,
     // 期望城市
-    expectedCity:"",
+    expectedCity:undefined,
     // 求职身份
-    jobSeeking:"",
+    jobSeeking:"2",
     // 参加工作时间
-    joinWork:"",
+    joinWork:undefined,
     // 个人优势
-    identityAdvantage:""
+    identityAdvantage:undefined
   });
   const [formOptional] = Form.useForm();
   const [formLayout, setFormLayout] = useState<LayoutType>("vertical");
@@ -118,13 +119,20 @@ const jobWanted: React.FC = () => {
     const r2 = formOptional.getFieldsValue();
     console.log("r1",r1);
     console.log("r2",r2);
+    const data = {
+      resumeReq:r1,
+      educationReq:r2,
+    };
+    await Axios.post("http://192.168.0.139:8088/eps/personResume//insertJob",data);
   };
   const getIndustryCategory = async() => {
-    const {data} = await axios.get("/sys/industry_category/get_cache_tree");
+    const {data} = await Axios.get("http://192.168.0.139:8088/sys/industry_category/get_cache_tree");
+    // const {data} = await axios.get("/sys/industry_category/get_cache_tree");
     setIndustryCategoryData(data.data);
   };
   const getPostCategory = async() => {
-    const {data} = await axios.get("/sys/post_category/cache_tree");
+    // const {data} = await axios.get("/sys/post_category/cache_tree");
+    const {data} = await Axios.get("http://192.168.0.139:8088/sys/post_category/cache_tree");
     setPostCategoryData(data.data);
   };
   // 获取数据
@@ -143,8 +151,17 @@ const jobWanted: React.FC = () => {
       callback();
     }
   };
-  const clickSex = (id:number) => {
-    console.log(id);
+  const clickSex = (id:string) => {
+    formMust.setFieldsValue({
+      sex:id
+    });
+    setUpdate(!update);
+  };
+  const clickJob = (id:string) => {
+    formMust.setFieldsValue({
+      jobSeeking:id
+    });
+    setUpdate(!update);
   };
   const postCategoryDataCb = (item:{}) => {
     console.log("ITEM",item);
@@ -187,13 +204,23 @@ const jobWanted: React.FC = () => {
                     {/* Radio */}
                     {/*  defaultValue="a"  */}
                     <div onChange={()=>{}} className="formRadio">
-                      <div className={classnames("formRadio_item",
-                        {
-                          formRadio_active:true
-                        }
-                      )} onClick={()=>clickSex(0)}>男</div>
+                      <div
+                        className={classnames("formRadio_item",
+                          {
+                            formRadio_active:formMust.getFieldValue("sex") === "1"
+                          }
+                        )}
+                        onClick={()=>clickSex("1")}
+                      >男</div>
                       <span className="formRadio_empty"></span>
-                      <div className="formRadio_item" onClick={()=>clickSex(1)}>女</div>
+                      <div 
+                        className={classnames("formRadio_item",
+                          {
+                            formRadio_active:formMust.getFieldValue("sex") === "2"
+                          }
+                        )}
+                        onClick={()=>clickSex("2")}
+                      >女</div>
                     </div>
                   </Form.Item>
                   <Form.Item label="期望行业" name="expectedIndustry"  rules={[{ required: true, message:"请选择行业"}]}>
@@ -213,15 +240,25 @@ const jobWanted: React.FC = () => {
                     {/* Radio */}
                     {/* defaultValue="a" */}
                     <div onChange={()=>{}} className="formRadio">
-                      <div className="formRadio_item formRadio_active">职场精英</div>
+                      <div
+                        className={classnames("formRadio_item",{
+                          "formRadio_active":formMust.getFieldValue("jobSeeking") === "1"
+                        })}
+                        onClick={()=>{clickJob("1");}}
+                      >职场精英</div>
                       <span className="formRadio_empty"></span>
-                      <div className="formRadio_item">学生</div>
+                      <div
+                        className={classnames("formRadio_item",{
+                          "formRadio_active":formMust.getFieldValue("jobSeeking") === "2"
+                        })}
+                        onClick={()=>{clickJob("2");}}
+                      >学生</div>
                     </div>
                   </Form.Item>
                   
                   <Form.Item className="formItemTwo"> </Form.Item>
                   <Form.Item label="参加工作时间" name='joinWork' rules={[{ required: true, message:"请填写参加工作时间"  }]}>
-                    <Input placeholder="请选择参加工作时间" />
+                    <DatePicker placeholder="请选择参加工作时间" />
                   </Form.Item>
                   <Form.Item label="个人优势" name="identityAdvantage" className="formFloat">
                     <TextArea rows={5} placeholder="您可以总结一下您的工作成果，向HR展示您的擅长领域 (选填)" />
@@ -265,11 +302,11 @@ const jobWanted: React.FC = () => {
                   </Form.Item>
                   <Form.Item label="在职时间" name="incumbencyType">
                     <div className="formItemLine">
-                      <Form.Item className="formItemTwo">
+                      <Form.Item className="formItemTwo" name="workDateStart">
                         <DatePicker onChange={()=>{}} />
                       </Form.Item>
                     -
-                      <Form.Item  className="formItemTwo">
+                      <Form.Item  className="formItemTwo" name="workDateEnd">
                         <DatePicker onChange={()=>{}} />
                       </Form.Item>
                     </div>
