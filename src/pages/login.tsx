@@ -11,17 +11,46 @@ import type { FormInstance } from "antd/es/form";
 import config from "@/config";
 import axios from "@/api/axios";
 import { useLocation,useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+let timer = 0;
 
 const {wxConfig} = config;
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof actions;
 type Props = StateProps & DispatchProps
 type SwtichType = 0 | 1
+
+
+type AgreementProps = {
+  checked?: boolean,
+  onChange?:(i:boolean)=>{}
+}
+
+const Agreement:React.FC = (props:AgreementProps) => {
+  const { checked,onChange } = props;
+  const navigate = useNavigate();
+  const selfClick = () => onChange(!checked);
+  const goToPage = (id:number) => {
+    navigate(`/agreement?id=${id}`);
+  };
+  return <div className="checkbox_layout">
+    <Checkbox onClick={(r)=>onChange(r)} checked={checked} />
+    <div> 
+      <span onClick={selfClick}> 我已阅读并同意 </span>
+      <span onClick={()=>goToPage(1)} className="agreement">《服务协议》</span> 
+      <span  onClick={selfClick}> 和 </span>
+      <span onClick={()=>goToPage(2)} className="agreement">《隐私政策》</span>
+    </div>
+  </div>;
+};
+
 const Login = () =>{
   const [swtichType, setSwitchType] = React.useState<SwtichType>(0);
   const [validCodeReqNo, setValidCodeReqNo] = React.useState("");
   const [formRef] = Form.useForm();
+  const [show,setShow] = React.useState(false);
   const routeConfig = useLocation();
+  const [time, setTime] = React.useState(0);
   const navigate = useNavigate();
   /**
    * 
@@ -45,13 +74,21 @@ const Login = () =>{
       message.success("登录成功");
       navigate("/search");
     }else{
-      message.error(`${rsData.error}`);
+      message.error(`${rsData.message}`);
     }
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
+  React.useEffect(()=> {
+    if( time === 60 ) {
+      timer = setInterval(()=> {
+        setTime(time => --time);
+      }, 1000);
+    }else if ( time === 0 ) {
+      setShow(false);
+      clearInterval(timer);
+    }
+  }, [time]);
+
   const init = async ()=>{
     const { search } = routeConfig;
     const code = search.slice(1,).split("=")[1];
@@ -64,7 +101,7 @@ const Login = () =>{
         message.success("登录成功");
         navigate("/search");
       }else{
-        message.error(`${rsData.error}`);
+        message.error(`${rsData.message}`);
       }
     }
   };
@@ -76,12 +113,20 @@ const Login = () =>{
       smsType:"loginSms"
     };
     const {data:getCodeRs} =  await axios.post("/auth/verify/code",data);
-    console.log("getCodeRs",getCodeRs.data);
     if(getCodeRs.code === 200){
       setValidCodeReqNo(getCodeRs.data);
       message.success("成功获取验证码");
+      setTime(60);
+      setShow(true);
     }else{
-      message.error(`${getCodeRs.error}`);
+      message.error(`${getCodeRs.message}`);
+    }
+  };
+  const validator = (rule, value, callback) =>{
+    if(Boolean(value) === true){
+      callback();
+    }else{
+      callback("请勾选协议");
     }
   };
   React.useEffect(()=>{
@@ -89,7 +134,7 @@ const Login = () =>{
   },[]);
   return (
     <div className="login_layout">
-      {/* <img className="login_layout_img" src={bgLogin} alt="" /> */}
+      <img className="login_layout_img" src={bgLogin} alt="" />
       <section className="login_layout_div">
         {/* 切换 */}
         <div className="login_layout_div_switch" onClick={()=>setSwitchType((swtichType^1) as SwtichType)}>
@@ -104,9 +149,8 @@ const Login = () =>{
               form={formRef}
               name="basic"
               wrapperCol={{ span: 24 }}
-              initialValues={{phone:"",validCode:"", remember: true }}
+              initialValues={{phone:"",validCode:"", remember: undefined }}
               onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
               autoComplete="off"
             >
               {/* form */}
@@ -123,20 +167,20 @@ const Login = () =>{
                 rules={[{ required: true, message: "请输入验证码" }]}
               >
                 <Input placeholder="请输入验证码" addonAfter={
-                  <Button onClick={()=>getCode()}>获取验证码</Button>
+                  show ? <div>{time}s</div>:<div className="clickCode" onClick={()=>getCode()}>获取验证码</div>
                 } />
               </Form.Item>
-              <Form.Item
-                className="login_layout_div_from"
-                name="remember"
-                valuePropName="checked">
-                <Checkbox>我已阅读并同意 </Checkbox>
-              </Form.Item>
-              {/* <span >服务协议</span> 和 <span>隐私政策</span> */}
               <Form.Item>
                 <Button style={{width:"100%"}} type="primary" htmlType="submit">
                  登录
                 </Button>
+              </Form.Item>
+              <Form.Item
+                className="login_layout_div_from"
+                name="remember"
+                rules={[{ validator:validator}]}
+                valuePropName="checked"> 
+                <Agreement />
               </Form.Item>
             </Form>
           </React.Fragment>

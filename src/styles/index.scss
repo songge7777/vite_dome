@@ -1,3 +1,15 @@
 @import "./reset.scss";
 
 $primaryColor: #f08300;
+
+.ant-btn-primary {
+  background: $primaryColor;
+  border-radius: 0 !important;
+}
+.ant-btn-primary:not(:disabled):hover {
+  background: $primaryColor;
+}
+
+button {
+  height: 40px;
+}

@@ -28,7 +28,6 @@ import {
   Select,
   DatePicker,
 } from "antd";
-import Axios from "axios";
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof actions;
@@ -89,25 +88,25 @@ const jobWanted: React.FC = () => {
     // 姓名
     name:undefined,
     // 期望职位
-    expectedPosition:undefined,
+    postCategoryCode:undefined,
     // 出生日期
-    birthday:[],
+    birthday:undefined,
     // 期望薪资
     salaryExpectation:[],
     // 性别
     sex:"2",
     // 期望行业
-    expectedIndustry:undefined,
+    industryCategoryCode:undefined,
     // 当前状态
     identityStatus: undefined,
     // 期望城市
-    expectedCity:undefined,
+    workCityCode:undefined,
     // 求职身份
-    jobSeeking:"2",
+    jobMent:"2",
     // 参加工作时间
-    joinWork:undefined,
+    workTime	:undefined,
     // 个人优势
-    identityAdvantage:undefined
+    merit:undefined
   });
   const [formOptional] = Form.useForm();
   const [formLayout, setFormLayout] = useState<LayoutType>("vertical");
@@ -116,24 +115,36 @@ const jobWanted: React.FC = () => {
 
   const onFinish = async() => {
     const r1 = formMust.getFieldsValue();
+    if(r1.salaryExpectation){
+      r1.salaryMin = r1.salaryExpectation[0];
+      r1.salaryMax = r1.salaryExpectation[1];
+    }
+    r1.birthday = dayjs(r1.birthday).format("YYYY-MM-DD");
+    r1.workTime = dayjs(r1.workTime).format("YYYY-MM-DD");
     const r2 = formOptional.getFieldsValue();
-    console.log("r1",r1);
-    console.log("r2",r2);
+    if(r2.workDate){
+      r1.workDateStart = r1.salaryExpectation[0].format("YYYY-MM-DD");
+      r1.workDateEnd = r1.salaryExpectation[1].format("YYYY-MM-DD");
+    }
+    if(r2.educationDate){
+      r1.educationDataStart = r1.salaryExpectation[0].format("YYYY-MM-DD");
+      r1.educationDataEnd = r1.salaryExpectation[1].format("YYYY-MM-DD");
+    }
     const data = {
       resumeReq:r1,
       educationReq:r2,
     };
-    await Axios.post("http://192.168.0.139:8088/eps/personResume//insertJob",data);
+    console.log(data);
+    const r =  await axios.post("/cpe/resume/job",data);
+    console.log("r",r);
   };
   const getIndustryCategory = async() => {
-    const {data} = await Axios.get("http://192.168.0.139:8088/sys/industry_category/get_cache_tree");
-    // const {data} = await axios.get("/sys/industry_category/get_cache_tree");
-    setIndustryCategoryData(data.data);
+    const {data} = await axios.get("/sys/industry_category/get_cache_tree");
+    setIndustryCategoryData(data.data.rows);
   };
   const getPostCategory = async() => {
-    // const {data} = await axios.get("/sys/post_category/cache_tree");
-    const {data} = await Axios.get("http://192.168.0.139:8088/sys/post_category/cache_tree");
-    setPostCategoryData(data.data);
+    const {data} = await axios.get("/sys/post_category/cache_tree");
+    setPostCategoryData(data.data.rows);
   };
   // 获取数据
   const getData = async()=>{
@@ -159,7 +170,7 @@ const jobWanted: React.FC = () => {
   };
   const clickJob = (id:string) => {
     formMust.setFieldsValue({
-      jobSeeking:id
+      jobMent:id
     });
     setUpdate(!update);
   };
@@ -191,11 +202,11 @@ const jobWanted: React.FC = () => {
                   <Form.Item label="姓名" name="name" rules={[{ required: true, message:"请输入姓名"},{validator:inputValidator }]}>
                     <Input placeholder="请输入姓名" />
                   </Form.Item>
-                  <Form.Item label="期望职位" name="expectedPosition" rules={[{ required: true, message:"请选择期望职位"}]}>
+                  <Form.Item label="期望职位" name="postCategoryCode" rules={[{ required: true, message:"请选择期望职位"}]}>
                     <DoubleTree data={postCategoryData} cb={postCategoryDataCb} />
                   </Form.Item>
                   <Form.Item label="出生日期" name="birthday" rules={[{ required: true, message:"请选择出生日期"}]}>
-                    <RangePicker placeholder="请选择出生日期" />
+                    <DatePicker placeholder="请选择出生日期" />
                   </Form.Item>
                   <Form.Item label="期望薪资" name="salaryExpectation" rules={[{ required: true, message:"请选择期望薪资"}]} >
                     <SalaryExpectation formMust={formMust}/>
@@ -223,7 +234,7 @@ const jobWanted: React.FC = () => {
                       >女</div>
                     </div>
                   </Form.Item>
-                  <Form.Item label="期望行业" name="expectedIndustry"  rules={[{ required: true, message:"请选择行业"}]}>
+                  <Form.Item label="期望行业" name="industryCategoryCode"  rules={[{ required: true, message:"请选择行业"}]}>
                     <SingleTree data={industryCategoryData} cb={industryCategoryDataCb} />
                   </Form.Item>
                   <Form.Item label="当前状态" name="identityStatus" rules={[{ required: true, message:"请选择状态"}]}>
@@ -231,25 +242,25 @@ const jobWanted: React.FC = () => {
                       {identityStatusData().map(item => <Select.Option key={`&2_${item.id}`} value={item.id}>{item.value}</Select.Option>)}
                     </Select>
                   </Form.Item>
-                  <Form.Item label="期望城市" name="expectedCity" rules={[{ required: true, message:"请选择城市" }]}>
+                  <Form.Item label="期望城市" name="workCityCode" rules={[{ required: true, message:"请选择城市" }]}>
                     <Select placeholder="请选择城市">
                       {expectedCityData().map(item => <Select.Option key={`&2_${item.id}`} value={item.id}>{item.value}</Select.Option>)}
                     </Select>
                   </Form.Item>
-                  <Form.Item label="求职身份"  name='jobSeeking' rules={[{ required: true, message:"请选择职身份"  }]}>
+                  <Form.Item label="求职身份"  name='jobMent' rules={[{ required: true, message:"请选择职身份"  }]}>
                     {/* Radio */}
                     {/* defaultValue="a" */}
                     <div onChange={()=>{}} className="formRadio">
                       <div
                         className={classnames("formRadio_item",{
-                          "formRadio_active":formMust.getFieldValue("jobSeeking") === "1"
+                          "formRadio_active":formMust.getFieldValue("jobMent") === "1"
                         })}
                         onClick={()=>{clickJob("1");}}
                       >职场精英</div>
                       <span className="formRadio_empty"></span>
                       <div
                         className={classnames("formRadio_item",{
-                          "formRadio_active":formMust.getFieldValue("jobSeeking") === "2"
+                          "formRadio_active":formMust.getFieldValue("jobMent") === "2"
                         })}
                         onClick={()=>{clickJob("2");}}
                       >学生</div>
@@ -257,10 +268,10 @@ const jobWanted: React.FC = () => {
                   </Form.Item>
                   
                   <Form.Item className="formItemTwo"> </Form.Item>
-                  <Form.Item label="参加工作时间" name='joinWork' rules={[{ required: true, message:"请填写参加工作时间"  }]}>
+                  <Form.Item label="参加工作时间" name='workTime' rules={[{ required: true, message:"请填写参加工作时间"  }]}>
                     <DatePicker placeholder="请选择参加工作时间" />
                   </Form.Item>
-                  <Form.Item label="个人优势" name="identityAdvantage" className="formFloat">
+                  <Form.Item label="个人优势" name="merit" className="formFloat">
                     <TextArea rows={5} placeholder="您可以总结一下您的工作成果，向HR展示您的擅长领域 (选填)" />
                   </Form.Item>
                 </Form>
@@ -285,22 +296,22 @@ const jobWanted: React.FC = () => {
                   <Form.Item label="公司全称"  name="companyName">
                     <Input placeholder="如：武汉德特云才科技有限公司" />
                   </Form.Item>
-                  <Form.Item label="学历" name="identityEducation">
+                  <Form.Item label="学历" name="educationCode">
                     <Select placeholder="请选择学历" 
                     >
                       {educationData().map(item => <Select.Option key={`&1_${item.id}`} value={item.id}>{item.value}</Select.Option>)}
                     </Select>
                   </Form.Item>
-                  <Form.Item label="担任职位" name="positionHeld">
+                  <Form.Item label="担任职位" name="postCategoryCode">
                     <Input placeholder="如：Java工程师" />
                   </Form.Item>
-                  <Form.Item label="学制类型" name="typeSchooling">
+                  <Form.Item label="学制类型" name="educationType">
                     <Select placeholder="请选择制类型" 
                     >
                       {educationalData().map(item => <Select.Option key={`&1_${item.id}`} value={item.id}>{item.value}</Select.Option>)}
                     </Select>
                   </Form.Item>
-                  <Form.Item label="在职时间" name="incumbencyType">
+                  <Form.Item label="在职时间" name="workDate">
                     <div className="formItemLine">
                       <Form.Item className="formItemTwo" name="workDateStart">
                         <DatePicker onChange={()=>{}} />
@@ -311,23 +322,23 @@ const jobWanted: React.FC = () => {
                       </Form.Item>
                     </div>
                   </Form.Item>
-                  <Form.Item label="专业" name="identityMajor">
+                  <Form.Item label="专业" name="major">
                     <Input placeholder="如：计算机" />
                   </Form.Item>
                   <Form.Item className="formItemTwo"> </Form.Item>
-                  <Form.Item label="时间">
+                  <Form.Item label="时间" name="educationDate">
                     <div className="formItemLine">
                       <Form.Item className="formItemTwo" name="entranceTime">
-                        <DatePicker onChange={()=>{}} />
+                        <DatePicker onChange={()=>{}} placeholder="入学时间" />
                       </Form.Item>
                     -
                       <Form.Item  className="formItemTwo" name="graduationTime">
-                        <DatePicker onChange={()=>{}} />
+                        <DatePicker onChange={()=>{}}  placeholder="毕业时间" />
                       </Form.Item>
                     </div>
                   </Form.Item>
                   <Form.Item className="formItemTwo"> </Form.Item>
-                  <Form.Item label="在校经历" name="associationActivity" >
+                  <Form.Item label="在校经历" name="career" >
                     <TextArea rows={5} placeholder="如：在校期间学习到的主要技能及获得的荣誉" />
                   </Form.Item>
                   <Form.Item className="formItemTwo"> </Form.Item>

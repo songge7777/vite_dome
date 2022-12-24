@@ -7,7 +7,7 @@ export const t = (a:RegExpMatchArray ,b:string) => a.map((item)=>{
   const r = {
     id:b,
     path:item,
-    element: lazyLoad(React.lazy(() => import(`${b}`))),
+    element: lazyLoad(React.lazy(() => import(b))),
     currentRouteList:a
   };
   return r;

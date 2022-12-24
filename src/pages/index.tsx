@@ -4,7 +4,6 @@ import { CombinedState, CounterState } from "../store/reducers";
 import { useNavigate } from "react-router-dom";
 import * as actions from "@/store/actions/counter";
 import "@/styles/pages/index.scss";
-import banner from "@/img/banner.png";
 import Card from "@/components/home/card";
 import Header from "@/components/home/Header";
 import InputSearch from "@/components/home/inputSearch";
@@ -22,24 +21,12 @@ const Counter = () =>{
     const {data} = await axios.post("/cpe/post/choice",{
       pageNum:1,
       pageSize:10,
-      param:{}
+      query:{}
     });
-    setListData(data.data);
-    console.log("data",data);
+    setListData(data.data.rows);
   };
   const searchList = async(data)=> {
     navigate("/search");
-    // const {code:workAddrCityCode,value:search} = data;
-    // const {data: rs} = await axios.post("/cpe/post/search",{
-    //   pageNum:1,
-    //   pageSize:10,
-    //   param:{
-    //     search,
-    //     workAddrCityCode
-    //   }
-    // });
-    // setListData(rs.data);
-    // console.log("data",rs);
   };
  
   React.useEffect(()=>{

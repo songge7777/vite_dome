@@ -12,12 +12,13 @@ import axios from "@/api/axios";
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof actions;
 type Props = StateProps & DispatchProps 
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 
 const ViewEnterprise = () => {
   const [companySize,setCompanySize] = React.useState([]);
   const [enterpriseType,setEnterpriseType] = React.useState([]);
   const routeConfig = useLocation();
+  const navigate = useNavigate();
   const [dataItem,setDataItem] = React.useState({});
   const [dataList,setDataList] = React.useState([]);
   const getData = async(companyId) => {
@@ -63,14 +64,23 @@ const ViewEnterprise = () => {
     const {data} = await axios.post("/cpe/post/search/company/post",{
       pageNum:1,
       pageSize:10,
-      param:{
+      query:{
         companyId
       }
     });
-    setDataList(data.data);
+    setDataList(data.data.rows);
     console.log("dat",data.data);
   };
- 
+  const goToPage = (item) => {
+    console.log("==>",item);
+    const companyId = item.companyId;
+    const state = {
+      dataItem,
+      companyId
+    };
+    navigate("/moreCompany",{state});
+
+  };
   React.useEffect(()=>{
     getInit();
   },[]);
@@ -147,7 +157,7 @@ const ViewEnterprise = () => {
           <div className="enterprise_lists_content_right">
             <div className="enterprise_lists_content_right_title">
               <span className="enterprise_lists_content_right_title_name">在招岗位</span>
-              <span className="enterprise_lists_content_right_title_more">更多</span>
+              <span className="enterprise_lists_content_right_title_more" onClick={()=>goToPage(dataItem)}>更多</span>
             </div>
             { dataList && dataList.map((item,index) => <div key={index} className="enterprise_lists_content_right_lists">
               <div className="enterprise_lists_content_right_lists_top">{item.postName}</div>

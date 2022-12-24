@@ -19,7 +19,6 @@
     &_div {
       width: 480px;
       height: 560px;
-      border: 1px solid red;
       background: rgba(255, 255, 255, 0.8);
       border-radius: 8px 8px 8px 8px;
       @include flex();
@@ -80,5 +79,15 @@
         height: 200px;
       }
     }
+  }
+}
+.checkbox_layout {
+  display: flex;
+  div {
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  .agreement {
+    color: rgba(75, 73, 160, 1);
   }
 }

@@ -81,7 +81,7 @@ const Counter:React.FC = () =>{
   };
   const initData = async(searchData:any) => {
     const data = {
-      param:{
+      query:{
         workAddrCityCode:searchData.workAddrCityCode,
         search:searchData.inputValue,
         education:searchData.education,
@@ -96,8 +96,8 @@ const Counter:React.FC = () =>{
       pageSize:10
     };
     const {data:rs} = await axios.post("/cpe/post/search",data);
-    console.log("==>",rs.data);
-    setGetListData(rs.data);
+    console.log("==>",rs.data.rows);
+    setGetListData(rs.data.rows);
   };
   React.useEffect(()=>{
     initData({});

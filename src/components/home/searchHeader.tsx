@@ -12,12 +12,8 @@ import {
   workExperience } from "@/utils/optionList";
 import classnames from "classnames";
 import {
-  Form,
-  Input,
-  Button,
-  Radio,
-  Select,
   DatePicker,
+  Select
 } from "antd";
 import axios from "@/api/axios";
 
@@ -151,11 +147,11 @@ const SearchHeader:React.FC =  (props:Props) =>{
   };
   const getIndustryCategory = async() => {
     const {data} = await axios.get("/sys/industry_category/get_cache_tree");
-    setIndustryCategoryData(data.data);
+    setIndustryCategoryData(data.data.rows);
   };
   const getPostCategory = async() => {
     const {data} = await axios.get("/sys/post_category/cache_tree");
-    setPostCategoryData(data.data);
+    setPostCategoryData(data.data.rows);
   };
   // 获取数据
   const getData = async()=>{

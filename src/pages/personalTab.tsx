@@ -77,21 +77,21 @@ const Personal = () => {
     const data = {
       pageNum:1,
       pageSize:10,
-      param:{}
+      query:{}
     };
     const {data:rs} = await axios.post("/cpe/post/all/interact",data);
     console.log("沟通过rs=>>", rs.data);
-    setTrenchingData(rs.data);
+    setTrenchingData(rs.data.rows);
   }; 
   // 已投递-列表
   const getTab2List = async () => {
     const data = {
       pageNum:1,
       pageSize:10,
-      param:{}
+      query:{}
     };
     const {data:rs} = await axios.post("/cpe/post/all/send",data);
-    setTrenchingData(rs.data);
+    setTrenchingData(rs.data.rows);
     console.log("已投递rs=>>", rs.data);
   }; 
   // 感兴趣的-列表
@@ -99,10 +99,10 @@ const Personal = () => {
     const data = {
       pageNum:1,
       pageSize:10,
-      param:{}
+      query:{}
     };
     const {data:rs} = await axios.post("/cpe/post/all/concern",data);
-    setTrenchingData(rs.data);
+    setTrenchingData(rs.data.rows);
     console.log("感兴趣的rs=>>", rs.data);
   }; 
   // 我看过的-列表
@@ -110,10 +110,10 @@ const Personal = () => {
     const data = {
       pageNum:1,
       pageSize:10,
-      param:{}
+      query:{}
     };
     const {data:rs} = await axios.post("/cpe/post/all/browse",data);
-    setTrenchingData(rs.data);
+    setTrenchingData(rs.data.rows);
     console.log("我看过的rs=>>", rs.data);
   }; 
   // 看过我的-列表
@@ -121,7 +121,7 @@ const Personal = () => {
     const data = {
       pageNum:1,
       pageSize:10,
-      param:{}
+      query:{}
     };
     const {data:rs} = await axios.post("/cpe/post/all/me",data);
     console.log("看过我的rs=>>", rs.data);

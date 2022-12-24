@@ -24,9 +24,9 @@ const Personal = () => {
     const {data} = await axios.post("/cpe/resume/choice",{
       pageNum:1,
       pageSize:10,
-      param:{}
+      query:{}
     });
-    setListData(data.data);
+    setListData(data.data.rows);
     console.log("data",data);
   };
   const searchList = async(data)=> {
@@ -34,12 +34,12 @@ const Personal = () => {
     const {data: rs} = await axios.post("/cpe/post/search",{
       pageNum:1,
       pageSize:10,
-      param:{
+      query:{
         search,
         workAddrCityCode
       }
     });
-    setListData(rs.data);
+    setListData(rs.data.rows);
     console.log("data",rs);
   };
   React.useEffect(()=>{

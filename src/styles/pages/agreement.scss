@@ -1,0 +1,31 @@
+@import "../layout.scss";
+.viewPosition {
+  &_layout {
+  }
+  &_lists {
+    @include flex(row);
+    justify-content: center;
+    width: 100%;
+    background: #fafafa;
+    min-height: 1000px;
+    &_content {
+      @include flex(row);
+      margin-top: 20px;
+      width: 1200px;
+      &_left {
+        width: 904px;
+      }
+
+      &_right {
+        width: 280px;
+        height: 300px;
+        margin-left: 16px;
+        padding: 18px 20px 0 20px;
+      }
+    }
+  }
+}
+#mapcontainer {
+  width: 480px;
+  height: 160px;
+}

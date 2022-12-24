@@ -11,19 +11,19 @@ import PersonalInfoCard from "@/components/home/personalInfoCard";
 import ResumeManagementCard from "@/components/home/resumeManagementCard";
 import BrowseInformationCard from "@/components/home/BrowseInformationCard";
 import { useLocation } from "react-router-dom";
-
+import useLogin from "@/hooks/login";
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof actions;
 type Props = StateProps & DispatchProps 
-import Axios from "axios";
 import axios from "@/api/axios";
 const Counter = () =>{
   const routeConfig = useLocation();
   const [info, setInfo] = React.useState({});
   const [getListData,setGetListData] = React.useState([]);
+  const [] = useLogin();
   const initData = async(searchData:any) => {
     const data = {
-      param:{
+      query:{
         workAddrCityCode:searchData.workAddrCityCode,
         search:searchData.inputValue,
         education:searchData.education,
@@ -39,13 +39,13 @@ const Counter = () =>{
     };
     const {data:rs} = await axios.post("/cpe/post/search",data);
     console.log("==>",rs.data);
-    setGetListData(rs.data);
+    setGetListData(rs.data.rows);
   };
   const init = async()=>{
-    console.log("routeConfig",routeConfig);
-    const {data} = await axios.get("/cpe/post/info");
-    setInfo(data.data);
-    console.log("个人信息",data.data);
+    // console.log("routeConfig",routeConfig);
+    // const {data} = await axios.get("/cpe/post/info");
+    // setInfo(data.data);
+    // console.log("个人信息",data);
   };
   React.useEffect(()=>{
     initData({});

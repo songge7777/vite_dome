@@ -8,6 +8,7 @@ const metaRouters = import.meta.globEager("@/pages/**/*.tsx") as MetaRouters;
 // 创建 router
 function routerInit(){
   const getRouteData: GetRouteData[][]=[]; 
+
   Object.entries(metaRouters).map((data) => {
     const [key] = data;
     const path = key.replace(/\/src\/pages|.tsx/g, "");

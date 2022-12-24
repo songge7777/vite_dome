@@ -52,9 +52,9 @@ const ViewEnterprise = () => {
     const {data} = await axios.post("/cpe/post/search/resemble/post",{
       pageNum:1,
       pageSize:10,
-      param:{recruitPostId}
+      query:{recruitPostId}
     });
-    setRecruitPostData(data.data);
+    setRecruitPostData(data.data.rows);
     console.log("data", data.data);
   };
   // 字典 查数据

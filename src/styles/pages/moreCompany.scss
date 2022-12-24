@@ -1,0 +1,141 @@
+@import "../layout.scss";
+.moreCompany {
+  &_layout {
+  }
+  &_lists {
+    @include flex(row);
+    justify-content: center;
+    width: 100%;
+    background: #fafafa;
+    min-height: 1000px;
+    &_content {
+      @include flex(row);
+      margin-top: 20px;
+      width: 1200px;
+      &_left {
+        width: 904px;
+        &_title {
+          width: 100%;
+          background: #ebedf1;
+          padding: 32px 0 20px 20px;
+          @include flex();
+          .top_title {
+            @include flex(row);
+            img {
+              width: 56px;
+              height: 56px;
+            }
+            &_info {
+              margin-left: 12px;
+              &_title {
+                font-size: 20px;
+                font-weight: 500;
+                color: #343130;
+              }
+              span {
+                font-size: 14px;
+                font-weight: 400;
+                color: #606266;
+                margin-right: 10px;
+              }
+            }
+          }
+          .top_tip {
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: 400;
+            color: rgba(0, 0, 0, 0.6);
+          }
+        }
+        &_content {
+          margin-top: 20px;
+          &_first {
+            width: 904px;
+            height: 128px;
+            background: #ffffff;
+            border-radius: 8px 0px 0px 8px;
+            @include flex(row);
+            .main_left {
+              padding: 16px 0 0 20px;
+              width: 536px;
+              &_top {
+                &_name {
+                  font-size: 16px;
+                  font-weight: 400;
+                  color: #343130;
+                }
+                &_money {
+                  font-size: 16px;
+                  font-weight: 400;
+                  color: #f5383a;
+                  margin-left: 40px;
+                }
+              }
+              &_middle {
+                margin-top: 13px;
+                span {
+                  background: #f1f2f5;
+                  font-size: 14px;
+                  font-weight: 400;
+                  color: #606266;
+                  padding: 2px 10px;
+                  border-radius: 3px 3px 3px 3px;
+                }
+              }
+              &_bottom {
+                margin-top: 18px;
+                font-size: 14px;
+                font-weight: 400;
+                color: #606266;
+              }
+            }
+            .main_right {
+              padding-right: 20px;
+              flex: 1;
+              @include flex(row);
+              align-items: center;
+              justify-content: flex-end;
+              &_img {
+                width: 48px;
+                height: 48px;
+                margin-right: 10px;
+              }
+              &_hr {
+                font-size: 14px;
+                font-weight: 400;
+                color: #606266;
+              }
+              &_call {
+                margin-left: 25px;
+                height: 20px;
+                width: 80px;
+                text-align: center;
+                border-radius: 3px 3px 3px 3px;
+                opacity: 1;
+                border: 1px solid #ebedf1;
+                display: flex;
+                font-size: 12px;
+                justify-content: center;
+                align-items: center;
+                img {
+                  width: 14px;
+                  height: 14px;
+                }
+                span {
+                  margin-left: 4px;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      &_right {
+        width: 280px;
+        height: 300px;
+        margin-left: 16px;
+        padding: 18px 20px 0 20px;
+      }
+    }
+  }
+}

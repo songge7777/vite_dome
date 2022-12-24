@@ -49,43 +49,43 @@ export const expectedIndustryData = ()=>{
 export const expectedCityData = ()=>{
   return [
     {
-      id:0,
+      id:"0",
       value:"不限"
     },
     {
-      id:420100,
+      id:"420100",
       value:"武汉"
     },
     {
-      id:320500,
+      id:"320500",
       value:"苏州"
     },
     {
-      id:610100,
+      id:"610100",
       value:"西安"
     },
     {
-      id:120100,
+      id:"120100",
       value:"天津"
     },
     {
-      id:330100,
+      id:"330100",
       value:"杭州"
     },
     {
-      id:440300,
+      id:"440300",
       value:"深圳"
     },
     {
-      id:440100,
+      id:"440100",
       value:"广州"
     },
     {
-      id:310100,
+      id:"310100",
       value:"上海"
     },
     {
-      id:110100,
+      id:"110100",
       value:"北京"
     }
   ];

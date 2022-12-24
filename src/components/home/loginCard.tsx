@@ -4,7 +4,28 @@ import { Button, Checkbox, Form, Input,message } from "antd";
 import { useNavigate } from "react-router-dom";
 import axios from "@/api/axios";
 let timer = 0;
-
+type AgreementProps = {
+  checked?: boolean,
+  onChange?:(i:boolean)=>{}
+}
+const Agreement:React.FC = (props:AgreementProps) => {
+  const { checked,onChange } = props;
+  const navigate = useNavigate();
+  console.log(props);
+  const selfClick = () => onChange(!checked);
+  const goToPage = (id:number) => {
+    navigate(`/agreement?id=${id}`);
+  };
+  return <div className="checkbox_layout">
+    <Checkbox onClick={(r)=>onChange(r)} checked={checked} />
+    <div> 
+      <span onClick={selfClick}> 我已阅读并同意 </span>
+      <span onClick={()=>goToPage(1)} className="agreement">《服务协议》</span> 
+      <span  onClick={selfClick}> 和 </span>
+      <span onClick={()=>goToPage(2)} className="agreement">《隐私政策》</span>
+    </div>
+  </div>;
+};
 const LoginCard = () => {
   const [formRef] = Form.useForm();
   const [validCodeReqNo, setValidCodeReqNo] = React.useState("");
@@ -26,11 +47,8 @@ const LoginCard = () => {
       message.success("登录成功");
       navigate("/search");
     }else{
-      message.error(`${rsData.error}`);
+      message.error(`${rsData.message}`);
     }
-  };
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
   };
 
   React.useEffect(()=> {
@@ -43,7 +61,13 @@ const LoginCard = () => {
       clearInterval(timer);
     }
   }, [time]);
-
+  const validator = (rule, value, callback) =>{
+    if(Boolean(value) === true){
+      callback();
+    }else{
+      callback("请勾选协议");
+    }
+  };
   const getCode = async() => {
     const {phone} =await formRef.validateFields(["phone"]);
     
@@ -53,15 +77,13 @@ const LoginCard = () => {
       smsType:"loginSms"
     };
     const {data:getCodeRs} =  await axios.post("/auth/verify/code",data);
-    console.log("getCodeRs",getCodeRs.data);
     if(getCodeRs.code === 200){
       setValidCodeReqNo(getCodeRs.data);
       message.success("成功获取验证码");
-      // getSixtymTime();
       setTime(60);
       setShow(true);
     }else{
-      message.error(`${getCodeRs.error}`);
+      message.error(`${getCodeRs.message}`);
     }
   };
   return (
@@ -71,9 +93,8 @@ const LoginCard = () => {
         className="loginCard_layout_div"
         form={formRef}
         name="basic"
-        initialValues={{phone:"",validCode:"", remember: true }}
+        initialValues={{phone:"",validCode:"", remember: false }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         {/* form */}
@@ -94,7 +115,6 @@ const LoginCard = () => {
           } />
         </Form.Item>
 
-        {/* <span >服务协议</span> 和 <span>隐私政策</span> */}
         <Form.Item>
           <Button style={{width:"100%"}} type="primary" htmlType="submit">
             登录
@@ -103,8 +123,9 @@ const LoginCard = () => {
         <Form.Item
           className="loginCard_layout_div_from"
           name="remember"
+          rules={[{ validator:validator }]}
           valuePropName="checked">
-          <Checkbox>我已阅读并同意 </Checkbox>
+          <Agreement />
         </Form.Item>
       </Form>
     </section>
