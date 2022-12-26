@@ -117,7 +117,7 @@ const InputSearch:React.FC = (props:Props) => {
           </div>} />
         </div>
         <Input className="inputSearch_input" value={searchValue} onChange={inputChange} placeholder="搜索职位、公司"/>
-        <Button className="inputSearch_btn" type="primary" onClick={()=>submit()}>Submit</Button>
+        <Button className="inputSearch_btn" type="primary" onClick={()=>submit()}>搜索</Button>
       </Input.Group>
     </section>
   );

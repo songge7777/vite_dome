@@ -2,18 +2,35 @@ import * as React from "react";
 import "@/styles/pages/personalInfoCard.scss";
 import LOGO from "@/img/LOGO.png";
 import axios from "@/api/axios";
-import Axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   info:{}
 }
 const PersonalInfoCard = (props:Props) => {
+  const [userInfo,setUserInfo] = React.useState({});
   const {info} = props;
+  const navigate = useNavigate();
+  const goToProfile = () => {
+    navigate(`/resumeManagement?userId=${userInfo.userId}`);
+  };
+  const getUserInfo = async () => {
+    const {data} = await axios.get("/auth/client/info");
+    return data.data;
+  };
+  const init = async()=>{
+    const data = await getUserInfo();
+    setUserInfo(data);
+  };
+
+  React.useEffect(()=>{
+    init();
+  },[]);
   return (
-    <section className="personalInfo_layout">
+    <section className="personalInfo_layout" onClick={goToProfile}>
       {/* 头 */}
       <div className="personalInfo_header">
-        <img className="personalInfo_header_img" src={LOGO} alt="" />
+        <img className="personalInfo_header_img" src={info.picture} alt="" />
         <span className="personalInfo_header_name">{info.name}</span>
       </div>
       {/* tip */}

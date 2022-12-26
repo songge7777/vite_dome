@@ -43,9 +43,9 @@ const Counter = () =>{
   };
   const init = async()=>{
     // console.log("routeConfig",routeConfig);
-    // const {data} = await axios.get("/cpe/post/info");
-    // setInfo(data.data);
-    // console.log("个人信息",data);
+    const {data} = await axios.get("/auth/client/info");
+    setInfo(data.data);
+    console.log("个人信息",data);
   };
   React.useEffect(()=>{
     initData({});

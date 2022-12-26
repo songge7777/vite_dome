@@ -1,0 +1,17 @@
+@import "../layout.scss";
+.layout_upload {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 14px;
+  border-radius: 50%;
+  overflow: hidden;
+  &_file {
+    width: 64px;
+    height: 64px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+  }
+}

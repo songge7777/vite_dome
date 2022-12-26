@@ -112,6 +112,24 @@ const PrivacyProtection:React.FC = () => {
 };
 
 const AccountSecurityCenter:React.FC = ()=>{
+  const [dataItem, setDataItem] = React.useState({});
+  const [showOne,setShowOne] = React.useState(true);
+  const [showTwo,setShowTwo] = React.useState(true);
+  const [showThree,setShowThree] = React.useState(true);
+  const getAccountInfo = async()=>{
+    // const {data} = await axios.get("/sys/account/setting/info");
+    // console.log("getAccountInfo",data.data);
+    const data = {
+      account:"123",
+      email:"222",
+      phone:"15997477937",
+      wxAccount:"xxx"
+    };
+    setDataItem(data);
+  };
+  React.useEffect(()=>{
+    getAccountInfo();
+  },[]);
   return <div className="accountSecurityCenter">
     <section className="accountSecurityCenter_title line">
       <div className="accountSecurityCenter_title_name">账号管理</div>
@@ -121,24 +139,47 @@ const AccountSecurityCenter:React.FC = ()=>{
       <div className="accountSecurityCenter_title_name">手机修改</div>
       <div className="accountSecurityCenter_title_tip">修改手机号，每个月可以修改一次手机号，修改时需原手机和新手机验证码确认。</div>
       <div className="accountSecurityCenter_title_btn">
-        <Input type="text" />
-        <button>修改</button>
+        { showOne?<div><span>{dataItem.phone}</span> <button onClick={()=>{
+          setShowOne(false);
+        }}>修改</button></div>:<div  className="accountSecurityCenter_title_btn"><Input type="text" value={dataItem.phone} onInput={(e)=>{
+          setDataItem({
+            ...dataItem,
+            phone:e.target.value
+          });
+        }} />
+        <button onClick={async()=>{
+          // console.log(dataItem.phone);
+          setShowOne(true);
+          // axios.post("/sys/account/change_phone");
+        }}>提交</button>
+        </div>}
+        
       </div>
     </section>
-    <section className="accountSecurityCenter_title">
+    {/* <section className="accountSecurityCenter_title">
       <div className="accountSecurityCenter_title_name">邮箱绑定</div>
       <div className="accountSecurityCenter_title_tip">修改绑定邮箱，修改时需原邮箱的验证码确认。</div>
       <div className="accountSecurityCenter_title_btn">
-        <Input type="text" />
-        <button>修改</button>
+        { showTwo?<div><span>{dataItem.email}</span> <button onClick={()=>{
+          setShowTwo(false);
+        }}>修改</button></div>:<div className="accountSecurityCenter_title_btn"><Input type="text" value={dataItem.email} />
+          <button onClick={()=>{
+            setShowTwo(true);
+          }}>提交</button>
+        </div>}
       </div>
-    </section>
+    </section> */}
     <section className="accountSecurityCenter_title">
       <div className="accountSecurityCenter_title_name">微信绑定</div>
       <div className="accountSecurityCenter_title_tip">修改绑定微信，每个月可以修改一次绑定微信，修改时需手机验证码确认。</div>
       <div className="accountSecurityCenter_title_btn">
-        <Input type="text" />
-        <button>修改</button>
+        { showThree?<div><span>{dataItem.wxAccount}</span> <button onClick={()=>{
+          setShowThree(false);
+        }}>修改</button></div>:<div className="accountSecurityCenter_title_btn"><Input type="text" value={dataItem.wxAccount}/>
+          <button onClick={()=>{
+            setShowThree(true);
+          }}>提交</button>
+        </div>}
       </div>
     </section>
   </div>;
@@ -169,9 +210,11 @@ const Counter:React.FC = () =>{
     console.log("==>",rs.data.rows);
     setGetListData(rs.data.rows);
   };
+
   React.useEffect(()=>{
     initData({});
   },[]);
+
   return (
     <div className="search_layout">
       <Header />
@@ -186,11 +229,11 @@ const Counter:React.FC = () =>{
                 key: "1",
                 children: <AccountSecurityCenter />
               },
-              {
-                label: "隐私保护",
-                key: "2",
-                children:<PrivacyProtection />,
-              },
+              // {
+              //   label: "隐私保护",
+              //   key: "2",
+              //   children:<PrivacyProtection />,
+              // },
               {
                 label: "消息通知",
                 key: "3",

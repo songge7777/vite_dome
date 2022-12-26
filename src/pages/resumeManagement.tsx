@@ -9,6 +9,7 @@ import ResumeManagementCard from "@/components/home/resumeManagementCard";
 import BrowseInformationCard from "@/components/home/BrowseInformationCard";
 import SingleTree from "@/components/home/singleTree";
 import DoubleTree from "@/components/home/doubleTree";
+import Upload from "@/components/home/upload";
 import "@/styles/pages/resumeManagement.scss";
 import * as dayjs from "dayjs";
 import LOGO from "@/img/LOGO.png";
@@ -183,13 +184,13 @@ const ResumeManagement = () => {
   const [formFive] = Form.useForm();
   const [formSix] = Form.useForm();
   const getIndustryCategory = async() => {
-    // const {data} = await axios.get("/sys/industry_category/get_cache_tree");
-    const {data} = await Axios.get("http://192.168.0.139:8088/sys/industry_category/get_cache_tree");
+    const {data} = await axios.get("/sys/industry_category/get_cache_tree");
+    // const {data} = await Axios.get("http://192.168.0.139:8088/sys/industry_category/get_cache_tree");
     setIndustryCategoryData(data.data);
   };
   const getPostCategory = async() => {
-    // const {data} = await axios.get("/sys/post_category/cache_tree");
-    const {data} = await Axios.get("http://192.168.0.139:8088/sys/post_category/cache_tree");
+    const {data} = await axios.get("/sys/post_category/cache_tree");
+    // const {data} = await Axios.get("http://192.168.0.139:8088/sys/post_category/cache_tree");
     setPostCategoryData(data.data);
   };
   // 获取数据
@@ -343,6 +344,30 @@ const ResumeManagement = () => {
     getData5(resumeId);
     setEdit5(false);
   };
+  const submitFormData6 = async(id?: number | string)=>{
+    await formFive.validateFields();
+    const data = await formFive.getFieldsValue();
+    console.log(data);
+    if(data.educationDate){
+      data.educationDataStart = dayjs(data.educationDate[0]).format("YYYY-MM-DD");
+      data.educationDataEnd = dayjs(data.educationDate[1]).format("YYYY-MM-DD");
+    }
+    // 新增
+    if(!id){
+      const rs = await axios.post("/cpe/resume/education",{
+        resumeId,
+        ...data,
+      });
+    } else {
+      const rs = await axios.put("/cpe/resume/education",{
+        ...data,
+        resumeId,
+        id
+      });
+    }
+    getData6(resumeId);
+    setEdit6(false);
+  };
   const submitFormData7 = async(id?: number | string)=>{
     const data = await formSix.getFieldsValue();
     if(data.gainDate){
@@ -475,7 +500,22 @@ const ResumeManagement = () => {
     return r[0]? r[0].value :"";
   };
   const handleTextarea = (text) => {
-    return text.split("\n");
+    return text?text.split("\n"):[];
+  };
+  const cbResult = async(data) => {
+    const picture = data.data.fileUrl;
+    // 新增
+    console.log("---->>", picture);
+    const {data:rs} = await axios.put("/cpe/resume/single",{
+      picture,
+      resumeId
+    });
+    if(rs.code === 200 ){
+      message.success("修改成功");
+    }else{
+      message.success(rs.data);
+    }
+    getData1();
   };
   return (
     <div className="resumeM_layout1">
@@ -521,10 +561,10 @@ const ResumeManagement = () => {
                         <img src={LOGO} alt="" />
                         <span>{OnlyShowFormOneData.email}</span>
                       </div>
-                 
                     </div>
                     <div className="resumeM_lists_content_left_resume_card_right">
-                      <img className="part-1_logo" src={OnlyShowFormOneData.picture} alt="" />
+                      {/* <img className="part-1_logo" src={OnlyShowFormOneData.picture} alt="" /> */}
+                      <Upload cbResult={cbResult} src={OnlyShowFormOneData.picture} />
                       <div className="part-1_span" onClick={()=>setEdit1(true)}><img className="part-1_icon" src={LOGO} alt="" />编辑</div>
                     </div>
                   </React.Fragment>
@@ -959,7 +999,6 @@ const ResumeManagement = () => {
                       <div className="resumeM_lists_content_left_resume_card_right right_absolute">
                         <div className="part-3_list">
                           <div className="part-3_list_span" onClick={()=>{
-                            console.log(item);
                             const educationDataStart = item.educationDataStart ? dayjs(item.educationDataStart) : undefined;
                             const educationDataEnd = item.educationDataEnd ? dayjs(item.educationDataEnd) : undefined;
                             formFive.setFieldsValue({
@@ -998,10 +1037,10 @@ const ResumeManagement = () => {
                     initialValues={{ layout: "vertical",...formFiveData }}
                     className="jobWanted_options_layout_cartTop_content_right_form"
                   >
-                    <Form.Item label="学校名称" name="schoolName" rules={[{ required: true, message:"请输入姓名"},{validator:inputValidator }]}>
+                    <Form.Item label="学校名称" name="schoolName" rules={[{ required: true, message:"请输入姓名"}]}>
                       <Input placeholder="请输入姓名" />
                     </Form.Item>
-                    <Form.Item label="求职类型" name="educationType" rules={[{ required: true, message:"请输入姓名"},{validator:inputValidator }]}>
+                    <Form.Item label="求职类型" name="educationType" rules={[{ required: true, message:"请选择求职类型"}]}>
                       <div onChange={()=>{}} className="formRadio">
                         <div
                           className={classnames("formRadio_item",
@@ -1022,13 +1061,13 @@ const ResumeManagement = () => {
                         >非全日制</div>
                       </div>
                     </Form.Item>
-                    <Form.Item label="学历" name="education">
+                    <Form.Item label="学历" name="education" rules={[{ required: true, message:"请选择学历"}]}>
                       <Select placeholder="请选择学历" 
                       >
                         {educationData().map(item => <Select.Option key={`&1_${item.id}`} value={String(item.id)}>{item.value}</Select.Option>)}
                       </Select>
                     </Form.Item>
-                    <Form.Item label="专业" name="major">
+                    <Form.Item label="专业" name="major" rules={[{ required: true, message:"请输入专业"}]}>
                       <Input placeholder="如：计算机" />
                     </Form.Item>
                     <Form.Item label="时间" name="educationDate" rules={[{ required: true, message:"请选择期望职位"}]}>

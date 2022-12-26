@@ -14,9 +14,15 @@ type DispatchProps = typeof actions;
 type Props = StateProps & DispatchProps 
 import axios from "@/api/axios";
 import { Tabs,Checkbox,Input, Switch, Button } from "antd";
+import { useNavigate ,useLocation } from "react-router-dom";
 
-
-const MessagePostChildren:React.FC = () => {
+type MessageProps = {
+  dataItem:[],
+  index: string
+}
+const MessagePostChildren:React.FC = (props:MessageProps) => {
+  const {dataItem,index} = props;
+  console.log("dataItem",dataItem,index);
   const [info,SetInfo] = React.useState([
     {
       name:"允许新消息通知",
@@ -35,11 +41,23 @@ const MessagePostChildren:React.FC = () => {
       id:4
     },
   ]);
-  const onChange = () => {
+  const clickMessage = async(item) => {
+    const rs = await axios(`/msg/msg/read?id=${item.msgId}`);
+    console.log(item);
+  };
+  const arrFilter = () => {
+    return dataItem.filter(item => {
+      if(!index) return true;
+      return Number(item.status) === Number(index);
+    });
   };
   return <div className="messagePost">
     <div className="messagePost_list">
-      { info.map((item,index)=><div key={index} className="messagePost_list_title">{item.name}</div>)}  
+      { dataItem && arrFilter(dataItem).map((item,index)=><div key={index}
+        onClick={()=>clickMessage(item)}
+        className="messagePost_list_title">
+        【{item.title}】{item.content}
+      </div>)}  
     
     </div>
   </div>;
@@ -47,7 +65,56 @@ const MessagePostChildren:React.FC = () => {
 
 
 const MessagePost:React.FC = () => {
-  const onChange = () => {};
+  const [userId,setUserId] = React.useState("");
+  const routeConfig = useLocation();
+  const [dataItem,setDataItem] = React.useState([]);
+  const [index,setIndex] = React.useState("");
+  const getMessage = async(_userId)=>{
+    // const {data} = await axios.get(`/msg/msg/all/${userId}`);
+    const data = [{
+      msgId:"1",
+      userId:"1",
+      title:"标题",
+      content:"内容内容内容内容内容 未读",
+      jumpUrl:"http://www.baidu.com",
+      // 是否已读 0 未读 1 已读
+      status:"0",
+      sentTime:"2020-1-1"
+    },{
+      msgId:"2",
+      userId:"2",
+      title:"标题1",
+      content:"内容内容内容内容内容1 已读",
+      jumpUrl:"http://www.baidu.com",
+      // 是否已读 0 未读 1 已读
+      status:"1",
+      sentTime:"2020-1-1"
+    }];
+    setDataItem(data);
+  };
+  const onChange = (num) => {
+    switch(num){
+      case "1":
+        setIndex(undefined);
+        break;
+      case "2":
+        setIndex("1");
+        break;
+      case "3":
+        setIndex("0");
+        break;
+    }
+  };
+
+  const initData = async(searchData:any) => {
+    const {search} = routeConfig;
+    const _userId = search.slice(1,).split("=")[1];
+    getMessage(_userId);
+    setUserId(_userId);
+  };
+  React.useEffect(()=>{
+    initData({});
+  },[]);
   return <div>
     <Tabs
       defaultActiveKey="1"
@@ -56,17 +123,17 @@ const MessagePost:React.FC = () => {
         {
           label: "全部",
           key: "1",
-          children: <MessagePostChildren />
+          children: <MessagePostChildren dataItem={dataItem} index={index}/>
         },
         {
           label: "已读",
           key: "2",
-          children: <MessagePostChildren />
+          children: <MessagePostChildren dataItem={dataItem} index={index} />
         },
         {
           label: "未读",
           key: "3",
-          children: <MessagePostChildren />
+          children: <MessagePostChildren dataItem={dataItem} index={index} />
         },
         
       ]}
@@ -75,33 +142,11 @@ const MessagePost:React.FC = () => {
 };
 
 const Counter:React.FC = () =>{
-  const [getListData,setGetListData] = React.useState([]);
+
   const onChange = (key: string) => {
     console.log(key);
   };
-  const initData = async(searchData:any) => {
-    const data = {
-      query:{
-        workAddrCityCode:searchData.workAddrCityCode,
-        search:searchData.inputValue,
-        education:searchData.education,
-        salaryMin:searchData.salaryMin,
-        salaryMax:searchData.salaryMax,
-        workExperience:searchData.workExperience,
-        postCategory:searchData.postCategory,
-        industryCategory:searchData.industryCategory,
-        companyScale:searchData.companyScale,
-      },
-      pageNum:1,
-      pageSize:10
-    };
-    const {data:rs} = await axios.post("/cpe/post/search",data);
-    console.log("==>",rs.data.rows);
-    setGetListData(rs.data.rows);
-  };
-  React.useEffect(()=>{
-    initData({});
-  },[]);
+  
   return (
     <div className="search_layout">
       <Header />
@@ -114,7 +159,7 @@ const Counter:React.FC = () =>{
               {
                 label: "消息通知",
                 key: "1",
-                children: <MessagePost />
+                children: <MessagePost  />
               },
             ]}
           />

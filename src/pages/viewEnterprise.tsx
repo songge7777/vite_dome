@@ -23,7 +23,8 @@ const ViewEnterprise = () => {
   const [dataList,setDataList] = React.useState([]);
   const getData = async(companyId) => {
     const {data} = await  axios.get(`/cpe/post/company/${companyId}`);
-    setDataItem(data.data);
+    console.log("data==>>",data);
+    setDataItem(data.data?data.data:{});
     return data.data;
   };
     // 字典 查数据

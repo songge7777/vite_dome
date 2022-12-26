@@ -28,6 +28,7 @@ type TProps = {
 
 const DoubleTree:React.FC = (props:TProps) => {
   const {data,cb,inputNode,single,onChange,name} = props;
+  console.log("DoubleTree",data);
   const [show,setShow] = React.useState(false);
   const [secondData,setSecondData] = React.useState([]);
   const [current,setCurrent] = React.useState({});
@@ -67,7 +68,7 @@ const DoubleTree:React.FC = (props:TProps) => {
       <article className="custom_select_layout_flex">
         {/* list */}
         {
-          data.length> 0 &&<section className="custom_select_layout_flex_list">
+          data && data.length> 0 &&<section className="custom_select_layout_flex_list">
             {data.map((item,index) => {
               return (
                 <div

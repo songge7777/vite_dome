@@ -140,11 +140,12 @@ const jobWanted: React.FC = () => {
   };
   const getIndustryCategory = async() => {
     const {data} = await axios.get("/sys/industry_category/get_cache_tree");
-    setIndustryCategoryData(data.data.rows);
+    setIndustryCategoryData(data.data);
   };
   const getPostCategory = async() => {
     const {data} = await axios.get("/sys/post_category/cache_tree");
-    setPostCategoryData(data.data.rows);
+    console.log("data=>>",data);
+    setPostCategoryData(data.data);
   };
   // 获取数据
   const getData = async()=>{

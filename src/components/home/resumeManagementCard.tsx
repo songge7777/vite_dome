@@ -105,21 +105,11 @@ const resumeManagementCard = () => {
             <span className="resumeManagement_list_item_name">{item.fileName}</span>
           </div>)
         } 
-        {/* 
-        <div className="resumeManagement_list_item resumeManagement_list_active">
-          <img className="resumeManagement_list_item_img" src={offerw} alt="" />
-          <span className="resumeManagement_list_item_name">xxxx啊实打实的撒大苏打实打实打算xxxxxxxx.word</span>
-        </div>
-        <div className="resumeManagement_list_item ">
-          <img className="resumeManagement_list_item_img" src={offerw} alt="" />
-          <span className="resumeManagement_list_item_name">xxxx.word</span>
-        </div> 
-        */}
       </section>
       {/* 按钮 */}
-      <section  className="resumeManagement_bottom">
+      {dataItem && dataItem.length >2 ? "": <section  className="resumeManagement_bottom">
         <Button onClick={()=>showModal()}>上传简历</Button>
-      </section>
+      </section>} 
       <Modal title="简历上传" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <FileUpload />
       </Modal>

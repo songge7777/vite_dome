@@ -280,7 +280,7 @@ const SearchHeader:React.FC =  (props:Props) =>{
                 {companySize().map(item => <Select.Option key={`&0_${item.id}`} value={item.id}>{item.value}</Select.Option>)}
               </Select>
             </div>
-            <span>融资阶段:</span>
+            {/* <span>融资阶段:</span>
             <div className="search_header_layout_list_selectOptionItem">
               <Select placeholder="请选择"
                 onChange={(e)=>{
@@ -290,7 +290,7 @@ const SearchHeader:React.FC =  (props:Props) =>{
               >
                 {financingStage().map(item => <Select.Option key={`&0_${item.id}`} value={item.id}>{item.value}</Select.Option>)}
               </Select>
-            </div>
+            </div> */}
           </div>
         </React.Fragment>
         }
