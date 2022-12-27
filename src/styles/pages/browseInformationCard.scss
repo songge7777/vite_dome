@@ -7,7 +7,7 @@
     border-radius: 8px 8px 8px 8px;
     opacity: 1;
     border: 1px solid #ebedf1;
-    padding: 16px 16px 0 16px;
+    padding: 16px 16px 10px 16px;
     @include flex();
     position: relative;
   }
@@ -76,6 +76,46 @@
           position: absolute;
           right: 0;
         }
+      }
+    }
+  }
+  &_listMe {
+    @include flex(row);
+    margin-bottom: 10px;
+    justify-content: space-between;
+    &_left {
+      width: 124px;
+      @include flex(row);
+      img {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+      }
+      span {
+        margin-left: 8px;
+        font-size: 14px;
+        font-weight: 400;
+        color: #606266;
+        width: 90px;
+        @include textHidden();
+      }
+    }
+    &_right {
+      width: 80px;
+      text-align: center;
+      border-radius: 3px 3px 3px 3px;
+      opacity: 1;
+      border: 1px solid #ebedf1;
+      display: flex;
+      font-size: 12px;
+      justify-content: center;
+      align-items: center;
+      img {
+        width: 14px;
+        height: 14px;
+      }
+      span {
+        margin-left: 4px;
       }
     }
   }

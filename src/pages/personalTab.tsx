@@ -14,12 +14,15 @@ import goback from "@/img/goback.png";
 import classnames from "classnames";
 import "@/styles/pages/personalTab.scss";
 import axios from "@/api/axios";
+import { useNavigate, useLocation } from "react-router-dom";
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof actions;
 type Props = StateProps & DispatchProps 
 
 const Personal = () => {
   const [info, setInfo] = React.useState({});
+  const routeConfig = useLocation();
+  const navigate  = useNavigate();
   const [tab,setTab] = React.useState([
     {
       id:0,
@@ -48,8 +51,10 @@ const Personal = () => {
   ]);
   const [currentIndex,setCurrentIndex] = React.useState(0);
   const [trenchingData,setTrenchingData] = React.useState([]);
+  const [searchItem,setSearchItem] = React.useState({});
+  const [tab6List,setTab6List] = React.useState([]);
   const switchTab = () => {
-    switch(currentIndex){
+    switch(Number(currentIndex)){
       // 沟通过
       case 0:
         return trenchingData ? trenchingData.map((item,index)=><TrenchingCard data={item} key={index}/>): <div>暂无数据</div>;
@@ -67,7 +72,7 @@ const Personal = () => {
         return trenchingData ? trenchingData.map((item,index)=><TrenchingCard data={item} key={index}/>): <div>暂无数据</div>;
       // 看过我
       case 5:
-        return <SeeMeCard/>;
+        return tab6List ? tab6List.map((item,index) => <SeeMeCard data={item} key={index} />) : <div>暂无数据</div>;
     }
   };
 
@@ -124,6 +129,7 @@ const Personal = () => {
     };
     const {data:rs} = await axios.post("/cpe/post/all/me",data);
     console.log("看过我的rs=>>", rs.data);
+    setTab6List(rs.data.rows);
   }; 
   // 我的面试
   const getTab7List = async () => {
@@ -133,7 +139,7 @@ const Personal = () => {
 
   const clickChange = (i:number) => {
     setCurrentIndex(i);
-    switch(i){
+    switch(Number(i)){
       // 沟通过
       case 0:
         getTab1List();
@@ -158,24 +164,37 @@ const Personal = () => {
       case 5:
         getTab6List();
         return;
+      default :
+        setCurrentIndex(0);
+        getTab1List();
     }
-    console.log("i",i);
   };
 
   const init = async()=>{
     const {data} = await axios.get("/cpe/post/info");
     setInfo(data.data);
-    console.log("个人信息",data.data);
+    const { search } = routeConfig;
+    const codes = {};
+    search.slice(1,).split("&").forEach(item => {
+      const _data = item.split("=");
+      console.log("_data",item);
+      codes[_data[0]]=_data[1];
+    });
+    
+    setSearchItem(codes);
+    console.log("个人信息==》",routeConfig);
+    return codes;
   };
 
-  const getInit = () => {
-    init();
-    getTab1List();
-    // getTab2List();
-    // getTab3List();
-    // getTab4List();
-    // getTab5List();
-    // getTab6List();
+  React.useEffect(()=>{
+    getInit();
+  }, [routeConfig.search]);
+
+  const getInit = async() => {
+    const data = await init();
+    console.log("setSearchItem",data);
+    const {num} = data;
+    clickChange(num);
   };
  
   React.useEffect(()=>{
@@ -197,7 +216,7 @@ const Personal = () => {
                 <div className="tab_layout_tabs">
                   {tab.map(item => <div key={item.id} onClick={()=>clickChange(item.id)}
                     className={classnames("tab_layout_tab",{
-                      "tab_layout_active":item.id === currentIndex
+                      "tab_layout_active":item.id === Number(currentIndex)
                     })}
                   >{item.value}</div>)}
                 </div>

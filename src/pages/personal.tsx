@@ -26,7 +26,6 @@ const Personal = () => {
       query:{}
     });
     setListData(data.data.rows);
-    console.log("data",data);
   };
   const searchList = async(data)=> {
     const {code:workAddrCityCode,value:search} = data;
@@ -39,7 +38,6 @@ const Personal = () => {
       }
     });
     setListData(rs.data.rows);
-    console.log("data",rs);
   };
   React.useEffect(()=>{
     getList();

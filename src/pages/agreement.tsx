@@ -5,7 +5,7 @@ import * as actions from "@/store/actions/counter";
 import Header from "@/components/home/Header";
 import classnames from "classnames";
 import "@/styles/pages/agreement.scss";
-import { useNavigate ,useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import axios from "@/api/axios";
 import { Button } from "antd";
@@ -15,7 +15,6 @@ type Props = StateProps & DispatchProps
 
 const Agreement = () => {
   const routeConfig = useLocation();
-  const navigate  = useNavigate();
   const getInit = ()=>{
     console.log(routeConfig);
   };

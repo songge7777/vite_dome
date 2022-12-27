@@ -6,6 +6,7 @@ import * as classNames from "classnames";
 const BrowseInformationCard = () => {
   const [currentIndex,setCurrentIndex] = React.useState(1);
   const [trenchingData,setTrenchingData] = React.useState([]);
+  const [tab6List,setTab6List] = React.useState([]);
   // 我看过的-列表
   const getTab5List = async () => {
     const data = {
@@ -26,6 +27,7 @@ const BrowseInformationCard = () => {
     };
     const {data:rs} = await axios.post("/cpe/post/all/me",data);
     console.log("看过我的rs=>>", rs.data);
+    setTab6List(rs.data.rows);
   };
   const clickFn = (n)=>{
     if(n===1){
@@ -48,7 +50,7 @@ const BrowseInformationCard = () => {
         <span className={classNames("browseInformation_tab_right",{"browseInformation_tab_active":currentIndex===2})} onClick={()=>clickFn(2)}>看过我</span>
       </div>
       {/* list */}
-      { trenchingData && trenchingData.map((item,index) => <div key={index} className="browseInformation_list">
+      { Number(currentIndex) === 1 && trenchingData && trenchingData.map((item,index) => <div key={index} className="browseInformation_list">
         <section className="browseInformation_list_item">
           <div className="browseInformation_list_item_top">
             <span className="browseInformation_list_item_top_position">{item.postName}</span>
@@ -61,6 +63,18 @@ const BrowseInformationCard = () => {
           </div>
         </section>
       </div>)}
+      {
+        Number(currentIndex) === 2 && tab6List && tab6List.map((item,index) => <div className="browseInformation_listMe" key={index}>
+          <div className="browseInformation_listMe_left">
+            <img src={item.hrPicture} alt="" />
+            <span>{item.hrName}</span>
+          </div>
+          <div className="browseInformation_listMe_right">
+            <img src={call}  alt="" />
+            <span>立即沟通</span>
+          </div>
+        </div>)
+      }
     </section>
   );
 };

@@ -13,7 +13,6 @@ type Props = {
 }
 const TrenchingCard:React.FC = (props:Props) =>{
   const {data}= props;
-  console.log("data",data);
   return (
     <div className="trenching_home_lists">
       <div className="trenching_content_layout_lists_left">

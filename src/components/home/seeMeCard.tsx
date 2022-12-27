@@ -3,27 +3,30 @@ import logoqiye from "@/img/logoqiye.png";
 import call from "@/img/call.png";
 import "@/styles/pages/seeMeCard.scss";
 /**
- * 我的面试
+ * 看过我
  * 
  */ 
-const seeMeCard = () => {
+type Props = {
+  data:{}
+}
+const seeMeCard = (props:Props) => {
+  const {data} = props;
+  console.log("看过我",data);
   return (
     <div className="seeMe_home_lists">
       <div className="seeMe_content_layout_lists_left">
         <div className="seeMe_content_layout_lists_personnel">
-          <img src={logoqiye}  alt="" />
-          <span>王女士11/HR</span>
+          <img src={data.hrPicture}  alt="" />
+          <span>{data.hrName}/HR</span>
         </div>
        
       </div>
       <div className="seeMe_content_layout_lists_center">
-        <img src={logoqiye}  alt="" />
+        <img src={data.companyLogo}  alt="" />
         <div className="seeMe_content_layout_lists_center_list">
-          <span className="seeMe_content_layout_lists_center_list_company">北京飞实打实打算渡科技有限公222司</span>
+          <span className="seeMe_content_layout_lists_center_list_company">{data.companyName}</span>
           <section className="seeMe_content_layout_lists_center_btns">
-            <span >武汉</span>
-            <span >3年</span>
-            <span >硕士</span>
+            {data.postKeywordList && data.postKeywordList.map((i,index) => <span key={index}>{i}</span>)}
           </section>
         </div>
       </div>

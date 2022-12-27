@@ -55,7 +55,6 @@ const ViewEnterprise = () => {
       query:{recruitPostId}
     });
     setRecruitPostData(data.data.rows);
-    console.log("data", data.data);
   };
   // 字典 查数据
   const getT = async(key) => {

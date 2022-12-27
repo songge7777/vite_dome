@@ -148,7 +148,6 @@ const AccountSecurityCenter:React.FC = ()=>{
     //   phone:"15997477937",
     //   wxAccount:"xxx"
     // };
-    console.log("data",data.data);
     setDataItem(data.data);
   };
   const getCode = async() => {

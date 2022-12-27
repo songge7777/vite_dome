@@ -38,7 +38,6 @@ const MoreCompany = () => {
       query:{companyId}
     });
     setDataList(data.data.rows);
-    console.log("data", data.data.rows);
   };
   // 字典 查数据
   const getT = async(key) => {

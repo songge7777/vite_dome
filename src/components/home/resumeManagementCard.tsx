@@ -58,7 +58,6 @@ const FileUpload:React.FC = (props:Props) => {
       if (status === "done") {
         console.log(info.file.response);
         const {data} = info.file.response;
-        console.log("data",data);
         const rs = {
           fileUrl:data.fileUrl,
           fileId:data.id,
