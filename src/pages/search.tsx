@@ -43,7 +43,7 @@ const Counter = () =>{
   };
   const init = async()=>{
     // console.log("routeConfig",routeConfig);
-    const {data} = await axios.get("/auth/client/info");
+    const {data} = await axios.get("/cpe/post/info");
     setInfo(data.data);
     console.log("个人信息",data);
   };

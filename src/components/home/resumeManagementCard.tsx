@@ -10,18 +10,25 @@ import {
   Upload,
   Modal,
   message,
+  Popover,
 } from "antd";
 
 const { Dragger } = Upload;
+type Props = {
+  cb:()=>void
+}
 
-const FileUpload:React.FC = () => {
-  
- 
+// const floatDiv = ()
+
+
+const FileUpload:React.FC = (props:Props) => {
+  const { cb } = props;
   const postData = async(rs) => {
     const {data} = await axios.post("/cpe/resume/file",rs);
+    cb(false);
     console.log(data);
   };
-  const props: UploadProps = {
+  const propsItem: UploadProps = {
     name: "file",
     accept: "*",
     multiple: true,
@@ -42,9 +49,9 @@ const FileUpload:React.FC = () => {
           resumeId:"1601142715991904258"
         };
         postData(rs);
-        message.success(`${info.file.name} file uploaded successfully.`);
+        message.success(`${info.file.name} 上传成功`);
       } else if (status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
+        message.error(`${info.file.name} 上传失败`);
       }
     },
     onDrop(e) {
@@ -52,7 +59,7 @@ const FileUpload:React.FC = () => {
     },
   };
 
-  return <Dragger {...props}>
+  return <Dragger {...propsItem}>
     <p className="ant-upload-text">上传附件简历，支持文档格式（pdf、word文档） 文件大小不超过10M</p>
     <p className="ant-upload-hint">
       <Button>上传附件简历</Button>
@@ -99,19 +106,21 @@ const resumeManagementCard = () => {
       </div>
       {/* 简历列表 */}
       <section  className="resumeManagement_list">
+        {/* onClick={()=>deleteFn(item.id)}  */}
         {
-          dataItem && dataItem.map((item,index) =><div key={index} onClick={()=>deleteFn(item.id)} className="resumeManagement_list_item ">
+          dataItem && dataItem.map((item,index) =><Popover  placement="left" content={"content"} trigger="click"> <div key={index} className="resumeManagement_list_item ">
             <img className="resumeManagement_list_item_img" src={item.fileUrl} alt="" />
             <span className="resumeManagement_list_item_name">{item.fileName}</span>
-          </div>)
+          </div>
+          </Popover >)
         } 
       </section>
       {/* 按钮 */}
       {dataItem && dataItem.length >2 ? "": <section  className="resumeManagement_bottom">
         <Button onClick={()=>showModal()}>上传简历</Button>
       </section>} 
-      <Modal title="简历上传" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <FileUpload />
+      <Modal className="hiddenBtn" title="简历上传" open={isModalOpen} >
+        <FileUpload cb={setIsModalOpen} />
       </Modal>
     </section>
   );

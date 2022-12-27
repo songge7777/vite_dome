@@ -23,6 +23,7 @@
   &_list {
     @include flex();
     margin-top: 15px;
+    margin-bottom: 15px;
     &_item {
       @include flex(row);
       height: 34px;
@@ -50,5 +51,11 @@
   }
   &_bottom {
     margin: 16px;
+  }
+}
+.hiddenBtn {
+  .ant-modal-footer {
+    overflow: hidden;
+    height: 0;
   }
 }
