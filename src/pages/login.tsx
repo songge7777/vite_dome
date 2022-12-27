@@ -11,7 +11,6 @@ import type { FormInstance } from "antd/es/form";
 import config from "@/config";
 import axios from "@/api/axios";
 import { useLocation,useNavigate } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 let timer = 0;
 
 const {wxConfig} = config;
@@ -72,7 +71,13 @@ const Login = () =>{
       const { data:{accessToken} } = rsData;
       sessionStorage.setItem("accessToken",accessToken);
       message.success("登录成功");
-      navigate("/search");
+      const data = await isGoToGuide();
+      message.success("登录成功");
+      if(data.data){
+        navigate("/jobWanted");
+      }else {
+        navigate("/search");
+      }
     }else{
       message.error(`${rsData.message}`);
     }
@@ -88,6 +93,12 @@ const Login = () =>{
       clearInterval(timer);
     }
   }, [time]);
+
+  // 是否进入个人引导页
+  const isGoToGuide = async() => {
+    const {data} = await axios.get("/cpe/resume/enter");
+    return data;
+  };
 
   const init = async ()=>{
     const { search } = routeConfig;

@@ -59,3 +59,22 @@
     height: 0;
   }
 }
+.floatDiv {
+  &_top {
+    @include flex(row);
+    align-items: center;
+    img {
+      width: 37px;
+      height: 34px;
+    }
+  }
+  &_bottom {
+    span {
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 400;
+      color: #606266;
+      margin-left: 16px;
+    }
+  }
+}

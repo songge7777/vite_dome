@@ -9,9 +9,12 @@ import LOGO from "@/img/LOGO.png";
 import * as dayjs from "dayjs";
 import classnames from "classnames";
 import DoubleTree from "@/components/home/doubleTree";
+import Picture from "@/img/picture.png";
 import axios from "@/api/axios";
 import { FormInstance, RuleObject } from "antd/es/form";
 import { StoreValue } from "antd/es/form/interface";
+import Upload from "@/components/home/upload";
+import { useNavigate } from "react-router-dom";
 import {
   moneyList,
   expectedIndustryData,
@@ -81,6 +84,7 @@ const { TextArea } = Input;
 
 const {useState} = React;
 const jobWanted: React.FC = () => {
+  const navigate = useNavigate();
   const [update,setUpdate] = useState(false);
   const [formMust] = Form.useForm();
   const [_, setIsShow] = useState<[]>();
@@ -112,7 +116,7 @@ const jobWanted: React.FC = () => {
   const [formLayout, setFormLayout] = useState<LayoutType>("vertical");
   const [postCategoryData, setPostCategoryData]=React.useState([]);
   const [industryCategoryData, setIndustryCategoryData]=React.useState([]);
-
+  const [url,setUrl] = React.useState("");
   const onFinish = async() => {
     const r1 = formMust.getFieldsValue();
     if(r1.salaryExpectation){
@@ -130,13 +134,18 @@ const jobWanted: React.FC = () => {
       r1.educationDataStart = r1.salaryExpectation[0].format("YYYY-MM-DD");
       r1.educationDataEnd = r1.salaryExpectation[1].format("YYYY-MM-DD");
     }
-    const data = {
+    if(url){
+      r1.picture = url;
+    }
+    const _data = {
       resumeReq:r1,
       educationReq:r2,
     };
-    console.log(data);
-    const r =  await axios.post("/cpe/resume/job",data);
-    console.log("r",r);
+    console.log(_data);
+    const {data} =  await axios.post("/cpe/resume/job",_data);
+    if(data.data){
+      navigate("/search");
+    }
   };
   const getIndustryCategory = async() => {
     const {data} = await axios.get("/sys/industry_category/get_cache_tree");
@@ -181,7 +190,11 @@ const jobWanted: React.FC = () => {
   const industryCategoryDataCb = (item:{}) => {
     console.log("ITEM",item);
   };
-
+  const cbResult = async(data) => {
+    const picture = data.data.fileUrl;
+    // 新增
+    setUrl(picture);
+  };
   return (
     <div className="jobWanted_layout">
       <Header />
@@ -191,7 +204,8 @@ const jobWanted: React.FC = () => {
             <div className="jobWanted_options_layout_cartTop_title">个人求职信息 (必填)</div>
             <div className="jobWanted_options_layout_cartTop_tip">完善您的基本信息后，会遇到更多您感兴趣的工作岗位；在您完成了求职信息后，有 209 个岗位符合您的条件。 (必填)</div>
             <section className="jobWanted_options_layout_cartTop_content">
-              <img src={LOGO} alt="" />
+              {/* <img src={LOGO} alt="" /> */}
+              <Upload cbResult={cbResult} src={url?url:Picture} />
               <div className="jobWanted_options_layout_cartTop_content_right">
                 {/* form */}
                 <Form

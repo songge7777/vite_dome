@@ -18,8 +18,10 @@
     margin-bottom: 24px;
     &_left {
       margin-right: 40px;
+      cursor: pointer;
     }
     &_right {
+      cursor: pointer;
     }
     &_active {
       font-size: 18px;

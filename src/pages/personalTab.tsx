@@ -10,7 +10,6 @@ import Login from "@/components/home/loginCard";
 import PersonalInfoCard from "@/components/home/personalInfoCard";
 import ResumeManagementCard from "@/components/home/resumeManagementCard";
 import BrowseInformationCard from "@/components/home/BrowseInformationCard";
-import Axios from "axios";
 import goback from "@/img/goback.png";
 import classnames from "classnames";
 import "@/styles/pages/personalTab.scss";

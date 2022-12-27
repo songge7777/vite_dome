@@ -151,3 +151,10 @@
     }
   }
 }
+
+.hiddenBtn {
+  .ant-modal-footer {
+    overflow: hidden;
+    height: 0;
+  }
+}

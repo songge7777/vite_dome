@@ -1,3 +1,5 @@
+// npm i -D cors express body-parser 
+// npm i -g nodemon
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");

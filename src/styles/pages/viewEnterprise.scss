@@ -7,7 +7,6 @@
     justify-content: center;
     width: 100%;
     background: #fafafa;
-    min-height: 1000px;
     &_content {
       @include flex(row);
       margin-top: 20px;
@@ -79,11 +78,12 @@
         }
       }
       &_right {
-        width: 280px;
-        height: 300px;
-        margin-left: 16px;
-        background: #ffffff;
-        padding: 18px 20px 0 20px;
+        &_layout {
+          width: 280px;
+          margin-left: 16px;
+          background: #ffffff;
+          padding: 18px 20px 10px 20px;
+        }
         &_title {
           width: 100%;
           @include flex(row);

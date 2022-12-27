@@ -152,26 +152,26 @@ const ViewEnterprise = () => {
                 {dataItem.addr}
               </div>
               <div id="mapcontainer" />
-
             </div>
           </div>
           <div className="enterprise_lists_content_right">
-            <div className="enterprise_lists_content_right_title">
-              <span className="enterprise_lists_content_right_title_name">在招岗位</span>
-              <span className="enterprise_lists_content_right_title_more" onClick={()=>goToPage(dataItem)}>更多</span>
+            <div className="enterprise_lists_content_right_layout">
+              <div className="enterprise_lists_content_right_title">
+                <span className="enterprise_lists_content_right_title_name">在招岗位</span>
+                <span className="enterprise_lists_content_right_title_more" onClick={()=>goToPage(dataItem)}>更多</span>
+              </div>
+              { dataList && dataList.map((item,index) => <div key={index} className="enterprise_lists_content_right_lists">
+                <div className="enterprise_lists_content_right_lists_top">{item.postName}</div>
+                <div className="enterprise_lists_content_right_lists_btns">
+                  {item.postKeywordList && item.postKeywordList.map((i,j) =><span key={j}>{i}</span>) }
+                </div>
+                <div className="enterprise_lists_content_right_lists_bottom">
+                  <span className="enterprise_lists_content_right_lists_bottom_money">
+                    {item.salaryMin/10000}万-{item.salaryMax/10000}万*{item.salaryNum}薪</span>
+                  <span className="enterprise_lists_content_right_lists_bottom_address">{item.workAddrCityName}-{item.workAddrCountyName}</span>
+                </div>
+              </div>)}
             </div>
-            { dataList && dataList.map((item,index) => <div key={index} className="enterprise_lists_content_right_lists">
-              <div className="enterprise_lists_content_right_lists_top">{item.postName}</div>
-              <div className="enterprise_lists_content_right_lists_btns">
-                {item.postKeywordList && item.postKeywordList.map((i,j) =><span key={j}>{i}</span>) }
-              </div>
-              <div className="enterprise_lists_content_right_lists_bottom">
-                <span className="enterprise_lists_content_right_lists_bottom_money">
-                  {item.salaryMin/10000}万-{item.salaryMax/10000}万*{item.salaryNum}薪</span>
-                <span className="enterprise_lists_content_right_lists_bottom_address">{item.workAddrCityName}-{item.workAddrCountyName}</span>
-              </div>
-            </div>)}
-            
           </div>
         </div> 
       </div> 

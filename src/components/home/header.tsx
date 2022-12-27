@@ -20,26 +20,26 @@ const Card = ()=>{
     navigate(`/resumeManagement?userId=${userInfo.userId}`);
   };
   const getMessage = async(_userId)=>{
-    // const {data} = await axios.get(`/msg/msg/all/${_userId}`);
-    const data = [{
-      msgId:"1",
-      userId:"1",
-      title:"标题",
-      content:"内容内容内容内容内容",
-      jumpUrl:"http://www.baidu.com",
-      // 是否已读 0 未读 1 已读
-      status:"0",
-      sentTime:"2020-1-1"
-    },{
-      msgId:"2",
-      userId:"2",
-      title:"标题1",
-      content:"内容内容内容内容内容1",
-      jumpUrl:"http://www.baidu.com",
-      // 是否已读 0 未读 1 已读
-      status:"1",
-      sentTime:"2020-1-1"
-    }];
+    const {data} = await axios.get(`/msg/msg/all/${_userId}`);
+    // const data = [{
+    //   msgId:"1",
+    //   userId:"1",
+    //   title:"标题",
+    //   content:"内容内容内容内容内容",
+    //   jumpUrl:"http://www.baidu.com",
+    //   // 是否已读 0 未读 1 已读
+    //   status:"0",
+    //   sentTime:"2020-1-1"
+    // },{
+    //   msgId:"2",
+    //   userId:"2",
+    //   title:"标题1",
+    //   content:"内容内容内容内容内容1",
+    //   jumpUrl:"http://www.baidu.com",
+    //   // 是否已读 0 未读 1 已读
+    //   status:"1",
+    //   sentTime:"2020-1-1"
+    // }];
     setDataItem(data);
   };
   const getUserInfo = async () => {
@@ -73,21 +73,21 @@ const Card = ()=>{
         <div className="header_top_layout_right">
           <div className="header_top_layout_myResume"> 
             <span className="header_top_layout_myResume_btn" onClick={goToMessage}>
-                  消息
+              消息
             </span>
             <span className="header_top_layout_myResume_btn" onClick={goToResumeManagement}>
-                  简历
+              简历
             </span>
             <span className="header_top_layout_myResume_btn" onClick={goToResumeManagement}>
-                  上传
+              上传
             </span>
           </div>
           <div className="header_top_layout_form"> 
             {userInfo.userId ? <div className="header_top_layout_form_layout"
               onClick={goToAccount}
             >
-              <span>李先生</span>
-              <img className="header_top_layout_form_img" src={homelogo} alt="" />
+              <span>{userInfo.username}</span>
+              <img className="header_top_layout_form_img" src={userInfo.picture} alt="" />
             </div>: <span className="header_top_layout_form_login"
               onClick={()=>goToLogin()}
             >

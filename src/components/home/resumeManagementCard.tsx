@@ -14,15 +14,32 @@ import {
 } from "antd";
 
 const { Dragger } = Upload;
+
+
+const floatDiv:React.FC = (item,initData) => {
+  const deleteFn = async(id) => {
+    const {data} = await axios.delete(`/cpe/resume/file?id=${id}`);
+    message.success("删除成功");
+    initData();
+  };
+  return <div className="floatDiv">
+    <div className="floatDiv_top">
+      <img src={item.fileUrl} alt="" />
+      <span>{item.fileName}</span>
+    </div>
+    <div className="floatDiv_bottom">
+      <span>下载</span>
+      <span onClick={()=>deleteFn(item.id)} >删除</span>
+    </div>
+  </div>;
+};
 type Props = {
   cb:()=>void
+  initData:()=>void
 }
 
-// const floatDiv = ()
-
-
 const FileUpload:React.FC = (props:Props) => {
-  const { cb } = props;
+  const { cb,initData } = props;
   const postData = async(rs) => {
     const {data} = await axios.post("/cpe/resume/file",rs);
     cb(false);
@@ -49,6 +66,7 @@ const FileUpload:React.FC = (props:Props) => {
           resumeId:"1601142715991904258"
         };
         postData(rs);
+        initData();
         message.success(`${info.file.name} 上传成功`);
       } else if (status === "error") {
         message.error(`${info.file.name} 上传失败`);
@@ -81,16 +99,13 @@ const resumeManagementCard = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  const deleteFn = async(id) => {
-    const {data} = await axios.delete(`/cpe/resume/file?id=${id}`);
-    console.log("deleteFn",data);
-    console.log(id);
-  };
 
   const initData = async() => {
     const {data} = await axios.get("/cpe/resume/file/list");
-    setDataItem(data.data);
-    console.log("1===>",data);
+    if(data.code === 200){
+      console.log("DATA",data);
+      setDataItem(data.data);
+    }
   };
  
   
@@ -106,9 +121,9 @@ const resumeManagementCard = () => {
       </div>
       {/* 简历列表 */}
       <section  className="resumeManagement_list">
-        {/* onClick={()=>deleteFn(item.id)}  */}
+        {/*  */}
         {
-          dataItem && dataItem.map((item,index) =><Popover  placement="left" content={"content"} trigger="click"> <div key={index} className="resumeManagement_list_item ">
+          dataItem && dataItem.map((item,index) =><Popover key={index}  placement="left" content={floatDiv(item,initData)} trigger="click"> <div className="resumeManagement_list_item ">
             <img className="resumeManagement_list_item_img" src={item.fileUrl} alt="" />
             <span className="resumeManagement_list_item_name">{item.fileName}</span>
           </div>
@@ -120,7 +135,7 @@ const resumeManagementCard = () => {
         <Button onClick={()=>showModal()}>上传简历</Button>
       </section>} 
       <Modal className="hiddenBtn" title="简历上传" open={isModalOpen} >
-        <FileUpload cb={setIsModalOpen} />
+        <FileUpload cb={setIsModalOpen} initData={initData}/>
       </Modal>
     </section>
   );

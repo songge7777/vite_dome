@@ -8,8 +8,7 @@ type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof actions;
 type Props = StateProps & DispatchProps 
 import axios from "@/api/axios";
-import { Tabs,Checkbox,Input, Switch, Button } from "antd";
-
+import { Tabs,Checkbox,Input, Switch, Button, Modal,Form,message } from "antd";
 
 const MessagePostChildren:React.FC = () => {
 
@@ -111,25 +110,84 @@ const PrivacyProtection:React.FC = () => {
   </div>;
 };
 
+let timer = 0;
 const AccountSecurityCenter:React.FC = ()=>{
   const [dataItem, setDataItem] = React.useState({});
-  const [showOne,setShowOne] = React.useState(true);
-  const [showTwo,setShowTwo] = React.useState(true);
   const [showThree,setShowThree] = React.useState(true);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [formRef] = Form.useForm();
+  const [time, setTime] = React.useState(0);
+  const [show,setShow] = React.useState(false);
+  const [validCodeReqNo, setValidCodeReqNo] = React.useState("");
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+
+  React.useEffect(()=> {
+    if( time === 60 ) {
+      timer = setInterval(()=> {
+        setTime(time => --time);
+      }, 1000);
+    }else if ( time === 0 ) {
+      setShow(false);
+      clearInterval(timer);
+    }
+  }, [time]);
+
   const getAccountInfo = async()=>{
-    // const {data} = await axios.get("/sys/account/setting/info");
+    const {data} = await axios.get("/sys/account/setting/info");
     // console.log("getAccountInfo",data.data);
+    // const data = {
+    //   account:"123",
+    //   email:"222",
+    //   phone:"15997477937",
+    //   wxAccount:"xxx"
+    // };
+    console.log("data",data.data);
+    setDataItem(data.data);
+  };
+  const getCode = async() => {
+    const {phone} =await formRef.validateFields(["phone"]);
+    if(!phone) return; 
     const data = {
-      account:"123",
-      email:"222",
-      phone:"15997477937",
-      wxAccount:"xxx"
+      phone,
+      smsType:"loginSms"
     };
-    setDataItem(data);
+    const {data:getCodeRs} =  await axios.post("/auth/verify/code",data);
+    if(getCodeRs.code === 200){
+      setValidCodeReqNo(getCodeRs.data);
+      message.success("成功获取验证码");
+      setTime(60);
+      setShow(true);
+    }else{
+      message.error(`${getCodeRs.message}`);
+    }
   };
   React.useEffect(()=>{
     getAccountInfo();
   },[]);
+  const onFinish =async (values: any) => {
+    const {validCode,phone} = values;
+    const param = {
+      newPhone:phone,
+      code:validCode,
+      validCodeReqNo
+    };
+    const {data:rsData} = await axios.post("/sys/account/change_phone",param);
+    if(rsData.code === 200){
+      message.success("修改成功");
+      setIsModalOpen(false);
+      getAccountInfo();
+    }else{
+      message.error(`${rsData.message}`);
+    }
+  };
+
   return <div className="accountSecurityCenter">
     <section className="accountSecurityCenter_title line">
       <div className="accountSecurityCenter_title_name">账号管理</div>
@@ -139,9 +197,11 @@ const AccountSecurityCenter:React.FC = ()=>{
       <div className="accountSecurityCenter_title_name">手机修改</div>
       <div className="accountSecurityCenter_title_tip">修改手机号，每个月可以修改一次手机号，修改时需原手机和新手机验证码确认。</div>
       <div className="accountSecurityCenter_title_btn">
-        { showOne?<div><span>{dataItem.phone}</span> <button onClick={()=>{
-          setShowOne(false);
-        }}>修改</button></div>:<div  className="accountSecurityCenter_title_btn"><Input type="text" value={dataItem.phone} onInput={(e)=>{
+        { <div><span>{dataItem.phone}</span> <button onClick={()=>{
+          setIsModalOpen(true);
+        }}>修改</button></div>}
+
+        {/* :<div  className="accountSecurityCenter_title_btn"><Input type="text" value={dataItem.phone} onInput={(e)=>{
           setDataItem({
             ...dataItem,
             phone:e.target.value
@@ -152,7 +212,7 @@ const AccountSecurityCenter:React.FC = ()=>{
           setShowOne(true);
           //  axios.post("/sys/account/change_phone");
         }}>提交</button>
-        </div>}
+        </div> */}
         
       </div>
     </section>
@@ -182,6 +242,43 @@ const AccountSecurityCenter:React.FC = ()=>{
         </div>}
       </div>
     </section>
+    <Modal
+      className="hiddenBtn"
+      title="修改手机号码"
+      width={300}
+      open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <Form
+        form={formRef}
+        name="basic"
+        initialValues={{phone:"",validCode:"", remember: false }}
+        onFinish={onFinish}
+        autoComplete="off"
+      >
+        {/* form */}
+        <Form.Item
+          className="loginCard_layout_div_from"
+          name="phone"
+          rules={[{ required: true, message: "请输入手机号码" }]}
+        >
+          <Input addonBefore="+86" placeholder="请输入手机号" />
+        </Form.Item>
+        <Form.Item
+          className="loginCard_layout_div_from"
+          name="validCode"
+          rules={[{ required: true, message: "请输入验证码" }]}
+        >
+          <Input placeholder="请输入验证码" addonAfter={
+            show ? <div>{time}s</div>:<div className="clickCode" onClick={()=>getCode()}>获取验证码</div>
+          } />
+        </Form.Item>
+
+        <Form.Item>
+          <Button style={{width:"100%"}} type="primary" htmlType="submit">
+            提交
+          </Button>
+        </Form.Item>
+      </Form>
+    </Modal>
   </div>;
 };
 

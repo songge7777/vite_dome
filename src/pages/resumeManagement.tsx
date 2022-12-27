@@ -12,6 +12,7 @@ import DoubleTree from "@/components/home/doubleTree";
 import Upload from "@/components/home/upload";
 import "@/styles/pages/resumeManagement.scss";
 import * as dayjs from "dayjs";
+import Picture from "@/img/picture.png";
 import LOGO from "@/img/LOGO.png";
 import classnames from "classnames";
 import { FormInstance, RuleObject } from "antd/es/form";
@@ -466,30 +467,40 @@ const ResumeManagement = () => {
   };
   const getData3 = async(id)=>{
     const {data:_rs} = await axios.get(`/cpe/resume/post/${id}`);
-    const rs = _rs.data;
-    setFormTwoDataList(rs);
+    if(_rs.code === 200){
+      const rs = _rs.data;
+      setFormTwoDataList(rs);
+    }
   };
   const getData4 = async(id)=>{
     const {data:_rs} = await axios.get(`/cpe/resume/work/${id}`);
-    const rs = _rs.data;
-    setFormThreeDataList(rs);
+    if(_rs.code === 200){
+      const rs = _rs.data;
+      setFormThreeDataList(rs);
+    }
   };
   const getData5 = async(id)=>{
     const {data:_rs} = await axios.get(`/cpe/resume/project/${id}`);
-    const rs = _rs.data;
-    setFormFourDataList(rs);
+    if(_rs.code === 200){
+      const rs = _rs.data;
+      setFormFourDataList(rs);
+    }
   };
   const getData6 = async(id)=>{
     const {data:_rs} = await axios.get(`/cpe/resume/education/${id}`);
-    const rs = _rs.data;
-    console.log("教育经历", rs);
-    setFormFiveDataList(rs);
+    if(_rs.code === 200){
+      const rs = _rs.data;
+      console.log("教育经历", rs);
+      setFormFiveDataList(rs);
+    }
   };
   const getData7 = async(id)=>{
     const {data:_rs} = await axios.get(`/cpe/resume/certificate/${id}`);
-    const rs = _rs.data;
-    console.log("资格证书", rs);
-    setFormSixDataList(rs);
+    if(_rs.code === 200){
+      const rs = _rs.data;
+      console.log("资格证书", rs);
+      setFormSixDataList(rs);
+    }
   };
   const cityFilter = (code) => {
     const r =  expectedCityData().filter(i => Number(i.id) === Number(code));
@@ -564,7 +575,7 @@ const ResumeManagement = () => {
                     </div>
                     <div className="resumeM_lists_content_left_resume_card_right">
                       {/* <img className="part-1_logo" src={OnlyShowFormOneData.picture} alt="" /> */}
-                      <Upload cbResult={cbResult} src={OnlyShowFormOneData.picture} />
+                      <Upload cbResult={cbResult} src={OnlyShowFormOneData.picture?OnlyShowFormOneData.picture:Picture} />
                       <div className="part-1_span" onClick={()=>setEdit1(true)}><img className="part-1_icon" src={LOGO} alt="" />编辑</div>
                     </div>
                   </React.Fragment>
