@@ -53,6 +53,7 @@ const Personal = () => {
   const [trenchingData,setTrenchingData] = React.useState([]);
   const [searchItem,setSearchItem] = React.useState({});
   const [tab6List,setTab6List] = React.useState([]);
+  const [tab3List,setTab3List] = React.useState([]);
   const switchTab = () => {
     switch(Number(currentIndex)){
       // 沟通过
@@ -63,7 +64,7 @@ const Personal = () => {
         return trenchingData ? trenchingData.map((item,index)=><TrenchingCard data={item} key={index}/>): <div>暂无数据</div>;
       // 我得面试
       case 2:
-        return <InterviewListCard/>;
+        return tab3List ? tab3List.map((item,index) => <InterviewListCard cb={getTab3List} data={item} key={index}/>) : <div>暂无数据</div>;
       // 感兴趣
       case 3:
         return trenchingData ? trenchingData.map((item,index)=><TrenchingCard data={item} key={index}/>): <div>暂无数据</div>;
@@ -132,8 +133,14 @@ const Personal = () => {
     setTab6List(rs.data.rows);
   }; 
   // 我的面试
-  const getTab7List = async () => {
-    const {data:rs} = await axios.get("/cpe/post/all/interview");
+  const getTab3List = async () => {
+    const data = {
+      pageNum:1,
+      pageSize:10,
+      query:{}
+    };
+    const {data:rs} = await axios.post("/cpe/post/all/interview",data);
+    setTab3List(rs.data.rows);
     console.log("我的面试rs=>>", rs.data);
   }; 
 
@@ -150,7 +157,7 @@ const Personal = () => {
         return;
       // 我得面试
       case 2:
-        // getTab3List();
+        getTab3List();
         return;
       // 感兴趣
       case 3:
@@ -177,12 +184,10 @@ const Personal = () => {
     const codes = {};
     search.slice(1,).split("&").forEach(item => {
       const _data = item.split("=");
-      console.log("_data",item);
       codes[_data[0]]=_data[1];
     });
     
     setSearchItem(codes);
-    console.log("个人信息==》",routeConfig);
     return codes;
   };
 
@@ -192,7 +197,6 @@ const Personal = () => {
 
   const getInit = async() => {
     const data = await init();
-    console.log("setSearchItem",data);
     const {num} = data;
     clickChange(num);
   };
