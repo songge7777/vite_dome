@@ -50,6 +50,9 @@ const FileUpload:React.FC = (props:Props) => {
     accept: "*",
     multiple: true,
     action: "http://192.168.0.139:8088/sys/file/upload",
+    headers:{
+      "Hx-Token": sessionStorage.getItem("accessToken")
+    },
     onChange(info) {
       const { status } = info.file;
       if (status !== "uploading") {

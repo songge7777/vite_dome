@@ -16,7 +16,7 @@ const BrowseInformationCard = () => {
     };
     const {data:rs} = await axios.post("/cpe/post/all/browse",data);
     setTrenchingData(rs.data.rows);
-    console.log("我看过的rs=>>", rs.data);
+    // console.log("我看过的rs=>>", rs.data);
   }; 
   // 看过我的-列表
   const getTab6List = async () => {

@@ -45,14 +45,13 @@
   &_offer {
     @include flex(row);
     justify-content: space-between;
-    width: 162px;
-    margin-left: 46px;
     font-size: 14px;
     font-weight: 400;
+    width: 278px;
     color: #606266;
     margin-top: 20px;
-    &_left {
-      width: 56px;
+    &_div {
+      width: 84px;
       @include flex();
       justify-content: center;
       align-items: center;

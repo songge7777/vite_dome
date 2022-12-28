@@ -48,7 +48,7 @@ const Card = ()=>{
   };
   const init = async()=>{
     const data = await getUserInfo();
-    console.log("获取用户信息11",data);
+    // console.log("获取用户信息11",data);
     getMessage(data.userId);
     setUserInfo(data);
   };

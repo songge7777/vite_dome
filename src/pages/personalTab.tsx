@@ -4,6 +4,7 @@ import { CombinedState, CounterState } from "../store/reducers";
 import * as actions from "@/store/actions/counter";
 import TrenchingCard from "@/components/home/trenchingCard";
 import InterviewListCard from "@/components/home/interviewListCard";
+import NoticeOffer from "@/components/home/noticeOffer";
 import SeeMeCard from "@/components/home/seeMeCard";
 import Header from "@/components/home/Header";
 import Login from "@/components/home/loginCard";
@@ -44,16 +45,27 @@ const Personal = () => {
       id:4,
       value:"我看过"
     },
-    {
-      id:5,
-      value:"看过我"
-    },
+    /**
+     * tab1 
+     * 沟通过
+     * 已投递
+     * 感兴趣
+     * 我看过
+     * 看过我
+     */ 
+    /**
+     * tab2 
+     * 对我感兴趣
+     * 我的面试
+     * 拟录通知
+     */ 
   ]);
   const [currentIndex,setCurrentIndex] = React.useState(0);
   const [trenchingData,setTrenchingData] = React.useState([]);
   const [searchItem,setSearchItem] = React.useState({});
   const [tab6List,setTab6List] = React.useState([]);
   const [tab3List,setTab3List] = React.useState([]);
+  const [tab8List,setTab8List] = React.useState([]);
   const switchTab = () => {
     switch(Number(currentIndex)){
       // 沟通过
@@ -62,8 +74,8 @@ const Personal = () => {
       // 已投递
       case 1:
         return trenchingData ? trenchingData.map((item,index)=><TrenchingCard data={item} key={index}/>): <div>暂无数据</div>;
-      // 我得面试
-      case 2:
+      // 我的面试
+      case 7:
         return tab3List ? tab3List.map((item,index) => <InterviewListCard cb={getTab3List} data={item} key={index}/>) : <div>暂无数据</div>;
       // 感兴趣
       case 3:
@@ -72,8 +84,11 @@ const Personal = () => {
       case 4:
         return trenchingData ? trenchingData.map((item,index)=><TrenchingCard data={item} key={index}/>): <div>暂无数据</div>;
       // 看过我
-      case 5:
+      case 6:
         return tab6List ? tab6List.map((item,index) => <SeeMeCard data={item} key={index} />) : <div>暂无数据</div>;
+      // 拟录通知
+      case 8:
+        return tab8List ? tab8List.map((item,index) => <NoticeOffer data={item} key={index} />) : <div>暂无数据</div>;
     }
   };
 
@@ -119,7 +134,19 @@ const Personal = () => {
     };
     const {data:rs} = await axios.post("/cpe/post/all/browse",data);
     setTrenchingData(rs.data.rows);
-    console.log("我看过的rs=>>", rs.data);
+    // console.log("我看过的rs=>>", rs.data);
+  }; 
+  // 拟录通知
+  const getTab8List =async () => {
+    const data = {
+      pageNum:1,
+      pageSize:10,
+      query:{}
+    };
+    const {data:rs} = await axios.post("/cpe/post/all/employ",data);
+    // const {data:rs} = await axios.post("/cpe/post/all/me",data);
+    // console.log("拟录通知=>>", rs.data);
+    setTab8List(rs.data.rows);
   }; 
   // 看过我的-列表
   const getTab6List = async () => {
@@ -156,7 +183,7 @@ const Personal = () => {
         getTab2List();
         return;
       // 我得面试
-      case 2:
+      case 7:
         getTab3List();
         return;
       // 感兴趣
@@ -167,9 +194,12 @@ const Personal = () => {
       case 4:
         getTab5List();
         return;
-      // 看过我
-      case 5:
+      case 6:
         getTab6List();
+        // getTab6List();
+        return;
+      case 8:
+        getTab8List();
         return;
       default :
         setCurrentIndex(0);
@@ -195,10 +225,47 @@ const Personal = () => {
     getInit();
   }, [routeConfig.search]);
 
+  const clickTable = (tabType:string) => {
+    const tab1 = [{
+      id:0,
+      value:"沟通过"
+    },
+    {
+      id:1,
+      value:"已投递"
+    },
+    {
+      id:3,
+      value:"感兴趣"
+    },
+    {
+      id:4,
+      value:"我看过"
+    }];
+    const tab2 = [{
+      id:6,
+      value:"对我感兴趣"
+    },
+    {
+      id:7,
+      value:"我的面试"
+    },
+    {
+      id:8,
+      value:"拟录通知"
+    }];
+    if(tabType === "bottom"){
+      setTab(tab1);
+    } else {
+      setTab(tab2);
+    }
+  };
+
   const getInit = async() => {
     const data = await init();
-    const {num} = data;
+    const {num,tabType} = data;
     clickChange(num);
+    clickTable(tabType);
   };
  
   React.useEffect(()=>{
@@ -213,10 +280,10 @@ const Personal = () => {
             <div className="search_lists_content_left_top">
               {/* <SearchHeader /> */}
               <section className="tab_layout">
-                <div className="tab_layout_goBack">
+                {/* <div className="tab_layout_goBack">
                   <img src={goback} alt="" />
                   <span>返回</span>
-                </div>
+                </div> */}
                 <div className="tab_layout_tabs">
                   {tab.map(item => <div key={item.id} onClick={()=>clickChange(item.id)}
                     className={classnames("tab_layout_tab",{

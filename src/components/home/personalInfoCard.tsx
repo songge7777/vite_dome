@@ -11,9 +11,9 @@ const PersonalInfoCard = (props:Props) => {
   const [userInfo,setUserInfo] = React.useState({});
   const {info} = props;
   const navigate = useNavigate();
-  const goToProfile = (num:number) => {
+  const goToProfile = (num:number,tabType:"string") => {
     console.log("num",num);
-    navigate(`/personalTab?userId=${userInfo.userId}&num=${num}`);
+    navigate(`/personalTab?userId=${userInfo.userId}&num=${num}&tabType=${tabType}`);
   };
   const getUserInfo = async () => {
     const {data} = await axios.get("/auth/client/info");
@@ -42,26 +42,30 @@ const PersonalInfoCard = (props:Props) => {
       </div>
       {/* offer */}
       <div className="personalInfo_offer">
-        <section className="personalInfo_offer_left">
-          <span className="personalInfo_offer_left_num">{info.interviewNum}</span>
+        <section className="personalInfo_offer_div" onClick={()=>goToProfile(6,"top")}>
+          <span  className="personalInfo_offer_div_num">{info.offerNum}</span>
+          <span>对我感兴趣</span>
+        </section>
+        <section className="personalInfo_offer_div" onClick={()=>goToProfile(7,"top")}>
+          <span className="personalInfo_offer_div_num">{info.interviewNum}</span>
           <span>我的面试</span>
         </section>
-        <section className="personalInfo_offer_right">
-          <span  className="personalInfo_offer_left_num">{info.offerNum}</span>
-          <span>我的offer</span>
+        <section className="personalInfo_offer_div" onClick={()=>goToProfile(8,"top")}>
+          <span  className="personalInfo_offer_div_num">{info.offerNum}</span>
+          <span>拟录通知</span>
         </section>
       </div>
       {/* 底部 */}
       <div className="personalInfo_bottom">
-        <section className="personalInfo_bottom_div" onClick={()=>goToProfile(0)}>
+        <section className="personalInfo_bottom_div" onClick={()=>goToProfile(0,"bottom")}>
           <span className="personalInfo_bottom_div_num">{info.interactNum}</span>
           <span className="personalInfo_bottom_div_title">已沟通</span>
         </section>
-        <section className="personalInfo_bottom_div" onClick={()=>goToProfile(1)}>
+        <section className="personalInfo_bottom_div" onClick={()=>goToProfile(1,"bottom")}>
           <span className="personalInfo_bottom_div_num">{info.sendNum}</span>
           <span className="personalInfo_bottom_div_title">已投递</span>
         </section>
-        <section className="personalInfo_bottom_div" onClick={()=>goToProfile(3)}>
+        <section className="personalInfo_bottom_div" onClick={()=>goToProfile(3,"bottom")}>
           <span className="personalInfo_bottom_div_num">{info.concernNum}</span>
           <span className="personalInfo_bottom_div_title">感兴趣</span>
         </section>
