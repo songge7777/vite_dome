@@ -9,9 +9,7 @@ axios.defaults.validateStatus = function (status) {
 };
 // 跨域请求，允许保存cookie
 axios.defaults.withCredentials = false;
-
-const baseUrl = "http://192.168.0.139:8088";
-// const baseUrl = "http://localhost:8088";
+const baseUrl = import.meta.env.VITE_BASE_URL;
 
 // 拦截
 axios.defaults.baseURL = baseUrl;

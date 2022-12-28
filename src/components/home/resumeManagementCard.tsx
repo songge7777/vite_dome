@@ -5,6 +5,7 @@ import offerp from "@/img/offerp.png";
 import offerw from "@/img/offerw.png";
 import type { UploadProps } from "antd";
 import axios from "@/api/axios";
+const baseUrl = import.meta.env.VITE_BASE_URL;
 import {
   Button,
   Upload,
@@ -49,7 +50,7 @@ const FileUpload:React.FC = (props:Props) => {
     name: "file",
     accept: "*",
     multiple: true,
-    action: "http://192.168.0.139:8088/sys/file/upload",
+    action: `${baseUrl}/sys/file/upload`,
     headers:{
       "Hx-Token": sessionStorage.getItem("accessToken")
     },

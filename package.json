@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "npm run lint && vite",
+    "dev:test": "npm run lint && vite --mode test",
     "build": "npm run lint && vite build",
+    "build:test": "npm run lint && vite build --mode test",
     "lint": "eslint src --ext .tsx,.ts",
     "lint:fix": "eslint src --ext .tsx,.ts --fix"
   },

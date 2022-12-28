@@ -186,12 +186,10 @@ const ResumeManagement = () => {
   const [formSix] = Form.useForm();
   const getIndustryCategory = async() => {
     const {data} = await axios.get("/sys/industry_category/get_cache_tree");
-    // const {data} = await Axios.get("http://192.168.0.139:8088/sys/industry_category/get_cache_tree");
     setIndustryCategoryData(data.data);
   };
   const getPostCategory = async() => {
     const {data} = await axios.get("/sys/post_category/cache_tree");
-    // const {data} = await Axios.get("http://192.168.0.139:8088/sys/post_category/cache_tree");
     setPostCategoryData(data.data);
   };
   // 获取数据
