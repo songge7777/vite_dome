@@ -8,7 +8,7 @@ import SearchHeader from "@/components/home/searchHeader";
 import Header from "@/components/home/header";
 import Login from "@/components/home/loginCard";
 import ResumeManagementCard from "@/components/home/resumeManagementCard";
-import BrowseInformationCard from "@/components/home/BrowseInformationCard";
+import BrowseInformationCard from "@/components/home/browseInformationCard";
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof actions;
 type Props = StateProps & DispatchProps 

@@ -6,7 +6,7 @@ import Header from "@/components/home/header";
 import Login from "@/components/home/loginCard";
 import PersonalInfoCard from "@/components/home/personalInfoCard";
 import ResumeManagementCard from "@/components/home/resumeManagementCard";
-import BrowseInformationCard from "@/components/home/BrowseInformationCard";
+import BrowseInformationCard from "@/components/home/browseInformationCard";
 import SingleTree from "@/components/home/singleTree";
 import DoubleTree from "@/components/home/doubleTree";
 import Upload from "@/components/home/upload";

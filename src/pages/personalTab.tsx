@@ -10,7 +10,7 @@ import Header from "@/components/home/header";
 import Login from "@/components/home/loginCard";
 import PersonalInfoCard from "@/components/home/personalInfoCard";
 import ResumeManagementCard from "@/components/home/resumeManagementCard";
-import BrowseInformationCard from "@/components/home/BrowseInformationCard";
+import BrowseInformationCard from "@/components/home/browseInformationCard";
 import goback from "@/img/goback.png";
 import classnames from "classnames";
 import "@/styles/pages/personalTab.scss";
