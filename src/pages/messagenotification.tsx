@@ -1,20 +1,9 @@
 import * as React from "react";
-import { connect } from "react-redux";
-import { CombinedState, CounterState } from "../store/reducers";
-import * as actions from "@/store/actions/counter";
 import "@/styles/pages/messagenotification.scss";
-import Card from "@/components/search/card";
-import SearchHeader from "@/components/home/searchHeader";
 import Header from "@/components/home/header";
-import Login from "@/components/home/loginCard";
-import ResumeManagementCard from "@/components/home/resumeManagementCard";
-import BrowseInformationCard from "@/components/home/browseInformationCard";
-type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = typeof actions;
-type Props = StateProps & DispatchProps 
 import axios from "@/api/axios";
-import { Tabs,Checkbox,Input, Switch, Button } from "antd";
-import { useNavigate ,useLocation } from "react-router-dom";
+import { Tabs } from "antd";
+import { useLocation } from "react-router-dom";
 
 type MessageProps = {
   dataItem:[],
@@ -170,9 +159,4 @@ const Counter:React.FC = () =>{
     </div>
   );
 };
-
-const mapStateToProps = function (state: CombinedState): CounterState {
-  return state.counter;
-};
-
-export default connect(mapStateToProps, actions)(Counter);
+export default Counter;

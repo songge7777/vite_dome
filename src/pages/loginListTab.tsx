@@ -1,12 +1,6 @@
 import * as React from "react";
-import { connect } from "react-redux";
-import { CombinedState, CounterState } from "../store/reducers";
-import * as actions from "@/store/actions/counter";
 import "@/styles/pages/loginListTab.scss";
 import Header from "@/components/home/header";
-type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = typeof actions;
-type Props = StateProps & DispatchProps 
 import axios from "@/api/axios";
 import { Tabs,Checkbox,Input, Switch, Button, Modal,Form,message } from "antd";
 
@@ -343,8 +337,4 @@ const Counter:React.FC = () =>{
   );
 };
 
-const mapStateToProps = function (state: CombinedState): CounterState {
-  return state.counter;
-};
-
-export default connect(mapStateToProps, actions)(Counter);
+export default Counter;

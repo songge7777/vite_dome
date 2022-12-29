@@ -1,22 +1,15 @@
 import * as React from "react";
-import { connect } from "react-redux";
-import { CombinedState, CounterState } from "../store/reducers";
-import * as actions from "@/store/actions/counter";
-import loginPc from "@/img/login-pc.png";
 import loginVx from "@/img/login-vx.png";
 import bgLogin from "@/img/bg-login.png";
 import { Button, Checkbox, Form, Input,message } from "antd";
 import "@/styles/pages/login.scss";
-import type { FormInstance } from "antd/es/form";
 import config from "@/config";
 import axios from "@/api/axios";
 import { useLocation,useNavigate } from "react-router-dom";
 let timer = 0;
 
 const {wxConfig} = config;
-type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = typeof actions;
-type Props = StateProps & DispatchProps
+
 type SwtichType = 0 | 1
 
 
@@ -207,8 +200,4 @@ const Login = () =>{
   );                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
 };
 
-const mapStateToProps = function (state: CombinedState): CounterState {
-  return state.counter;
-};
-
-export default connect(mapStateToProps, actions)(Login);
+export default Login;

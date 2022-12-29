@@ -1,12 +1,8 @@
 import * as React from "react";
-import { connect } from "react-redux";
-import { CombinedState, CounterState } from "../store/reducers";
-import * as actions from "@/store/actions/counter";
+import * as dayjs from "dayjs";
 import SingleTree from "@/components/home/singleTree";
 import "@/styles/pages/jobWanted.scss";
 import Header from "@/components/home/header";
-import LOGO from "@/img/LOGO.png";
-import * as dayjs from "dayjs";
 import classnames from "classnames";
 import DoubleTree from "@/components/home/doubleTree";
 import Picture from "@/img/picture.png";
@@ -31,10 +27,6 @@ import {
   Select,
   DatePicker,
 } from "antd";
-
-type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = typeof actions;
-type Props = StateProps & DispatchProps 
 
 type LayoutType = Parameters<typeof Form>[0]["layout"];
 
@@ -370,8 +362,5 @@ const jobWanted: React.FC = () => {
   );
 };
 
-const mapStateToProps = function (state: CombinedState): CounterState {
-  return state.counter;
-};
 
-export default connect(mapStateToProps, actions)(jobWanted);
+export default jobWanted;

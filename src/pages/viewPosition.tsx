@@ -1,7 +1,4 @@
 import * as React from "react";
-import { connect } from "react-redux";
-import { CombinedState, CounterState } from "../store/reducers";
-import * as actions from "@/store/actions/counter";
 import Header from "@/components/home/header";
 import People from "@/img/people.png";
 import FullTime from "@/img/fullTime.png";
@@ -10,17 +7,12 @@ import Education from "@/img/education.png";
 import call from "@/img/call.png";
 import Address from "@/img/address.png";
 import UnFollow from "@/img/unfollow.png";
-import Follow from "@/img/follow.png";
-import classnames from "classnames";
 import "@/styles/pages/viewPosition.scss";
 import AMapLoader from "@amap/amap-jsapi-loader";
 import { useNavigate ,useLocation } from "react-router-dom";
 
 import axios from "@/api/axios";
 import { Button } from "antd";
-type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = typeof actions;
-type Props = StateProps & DispatchProps 
 
 const ViewEnterprise = () => {
   const routeConfig = useLocation();
@@ -204,8 +196,4 @@ const ViewEnterprise = () => {
   );
 };
 
-const mapStateToProps = function (state: CombinedState): CounterState {
-  return state.counter;
-};
-
-export default connect(mapStateToProps, actions)(ViewEnterprise);
+export default ViewEnterprise;

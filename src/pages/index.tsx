@@ -1,8 +1,5 @@
 import * as React from "react";
-import { connect } from "react-redux";
-import { CombinedState, CounterState } from "../store/reducers";
 import { useNavigate } from "react-router-dom";
-import * as actions from "@/store/actions/counter";
 import "@/styles/pages/index.scss";
 import Card from "@/components/home/card";
 import Header from "@/components/home/header";
@@ -10,9 +7,6 @@ import InputSearch from "@/components/home/inputSearch";
 import LoginCard from "@/components/home/loginCard";
 import axios from "@/api/axios";
 
-type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = typeof actions;
-type Props = StateProps & DispatchProps 
 const Counter = () =>{
   const navigate = useNavigate();
   const [listData,setListData] = React.useState([]);
@@ -58,8 +52,4 @@ const Counter = () =>{
   );
 };
 
-const mapStateToProps = function (state: CombinedState): CounterState {
-  return state.counter;
-};
-
-export default connect(mapStateToProps, actions)(Counter);
+export default Counter;

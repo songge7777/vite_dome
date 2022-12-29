@@ -1,17 +1,8 @@
 import * as React from "react";
-import { connect } from "react-redux";
-import { CombinedState, CounterState } from "../store/reducers";
-import * as actions from "@/store/actions/counter";
 import Header from "@/components/home/header";
-import Axios from "axios";
-import goback from "@/img/goback.png";
-import classnames from "classnames";
 import AMapLoader from "@amap/amap-jsapi-loader";
 import "@/styles/pages/viewEnterprise.scss";
 import axios from "@/api/axios";
-type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = typeof actions;
-type Props = StateProps & DispatchProps 
 import { useLocation,useNavigate } from "react-router-dom";
 
 const ViewEnterprise = () => {
@@ -179,8 +170,4 @@ const ViewEnterprise = () => {
   );
 };
 
-const mapStateToProps = function (state: CombinedState): CounterState {
-  return state.counter;
-};
-
-export default connect(mapStateToProps, actions)(ViewEnterprise);
+export default ViewEnterprise;

@@ -1,7 +1,4 @@
 import * as React from "react";
-import { connect } from "react-redux";
-import { CombinedState, CounterState } from "../store/reducers";
-import * as actions from "@/store/actions/counter";
 import "@/styles/pages/search.scss";
 import Card from "@/components/search/card";
 import SearchHeader from "@/components/home/searchHeader";
@@ -12,11 +9,9 @@ import ResumeManagementCard from "@/components/home/resumeManagementCard";
 import BrowseInformationCard from "@/components/home/browseInformationCard";
 import { useLocation } from "react-router-dom";
 import useLogin from "@/hooks/login";
-type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = typeof actions;
-type Props = StateProps & DispatchProps 
+
 import axios from "@/api/axios";
-const Counter = () =>{
+const Search = () =>{
   const routeConfig = useLocation();
   const [info, setInfo] = React.useState({});
   const [getListData,setGetListData] = React.useState([]);
@@ -82,8 +77,5 @@ const Counter = () =>{
   );
 };
 
-const mapStateToProps = function (state: CombinedState): CounterState {
-  return state.counter;
-};
 
-export default connect(mapStateToProps, actions)(Counter);
+export default Search;

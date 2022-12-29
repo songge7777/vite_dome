@@ -1,7 +1,4 @@
 import * as React from "react";
-import { connect } from "react-redux";
-import { CombinedState, CounterState } from "../store/reducers";
-import * as actions from "@/store/actions/counter";
 import TrenchingCard from "@/components/home/trenchingCard";
 import InterviewListCard from "@/components/home/interviewListCard";
 import NoticeOffer from "@/components/home/noticeOffer";
@@ -11,19 +8,14 @@ import Login from "@/components/home/loginCard";
 import PersonalInfoCard from "@/components/home/personalInfoCard";
 import ResumeManagementCard from "@/components/home/resumeManagementCard";
 import BrowseInformationCard from "@/components/home/browseInformationCard";
-import goback from "@/img/goback.png";
 import classnames from "classnames";
 import "@/styles/pages/personalTab.scss";
 import axios from "@/api/axios";
 import { useNavigate, useLocation } from "react-router-dom";
-type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = typeof actions;
-type Props = StateProps & DispatchProps 
 
 const Personal = () => {
   const [info, setInfo] = React.useState({});
   const routeConfig = useLocation();
-  const navigate  = useNavigate();
   const [tab,setTab] = React.useState([
     {
       id:0,
@@ -321,9 +313,4 @@ const Personal = () => {
     </div>
   );
 };
-
-const mapStateToProps = function (state: CombinedState): CounterState {
-  return state.counter;
-};
-
-export default connect(mapStateToProps, actions)(Personal);
+export default Personal;

@@ -1,7 +1,4 @@
 import * as React from "react";
-import { connect } from "react-redux";
-import { CombinedState, CounterState } from "../store/reducers";
-import * as actions from "@/store/actions/counter";
 import "@/styles/pages/search.scss";
 import Card from "@/components/search/card";
 import SearchHeader from "@/components/home/searchHeader";
@@ -11,9 +8,6 @@ import PersonalInfoCard from "@/components/home/personalInfoCard";
 import ResumeManagementCard from "@/components/home/resumeManagementCard";
 import BrowseInformationCard from "@/components/home/browseInformationCard";
 import axios from "@/api/axios";
-type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = typeof actions;
-type Props = StateProps & DispatchProps 
 
 const Personal = () => { 
   const [info, setInfo] = React.useState({});
@@ -27,18 +21,7 @@ const Personal = () => {
     });
     setListData(data.data.rows);
   };
-  const searchList = async(data)=> {
-    const {code:workAddrCityCode,value:search} = data;
-    const {data: rs} = await axios.post("/cpe/post/search",{
-      pageNum:1,
-      pageSize:10,
-      query:{
-        search,
-        workAddrCityCode
-      }
-    });
-    setListData(rs.data.rows);
-  };
+ 
   React.useEffect(()=>{
     getList();
     init();
@@ -80,8 +63,4 @@ const Personal = () => {
   );
 };
 
-const mapStateToProps = function (state: CombinedState): CounterState {
-  return state.counter;
-};
-
-export default connect(mapStateToProps, actions)(Personal);
+export default Personal;

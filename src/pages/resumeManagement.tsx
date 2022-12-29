@@ -1,7 +1,4 @@
 import * as React from "react";
-import { connect } from "react-redux";
-import { CombinedState, CounterState } from "../store/reducers";
-import * as actions from "@/store/actions/counter";
 import Header from "@/components/home/header";
 import Login from "@/components/home/loginCard";
 import PersonalInfoCard from "@/components/home/personalInfoCard";
@@ -17,20 +14,14 @@ import LOGO from "@/img/LOGO.png";
 import classnames from "classnames";
 import { FormInstance, RuleObject } from "antd/es/form";
 import axios from "@/api/axios";
-import Axios from "axios";
 
 import {
   moneyList,
-  expectedIndustryData,
   expectedCityData,
   identityStatusData,
-  educationData,
-  educationalData
+  educationData
 } from "@/utils/optionList";
-type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = typeof actions;
 const {useState} = React;
-type Props = StateProps & DispatchProps 
 import {
   Form,
   Input,
@@ -1172,8 +1163,4 @@ const ResumeManagement = () => {
   );
 };
 
-const mapStateToProps = function (state: CombinedState): CounterState {
-  return state.counter;
-};
-
-export default connect(mapStateToProps, actions)(ResumeManagement);
+export default ResumeManagement;
