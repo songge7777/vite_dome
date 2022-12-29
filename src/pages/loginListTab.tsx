@@ -61,7 +61,7 @@ const PrivacyProtection:React.FC = () => {
   const { Search } = Input;
   return <div className="privacyProtection">
     <section className="privacyProtection_title line">
-      <div className="privacyProtection_title_name">账号管理1</div>
+      <div className="privacyProtection_title_name">账号管理</div>
       <div className="privacyProtection_title_tip">在此可查看以及了解您账号的一些绑定设置信息</div>
     </section>
     <section className="privacyProtection_search">
@@ -324,11 +324,11 @@ const Counter:React.FC = () =>{
               //   key: "2",
               //   children:<PrivacyProtection />,
               // },
-              {
-                label: "消息通知",
-                key: "3",
-                children: <MessagePost />,
-              },
+              // {
+              //   label: "消息通知",
+              //   key: "3",
+              //   children: <MessagePost />,
+              // },
             ]}
           />
         </div>

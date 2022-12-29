@@ -2,7 +2,7 @@ import * as React from "react";
 import "@/styles/pages/browseInformationCard.scss";
 import call from "@/img/call.png";
 import axios from "@/api/axios";
-import * as classNames from "classnames";
+import classNames from "classnames";
 const BrowseInformationCard = () => {
   const [currentIndex,setCurrentIndex] = React.useState(1);
   const [trenchingData,setTrenchingData] = React.useState([]);

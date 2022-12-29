@@ -24,3 +24,13 @@
     }
   }
 }
+.checkbox_layout {
+  display: flex;
+  div {
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  .agreement {
+    color: rgba(75, 73, 160, 1);
+  }
+}

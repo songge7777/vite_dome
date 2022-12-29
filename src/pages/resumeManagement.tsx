@@ -8,7 +8,7 @@ import SingleTree from "@/components/home/singleTree";
 import DoubleTree from "@/components/home/doubleTree";
 import Upload from "@/components/home/upload";
 import "@/styles/pages/resumeManagement.scss";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 import Picture from "@/img/picture.png";
 import LOGO from "@/img/LOGO.png";
 import classnames from "classnames";

@@ -14,6 +14,9 @@ export default defineConfig(({ mode, command })=>{
         "@": pathResolve("src")
       }
     },
-    plugins: [react()]
+    plugins: [react()],
+    build:{
+      sourcemap: true
+    }
   };
 });

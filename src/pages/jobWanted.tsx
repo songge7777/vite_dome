@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 import SingleTree from "@/components/home/singleTree";
 import "@/styles/pages/jobWanted.scss";
 import Header from "@/components/home/header";
@@ -110,6 +110,7 @@ const jobWanted: React.FC = () => {
   const [industryCategoryData, setIndustryCategoryData]=React.useState([]);
   const [url,setUrl] = React.useState("");
   const onFinish = async() => {
+    await formMust.validateFields();
     const r1 = formMust.getFieldsValue();
     if(r1.salaryExpectation){
       r1.salaryMin = r1.salaryExpectation[0];
