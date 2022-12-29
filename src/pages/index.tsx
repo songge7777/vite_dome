@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import * as actions from "@/store/actions/counter";
 import "@/styles/pages/index.scss";
 import Card from "@/components/home/card";
-import Header from "@/components/home/Header";
+import Header from "@/components/home/header";
 import InputSearch from "@/components/home/inputSearch";
 import LoginCard from "@/components/home/loginCard";
 import axios from "@/api/axios";

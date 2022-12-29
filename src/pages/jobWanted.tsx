@@ -4,7 +4,7 @@ import { CombinedState, CounterState } from "../store/reducers";
 import * as actions from "@/store/actions/counter";
 import SingleTree from "@/components/home/singleTree";
 import "@/styles/pages/jobWanted.scss";
-import Header from "@/components/home/Header";
+import Header from "@/components/home/header";
 import LOGO from "@/img/LOGO.png";
 import * as dayjs from "dayjs";
 import classnames from "classnames";

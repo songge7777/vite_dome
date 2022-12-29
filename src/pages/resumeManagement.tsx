@@ -2,7 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { CombinedState, CounterState } from "../store/reducers";
 import * as actions from "@/store/actions/counter";
-import Header from "@/components/home/Header";
+import Header from "@/components/home/header";
 import Login from "@/components/home/loginCard";
 import PersonalInfoCard from "@/components/home/personalInfoCard";
 import ResumeManagementCard from "@/components/home/resumeManagementCard";

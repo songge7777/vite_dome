@@ -2,7 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { CombinedState, CounterState } from "../store/reducers";
 import * as actions from "@/store/actions/counter";
-import Header from "@/components/home/Header";
+import Header from "@/components/home/header";
 import Axios from "axios";
 import goback from "@/img/goback.png";
 import classnames from "classnames";

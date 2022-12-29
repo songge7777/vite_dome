@@ -6,7 +6,7 @@ import TrenchingCard from "@/components/home/trenchingCard";
 import InterviewListCard from "@/components/home/interviewListCard";
 import NoticeOffer from "@/components/home/noticeOffer";
 import SeeMeCard from "@/components/home/seeMeCard";
-import Header from "@/components/home/Header";
+import Header from "@/components/home/header";
 import Login from "@/components/home/loginCard";
 import PersonalInfoCard from "@/components/home/personalInfoCard";
 import ResumeManagementCard from "@/components/home/resumeManagementCard";

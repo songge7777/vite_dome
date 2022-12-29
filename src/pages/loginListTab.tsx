@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { CombinedState, CounterState } from "../store/reducers";
 import * as actions from "@/store/actions/counter";
 import "@/styles/pages/loginListTab.scss";
-import Header from "@/components/home/Header";
+import Header from "@/components/home/header";
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof actions;
 type Props = StateProps & DispatchProps 

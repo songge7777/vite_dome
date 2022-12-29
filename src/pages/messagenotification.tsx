@@ -5,7 +5,7 @@ import * as actions from "@/store/actions/counter";
 import "@/styles/pages/messagenotification.scss";
 import Card from "@/components/search/card";
 import SearchHeader from "@/components/home/searchHeader";
-import Header from "@/components/home/Header";
+import Header from "@/components/home/header";
 import Login from "@/components/home/loginCard";
 import ResumeManagementCard from "@/components/home/resumeManagementCard";
 import BrowseInformationCard from "@/components/home/BrowseInformationCard";
