@@ -31,7 +31,7 @@ const MessagePostChildren:React.FC = (props:MessageProps) => {
     },
   ]);
   const clickMessage = async(item) => {
-    const rs = await axios(`/msg/msg/read?id=${item.msgId}`);
+    const rs = await axios(`/res/msg/read?id=${item.msgId}`);
     console.log(item);
   };
   const arrFilter = () => {
@@ -59,7 +59,7 @@ const MessagePost:React.FC = () => {
   const [dataItem,setDataItem] = React.useState([]);
   const [index,setIndex] = React.useState("");
   const getMessage = async(_userId)=>{
-    const {data} = await axios.get(`/msg/msg/all/${userId}`);
+    const {data} = await axios.get(`/res/msg/all/${userId}`);
     // const data = [{
     //   msgId:"1",
     //   userId:"1",

@@ -20,7 +20,7 @@ const Card = ()=>{
     navigate(`/resumeManagement?userId=${userInfo.userId}`);
   };
   const getMessage = async(_userId)=>{
-    const {data} = await axios.get(`/msg/msg/all/${_userId}`);
+    const {data} = await axios.get(`/res/msg/all/${_userId}`);
     // const data = [{
     //   msgId:"1",
     //   userId:"1",
