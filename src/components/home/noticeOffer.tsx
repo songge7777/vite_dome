@@ -321,7 +321,7 @@ const NoticeOffer = (props:Props) =>{
               }} />
               <div className="noticeOffer_upload_div_row">
                 <Upload
-                  action={`${baseUrl}/sys/file/upload`}
+                  action={`${baseUrl}/res/file/upload`}
                   accept=".jpg,.jpeg,.bmp"
                   listType="picture-card"
                   headers={
@@ -336,7 +336,7 @@ const NoticeOffer = (props:Props) =>{
                   {fileListIDFront.length >= 1 ? null : uploadButton("身份证正面")}
                 </Upload>
                 <Upload
-                  action={`${baseUrl}/sys/file/upload`}
+                  action={`${baseUrl}/res/file/upload`}
                   listType="picture-card"
                   accept=".jpg,.jpeg,.bmp"
                   headers={
@@ -358,7 +358,7 @@ const NoticeOffer = (props:Props) =>{
             <span className="noticeOffer_upload_div_span">毕业证书:</span>
             <div className="noticeOffer_upload_div_column">
               <Upload
-                action={`${baseUrl}/sys/file/upload`}
+                action={`${baseUrl}/res/file/upload`}
                 listType="picture-card"
                 accept=".jpg,.jpeg,.bmp"
                 headers={
@@ -379,7 +379,7 @@ const NoticeOffer = (props:Props) =>{
             <span className="noticeOffer_upload_div_span">离职证明:</span>
             <div className="noticeOffer_upload_div_column">
               <Upload
-                action={`${baseUrl}/sys/file/upload`}
+                action={`${baseUrl}/res/file/upload`}
                 listType="picture-card"
                 accept=".jpg,.jpeg,.bmp,.pdf"
                 headers={
@@ -400,7 +400,7 @@ const NoticeOffer = (props:Props) =>{
             <span className="noticeOffer_upload_div_span">体检报告:</span>
             <div className="noticeOffer_upload_div_column">
               <Upload
-                action={`${baseUrl}/sys/file/upload`}
+                action={`${baseUrl}/res/file/upload`}
                 listType="picture-card"
                 accept=".jpg,.jpeg,.bmp,.pdf,.word"
                 headers={
@@ -421,7 +421,7 @@ const NoticeOffer = (props:Props) =>{
             <span className="noticeOffer_upload_div_span">其他资料:</span>
             <div className="noticeOffer_upload_div_column">
               <Upload
-                action={`${baseUrl}/sys/file/upload`}
+                action={`${baseUrl}/res/file/upload`}
                 listType="picture-card"
                 accept=".jpg,.jpeg,.bmp,.pdf,.word,.zip"
                 headers={

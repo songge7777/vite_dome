@@ -50,7 +50,7 @@ const FileUpload:React.FC = (props:Props) => {
     name: "file",
     accept: "*",
     multiple: true,
-    action: `${baseUrl}/sys/file/upload`,
+    action: `${baseUrl}/res/file/upload`,
     headers:{
       "Hx-Token": sessionStorage.getItem("accessToken")
     },

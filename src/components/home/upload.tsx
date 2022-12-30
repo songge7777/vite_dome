@@ -49,7 +49,7 @@ const Upload:React.FC = (props:Props) => {
     const formData = new FormData();
     formData.append("file", currentFile);
     const { data } = await axios({
-      url: "/sys/file/upload",
+      url: "/res/file/upload",
       method: "POST",
       data: formData,
     });
