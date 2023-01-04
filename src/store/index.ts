@@ -1,14 +1,12 @@
 import { configureStore,combineReducers } from "@reduxjs/toolkit";
 import {persistStore, persistReducer} from "redux-persist";
 import storage from "redux-persist/lib/storage";
-// import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 import * as reducer from "./modules";
 
 const persistConfig = {
   key: "root",
   storage: storage,
   blacklist:[]
-  // stateReconciler: autoMergeLevel2 // 查看 'Merge Process' 部分的具体情况
 };
 const reducers = combineReducers({
   ...reducer

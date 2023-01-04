@@ -11,7 +11,8 @@ import BrowseInformationCard from "@/components/home/browseInformationCard";
 import classnames from "classnames";
 import "@/styles/pages/personalTab.scss";
 import axios from "@/api/axios";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Personal = () => {
   const [info, setInfo] = React.useState({});
@@ -58,6 +59,7 @@ const Personal = () => {
   const [tab6List,setTab6List] = React.useState([]);
   const [tab3List,setTab3List] = React.useState([]);
   const [tab8List,setTab8List] = React.useState([]);
+  const { loginInfo } = useSelector((store: any) => store.login);
   const switchTab = () => {
     switch(Number(currentIndex)){
       // 沟通过
@@ -264,12 +266,13 @@ const Personal = () => {
     getInit();
   },[]);
   return (
-    <div className="search_layout">
+    
+    <div className="personalTab_layout">
       <Header />
-      <div className="search_lists">
-        <div className="search_lists_content">
-          <div className="search_lists_content_left">
-            <div className="search_lists_content_left_top">
+      <div className="personalTab_lists">
+        <div className="personalTab_lists_content">
+          <div className="personalTab_lists_content_left">
+            <div className="personalTab_lists_content_left_top">
               {/* <SearchHeader /> */}
               <section className="tab_layout">
                 {/* <div className="tab_layout_goBack">
@@ -297,10 +300,10 @@ const Personal = () => {
               switchTab()
             }
           </div>
-          <div className="search_lists_content_right">
+          <div className="personalTab_lists_content_right">
             {
-              info ? <React.Fragment>
-                <PersonalInfoCard info={info} />
+              loginInfo.userId ? <React.Fragment>
+                <PersonalInfoCard />
                 <ResumeManagementCard />
                 <BrowseInformationCard />
               </React.Fragment>

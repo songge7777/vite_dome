@@ -7,12 +7,11 @@ import Login from "@/components/home/loginCard";
 import PersonalInfoCard from "@/components/home/personalInfoCard";
 import ResumeManagementCard from "@/components/home/resumeManagementCard";
 import BrowseInformationCard from "@/components/home/browseInformationCard";
-import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import axios from "@/api/axios";
 const Search = () =>{
-  const routeConfig = useLocation();
-  const [info, setInfo] = React.useState({});
+  const { loginInfo } = useSelector((store: any) => store.login);
   const [getListData,setGetListData] = React.useState([]);
   const initData = async(searchData:any) => {
     const data = {
@@ -34,15 +33,9 @@ const Search = () =>{
     console.log("==>",rs.data);
     setGetListData(rs.data.rows);
   };
-  const init = async()=>{
-    // console.log("routeConfig",routeConfig);
-    const {data} = await axios.get("/cpe/post/info");
-    setInfo(data.data);
-    console.log("个人信息",data);
-  };
+ 
   React.useEffect(()=>{
     initData({});
-    init();
   },[]);
   return (
     <div className="search_layout">
@@ -60,8 +53,8 @@ const Search = () =>{
           </div>
           <div className="search_lists_content_right">
             {
-              info ? <React.Fragment>
-                <PersonalInfoCard info={info} />
+              loginInfo.userId ? <React.Fragment>
+                <PersonalInfoCard />
                 <ResumeManagementCard />
                 <BrowseInformationCard />
               </React.Fragment>

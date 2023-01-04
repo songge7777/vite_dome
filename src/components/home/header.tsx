@@ -9,21 +9,28 @@ const Card = ()=>{
   const { loginInfo } = useSelector((store: any) => store.login);
   const [info, setInfo] = React.useState({});
   const [dataItem,setDataItem] = React.useState([]);
-  const [userInfo,setUserInfo] = React.useState({});
+  
   const navigate = useNavigate();
   const goToLogin = () => {
     navigate("/login");
   };
   const goToMessage = () => {
-    console.log("loginInfo",loginInfo);
-    // navigate(`/messagenotification?userId=${userInfo.userId}`);
+    if(loginInfo.userId){
+      navigate(`/messagenotification?userId=${loginInfo.userId}`);
+    } else{
+      navigate("/login");
+    }
   };
   // resumeManagement
   const goToResumeManagement = () => {
-    navigate(`/resumeManagement?userId=${userInfo.userId}`);
+    if(loginInfo.userId){
+      navigate(`/resumeManagement?userId=${loginInfo.userId}`);
+    } else{
+      navigate("/login");
+    }
   };
-  const getMessage = async(_userId)=>{
-    const {data} = await axios.get(`/res/msg/all/${_userId}`);
+  const getMessage = async()=>{
+    const {data} = await axios.get(`/res/msg/all/${loginInfo.userId}`);
     // const data = [{
     //   msgId:"1",
     //   userId:"1",
@@ -45,21 +52,17 @@ const Card = ()=>{
     // }];
     setDataItem(data);
   };
-  const getUserInfo = async () => {
-    const {data} = await axios.get("/auth/client/info");
-    return data.data;
-  };
   const init = async()=>{
-    const data = await getUserInfo();
-    // console.log("获取用户信息11",data);
-    getMessage(data.userId);
-    setUserInfo(data);
+    if(loginInfo.userId){
+      getMessage();
+    }
   };
-  React.useEffect(()=>{
-    console.log("==>");
-  },[]);
   const goToAccount = async()=>{
-    navigate(`/loginListTab?userId=${userInfo.userId}`);
+    if(loginInfo.userId){
+      navigate(`/loginListTab?userId=${loginInfo.userId}`);
+    } else{
+      navigate("/login");
+    }
   };
   React.useEffect(()=>{
     init();
@@ -78,9 +81,11 @@ const Card = ()=>{
         </div>
         <div className="header_top_layout_right">
           <div className="header_top_layout_myResume"> 
-            <span className="header_top_layout_myResume_btn" onClick={goToMessage}>
+            {
+              loginInfo.userId &&<span className="header_top_layout_myResume_btn" onClick={goToMessage}>
               消息
-            </span>
+              </span>
+            }
             <span className="header_top_layout_myResume_btn" onClick={goToResumeManagement}>
               简历
             </span>
@@ -89,11 +94,11 @@ const Card = ()=>{
             </span>
           </div>
           <div className="header_top_layout_form"> 
-            {userInfo.userId ? <div className="header_top_layout_form_layout"
+            {loginInfo.userId ? <div className="header_top_layout_form_layout"
               onClick={goToAccount}
             >
-              <span>{userInfo.username}</span>
-              <img className="header_top_layout_form_img" src={userInfo.picture} alt="" />
+              <span>{loginInfo.username}</span>
+              <img className="header_top_layout_form_img" src={loginInfo.picture || {}} alt="" />
             </div>: <span className="header_top_layout_form_login"
               onClick={()=>goToLogin()}
             >

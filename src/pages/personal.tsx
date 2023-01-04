@@ -8,10 +8,12 @@ import PersonalInfoCard from "@/components/home/personalInfoCard";
 import ResumeManagementCard from "@/components/home/resumeManagementCard";
 import BrowseInformationCard from "@/components/home/browseInformationCard";
 import axios from "@/api/axios";
+import { useSelector } from "react-redux";
 
 const Personal = () => { 
   const [info, setInfo] = React.useState({});
   const [listData,setListData] = React.useState([]);
+  const { loginInfo } = useSelector((store: any) => store.login);
   const getList = async() => {
     // 获取首页列表数据
     const {data} = await axios.post("/cpe/resume/choice",{
@@ -48,8 +50,8 @@ const Personal = () => {
           </div>
           <div className="search_lists_content_right">
             {
-              info ? <React.Fragment>
-                <PersonalInfoCard info={info} />
+              loginInfo.userId ? <React.Fragment>
+                <PersonalInfoCard />
                 <ResumeManagementCard />
                 <BrowseInformationCard />
               </React.Fragment>

@@ -1,31 +1,36 @@
 import * as React from "react";
 import "@/styles/pages/personalInfoCard.scss";
-import LOGO from "@/img/LOGO.png";
 import axios from "@/api/axios";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 type Props = {
-  info:{}
 }
 const PersonalInfoCard = (props:Props) => {
-  const [userInfo,setUserInfo] = React.useState({});
-  const {info} = props;
+  const { loginInfo } = useSelector((store: any) => store.login);
+  const [info, setInfo] = React.useState({});
   const navigate = useNavigate();
-  const goToProfile = (num:number,tabType:"string") => {
-    navigate(`/personalTab?userId=${userInfo.userId}&num=${num}&tabType=${tabType}`);
-  };
-  const getUserInfo = async () => {
-    const {data} = await axios.get("/auth/client/info");
-    return data.data;
+  const goToProfile = (num?:number,tabType?:"string") => {
+    navigate(`/personalTab?userId=${loginInfo.userId}&num=${num}&tabType=${tabType}`);
   };
   const init = async()=>{
-    const data = await getUserInfo();
-    setUserInfo(data);
+    // 获取卡片 个人信息的 
+    const {data} = await axios.get("/cpe/post/info");
+    if(data.status === 200){
+      setInfo(data.data);
+      console.log("个人信息",data);
+    }
   };
-
   React.useEffect(()=>{
     init();
   },[]);
+  // 登录失效
+  React.useEffect(()=>{
+    if(!loginInfo.userId){
+      navigate("/login");
+    }
+  },[loginInfo.userId]);
+
   return (
     <section className="personalInfo_layout">
       {/* 头 */}

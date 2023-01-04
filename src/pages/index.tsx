@@ -6,8 +6,10 @@ import Header from "@/components/home/header";
 import InputSearch from "@/components/home/inputSearch";
 import LoginCard from "@/components/home/loginCard";
 import axios from "@/api/axios";
+import { useSelector } from "react-redux";
 
 const Counter = () =>{
+  const { loginInfo } = useSelector((store: any) => store.login);
   const navigate = useNavigate();
   const [listData,setListData] = React.useState([]);
   const getList = async() => {
@@ -34,7 +36,7 @@ const Counter = () =>{
           <div className="home_banner_layout_search">
             <InputSearch cb={searchList}/>
           </div>
-          <div  className="home_banner_layout_form"><LoginCard /></div>
+          {!loginInfo.userId && <div className="home_banner_layout_form"><LoginCard /></div>} 
         </div>
       </div>
       <div className="home_content">

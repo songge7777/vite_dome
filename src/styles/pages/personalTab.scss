@@ -1,50 +1,76 @@
 @import "../layout.scss";
 @import "../index.scss";
 
-.tab {
+.personalTab {
   &_layout {
-    width: 904px;
-    height: 48px;
-    background: #ffffff;
+    .tab {
+      &_layout {
+        width: 904px;
+        height: 48px;
+        background: #ffffff;
+        @include flex(row);
+        align-items: center;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+        &_goBack {
+          width: 70px;
+          @include flex(row);
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          img {
+            width: 14px;
+            height: 14px;
+          }
+          span {
+            margin-left: 4px;
+            font-size: 14px;
+            font-weight: 400;
+            color: #606266;
+          }
+        }
+        &_tabs {
+          @include flex(row);
+          width: 720px;
+          justify-content: start;
+          margin-left: 40px;
+        }
+        &_tab {
+          height: 48px;
+          padding: 0 20px;
+          text-align: center;
+          line-height: 48px;
+          background: #ffffff;
+          box-sizing: border-box;
+          cursor: pointer;
+        }
+        &_active {
+          color: #f08300;
+          border-bottom: 2px solid #f08300;
+        }
+      }
+    }
+  }
+  &_lists {
     @include flex(row);
-    align-items: center;
-    box-sizing: border-box;
-    margin-bottom: 20px;
-    &_goBack {
-      width: 70px;
+    justify-content: center;
+    width: 100%;
+    background: #fafafa;
+    min-height: 1000px;
+    &_content {
       @include flex(row);
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      img {
-        width: 14px;
-        height: 14px;
+      margin-top: 20px;
+      width: 1200px;
+      &_left {
+        width: 904px;
       }
-      span {
-        margin-left: 4px;
-        font-size: 14px;
-        font-weight: 400;
-        color: #606266;
+
+      &_right {
+        width: 280px;
+        height: 300px;
+        margin-left: 16px;
+        padding: 18px 20px 0 20px;
       }
-    }
-    &_tabs {
-      @include flex(row);
-      width: 720px;
-      justify-content: start;
-      margin-left: 40px;
-    }
-    &_tab {
-      height: 48px;
-      padding: 0 20px;
-      text-align: center;
-      line-height: 48px;
-      background: #ffffff;
-      box-sizing: border-box;
-      cursor: pointer;
-    }
-    &_active {
-      color: #f08300;
-      border-bottom: 2px solid #f08300;
     }
   }
 }

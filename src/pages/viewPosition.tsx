@@ -64,6 +64,7 @@ const ViewEnterprise = () => {
   };
 
   const filter = (data,id) => {
+    if(Boolean(data.length)) return;
     const r = data.filter(i => Number(i.value)===Number(id))[0];
     const label =  r ? r.label : "";
     return label;

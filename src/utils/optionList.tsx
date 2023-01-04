@@ -169,44 +169,40 @@ export const educationalData = ()=>{
 export const searchCityData = ()=>{
   return [
     {
-      id:1,
+      id:"420100",
       value:"武汉"
     },
     {
-      id:2,
-      value:"北京"
-    },
-    {
-      id:3,
-      value:"上海"
-    },
-    {
-      id:4,
-      value:"广州"
-    },
-    {
-      id:5,
-      value:"深圳"
-    },
-    {
-      id:6,
-      value:"杭州"
-    },
-    {
-      id:7,
-      value:"天津"
-    },
-    {
-      id:8,
-      value:"西安"
-    },
-    {
-      id:9,
+      id:"320500",
       value:"苏州"
     },
     {
-      id:0,
-      value:"其他城市"
+      id:"610100",
+      value:"西安"
+    },
+    {
+      id:"120100",
+      value:"天津"
+    },
+    {
+      id:"330100",
+      value:"杭州"
+    },
+    {
+      id:"440300",
+      value:"深圳"
+    },
+    {
+      id:"440100",
+      value:"广州"
+    },
+    {
+      id:"310100",
+      value:"上海"
+    },
+    {
+      id:"110100",
+      value:"北京"
     }
   ];
 };

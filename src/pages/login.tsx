@@ -73,7 +73,7 @@ const Login = () =>{
       if(data.data){
         navigate("/jobWanted");
       }else {
-        navigate("/search");
+        navigate("/index");
       }
     }else{
       message.error(`${rsData.message}`);

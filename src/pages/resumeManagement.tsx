@@ -13,7 +13,9 @@ import Picture from "@/img/picture.png";
 import LOGO from "@/img/LOGO.png";
 import classnames from "classnames";
 import { FormInstance, RuleObject } from "antd/es/form";
+import { useLocation } from "react-router-dom";
 import axios from "@/api/axios";
+import { useSelector } from "react-redux";
 
 import {
   moneyList,
@@ -125,6 +127,8 @@ const initData4 = () => ({
 });
 
 const ResumeManagement = () => {
+  const routeConfig = useLocation();
+
   const [info, setInfo] = React.useState({});
 
   const [OnlyShowFormOneData,setOnlyShowFormOneData] = React.useState(initData1());
@@ -166,8 +170,7 @@ const ResumeManagement = () => {
   const [edit6,setEdit6] = React.useState<boolean>(false);
   const [edit7,setEdit7] = React.useState<boolean>(false);
   const [resumeId,setResumeId] = React.useState<string|number>("");
-
-  const [edit3Item, setEdit3Item] = React.useState<{}>({});
+  const { loginInfo } = useSelector((store: any) => store.login);
 
   const [formOne] = Form.useForm();
   const [formTwo] = Form.useForm();
@@ -193,6 +196,7 @@ const ResumeManagement = () => {
   };
   React.useEffect(()=>{
     getData();
+    console.log("routeConfig",routeConfig);
   },[]);
   const inputValidator = (rule: RuleObject, value: StoreValue, callback: (error?: string) => void):Promise<void | any> | void =>{
     if(!value) return callback();
@@ -524,7 +528,9 @@ const ResumeManagement = () => {
         <div className="resumeM_lists_content">
           <div className="resumeM_lists_content_left">
             {/* 锚点 */}
-            <Anchor className="resumeM_lists_content_left_anchor">
+            <Anchor onClick={(e)=>{
+              e.preventDefault();
+            }} className="resumeM_lists_content_left_anchor">
               <div className="resumeM_lists_content_left_anchor_title">简历目录</div>
               <Link className="resumeM_lists_content_left_anchor_item" href="#part-1" title="个人信息" />
               <Link className="resumeM_lists_content_left_anchor_item" href="#part-2" title="个人优势" />
@@ -1148,8 +1154,8 @@ const ResumeManagement = () => {
           </div>
           <div className="resumeM_lists_content_right">
             {
-              info ? <React.Fragment>
-                <PersonalInfoCard info={info} />
+              loginInfo.userId ? <React.Fragment>
+                <PersonalInfoCard />
                 <ResumeManagementCard />
                 <BrowseInformationCard />
               </React.Fragment>

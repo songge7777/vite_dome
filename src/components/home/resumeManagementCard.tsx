@@ -128,7 +128,7 @@ const resumeManagementCard = () => {
       {dataItem && dataItem.length >2 ? "": <section  className="resumeManagement_bottom">
         <Button onClick={()=>showModal()}>上传简历</Button>
       </section>} 
-      <Modal className="hiddenBtn" title="简历上传" open={isModalOpen} >
+      <Modal className="hiddenBtn" title="简历上传" open={isModalOpen} onCancel={()=>setIsModalOpen(false)} >
         <FileUpload cb={setIsModalOpen} initData={initData}/>
       </Modal>
     </section>

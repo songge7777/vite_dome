@@ -25,7 +25,7 @@ const SearchHeader:React.FC =  (props:Props) =>{
   const {cb} = props;
   const initData = () =>({
     // 工作地点-市code	
-    workAddrCityCode:undefined,
+    workAddrCityCode:"420100",
     // 输入条件	
     search:undefined,
     // 学历
@@ -55,6 +55,7 @@ const SearchHeader:React.FC =  (props:Props) =>{
   const [postCategoryShowList,setPostCategoryShowList] = React.useState<{}[]>([]);
   const [industryCategoryShowList,setIndustryCategoryShowList] = React.useState<{}[]>([]);
   const changeDataFn = (type: string,n:string|string[]) => {
+    console.log(type,n);
     setSearchData({
       ...searchData,
       [type]:n
@@ -147,6 +148,7 @@ const SearchHeader:React.FC =  (props:Props) =>{
   };
   const getIndustryCategory = async() => {
     const {data} = await axios.get("/sys/industry_category/get_cache_tree");
+    console.log("setIndustryCategoryData",data);
     setIndustryCategoryData(data.data);
   };
   const getPostCategory = async() => {
@@ -183,7 +185,9 @@ const SearchHeader:React.FC =  (props:Props) =>{
   };
 
   const searchList = (item,type) => {
+    console.log("type",type);
     const {select,value} = item;
+    console.log("回调函数==>",select,value);
     if(select.code){
       // 下拉选中才触发
       changeDataFn("workAddrCityCode",String(select.code));

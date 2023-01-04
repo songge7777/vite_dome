@@ -21,41 +21,41 @@ const InputSearch:React.FC = (props:Props) => {
   const getPostCategory = async() => {
     const data = [
       {
-        code: "1",
-        name:"武汉"
+        id:"420100",
+        value:"武汉"
       },
       {
-        code: "2",
-        name:"北京"
+        id:"320500",
+        value:"苏州"
       },
       {
-        code: "3",
-        name:"上海"
+        id:"610100",
+        value:"西安"
       },
       {
-        code: "4",
-        name:"广州"
+        id:"120100",
+        value:"天津"
       },
       {
-        code: "5",
-        name:"深圳"
+        id:"330100",
+        value:"杭州"
       },
       {
-        code: "6",
-        name:"杭州"
+        id:"440300",
+        value:"深圳"
       },
       {
-        code: "7",
-        name:"天津"
+        id:"440100",
+        value:"广州"
       },
       {
-        code: "8",
-        name:"西安"
+        id:"310100",
+        value:"上海"
       },
       {
-        code: "9",
-        name:"苏州"
-      },
+        id:"110100",
+        value:"北京"
+      }
     ];
     setPostCategoryData(data);
   };
@@ -103,18 +103,20 @@ const InputSearch:React.FC = (props:Props) => {
     <section className="inputSearch">
       <Input.Group compact>
         <div className="inputSearch_selectOption">
-          {/* <DoubleTree  single={true} data={postCategoryData} cb={postCategoryDataCb} inputNode={<div className="inputSearch_selectOption_item">
-            { searchItem&&searchItem.name ? <span className="inputSearch_selectOption_item_text">{searchItem.name}</span>:<React.Fragment>
-              <span>岗位类型</span>
-              <img src={selectStyle} alt="" />
-            </React.Fragment>}
-          </div>} /> */}
-          <DoubleTree  single={true} data={postCategoryData} cb={postCategoryDataCb} inputNode={<div className="inputSearch_selectOption_item">
+          <div className="inputSearch_selectOption_item">
             {<React.Fragment>
-              <span>{searchItem.name ? searchItem.name: "岗位类型"}</span>
+              <span>{"武汉"}</span>
               <img src={selectStyle} alt="" />
             </React.Fragment>}
-          </div>} />
+          </div>
+          {/* <DoubleTree  single={true} data={postCategoryData} cb={postCategoryDataCb}
+            inputNode={<div className="inputSearch_selectOption_item">
+              {<React.Fragment>
+                <span>{searchItem.name ? searchItem.name: "岗位类型"}</span>
+                <img src={selectStyle} alt="" />
+              </React.Fragment>}
+            </div>} 
+          /> */}
         </div>
         <Input className="inputSearch_input" value={searchValue} onChange={inputChange} placeholder="搜索职位、公司"/>
         <Button className="inputSearch_btn" type="primary" onClick={()=>submit()}>搜索</Button>

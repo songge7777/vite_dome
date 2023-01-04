@@ -2,6 +2,8 @@ import * as React from "react";
 import "@/styles/pages/loginCard.scss";
 import { Button, Checkbox, Form, Input,message } from "antd";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setLoginInfo } from "@/store/modules/login";
 import axios from "@/api/axios";
 let timer = 0;
 type AgreementProps = {
@@ -26,6 +28,7 @@ const Agreement:React.FC = (props:AgreementProps) => {
   </div>;
 };
 const LoginCard = () => {
+  const dispatch = useDispatch();
   const [formRef] = Form.useForm();
   const [validCodeReqNo, setValidCodeReqNo] = React.useState("");
   const [show,setShow] = React.useState(false);
@@ -39,12 +42,31 @@ const LoginCard = () => {
       validCodeReqNo,
       device:"pc"
     };
+
+    
+    // 是否进入个人引导页
+    const isGoToGuide = async() => {
+      const {data} = await axios.get("/cpe/resume/enter");
+      return data;
+    };
+    const getUserInfo = async () => {
+      const {data} = await axios.get("/auth/client/info");
+      console.log("getUserInfo",data.data);
+      dispatch(setLoginInfo({loginInfo:data.data}));
+    };
     const {data:rsData} = await axios.post("/auth/client/login",param);
     if(rsData.code === 200){
       const { data:{accessToken} } = rsData;
       sessionStorage.setItem("accessToken",accessToken);
       message.success("登录成功");
-      navigate("/search");
+      const data = await isGoToGuide();
+      console.log("是否有引导页",data);
+      getUserInfo();
+      if(data.data){
+        navigate("/jobWanted");
+      }else {
+        navigate("/index");
+      }
     }else{
       message.error(`${rsData.message}`);
     }

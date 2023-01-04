@@ -22,7 +22,8 @@ const InputSearch:React.FC = (props:Props) => {
   };
   const getPostCategory = async() => {
     const {data} = await axios.get("/sys/post_category/cache_tree");
-    setPostCategoryData(data.data.rows);
+    console.log("data",data,data);
+    setPostCategoryData(data.data);
   };
   // 获取数据
   const getData = async()=>{
