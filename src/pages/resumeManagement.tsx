@@ -211,8 +211,9 @@ const ResumeManagement = () => {
     data.birthday = dayjs(data.birthday).format("YYYY-MM-DD");
     data.workTime = dayjs(data.workTime).format("YYYY-MM-DD");
     // 新增
+    // type c端口 type 默认为1
     if(!resumeId){
-      const {data:rs} = await axios.post("/cpe/resume/single",data);
+      const {data:rs} = await axios.post("/cpe/resume/single",{...data,type:1});
       if(rs.code === 200 ){
         message.success("新增成功");
       }else{
@@ -221,6 +222,7 @@ const ResumeManagement = () => {
     } else {
       const {data:rs} = await axios.put("/cpe/resume/single",{
         ...data,
+        type:1,
         resumeId
       });
       if(rs.code === 200 ){
@@ -235,7 +237,8 @@ const ResumeManagement = () => {
     getData1();
   };
   const submitFormData2 = async () => {
-    const {data:rs} =await axios.put("/cpe/resume/single",{merit,resumeId});
+       
+    const {data:rs} =await axios.put("/cpe/resume/single",{merit,resumeId, type:1});
     if(rs.code === 200 ){
       message.success("修改成功");
     }else{
@@ -511,6 +514,7 @@ const ResumeManagement = () => {
     // 新增
     console.log("---->>", picture);
     const {data:rs} = await axios.put("/cpe/resume/single",{
+      type:1,
       picture,
       resumeId
     });

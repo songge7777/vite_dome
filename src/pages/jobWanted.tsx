@@ -131,7 +131,7 @@ const jobWanted: React.FC = () => {
       r1.picture = url;
     }
     const _data = {
-      resumeReq:r1,
+      resumeReq:{...r1,type:1},
       educationReq:r2,
     };
     const {data} =  await axios.post("/cpe/resume/job",_data);
