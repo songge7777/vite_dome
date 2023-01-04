@@ -188,7 +188,7 @@ const jobWanted: React.FC = () => {
   };
   return (
     <div className="jobWanted_layout">
-      <Header />
+      {/* <Header /> */}
       <div className="jobWanted_options">
         <div className="jobWanted_options_layout">
           <div className="jobWanted_options_layout_cartTop">

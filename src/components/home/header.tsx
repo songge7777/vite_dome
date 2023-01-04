@@ -70,7 +70,7 @@ const Card = ()=>{
   return (
     <div className="header_top">
       <div className="header_top_layout">
-        <img className="header_top_layout_img" src={homelogo} alt="" />
+        <img className="header_top_layout_img" src={homelogo} alt="" onClick={()=>{navigate("/index");}} />
         <div className="header_top_layout_btns"> 
           <span className="header_top_layout_btns_left header_top_layout_btns_active">
                 找工作
