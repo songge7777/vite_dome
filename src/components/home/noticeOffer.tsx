@@ -3,7 +3,6 @@ import uploadIcon from "@/img/upload.png";
 import "@/styles/pages/noticeOffer.scss";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 const baseUrl = import.meta.env.VITE_BASE_URL;
-console.log("rs",baseUrl);
 import {
   Button,
   Modal,
@@ -41,14 +40,12 @@ const NoticeOffer = (props:Props) =>{
   // 接受面试
   const accept = async(recordId:number) => {
     const rs =await  axios.put("/cpe/post/employ/accept",{recordId});
-    console.log("rs",rs);
     cb();
   };
  
   // 拒绝面试
   const refuse = async(recordId:number) => {
     const rs =await  axios.put("/cpe/post/employ/refuse",{recordId});
-    console.log("rs",rs);
     cb();
   };
   const look = ()=>{};
@@ -58,8 +55,6 @@ const NoticeOffer = (props:Props) =>{
     // 查看入职资料
     const { data:rs } = await axios.get(`/cpe/post/induction/gen/${_inductionId}`);
     const data = rs.data;
-    console.log("data=->",data);
-    console.log("identityAnnexList",data);
     data.identityAnnexList[0] && setFileListIDFront([data.identityAnnexList[0]].map(i => ({...i,url:i.fileUrl,uid:i.id})));
     data.identityAnnexList[1] && setFileListIDBack([data.identityAnnexList[1]].map(i => ({...i,url:i.fileUrl,uid:i.id})));
     setFileListGraduation(data.diplomaAnnexList.map(i => ({...i,url:i.fileUrl,uid:i.id})));
@@ -108,7 +103,6 @@ const NoticeOffer = (props:Props) =>{
       otherAnnex:[...fileListOther].map(i=>i.id)
     };
     const {data:rs} = await axios.put("/cpe/post/induction/gen",data);
-    console.log("data",data,rs);
     if(rs.code === 200){
       message.success("操作成功");
     } else{
@@ -133,7 +127,6 @@ const NoticeOffer = (props:Props) =>{
   const handleChange2: UploadProps["onChange"] = (info: UploadChangeParam<UploadFile>) => {
     if (info.file.status === "done") {
       const {data} = info.file.response;
-      console.log("handleChange2");
       setFileListIDBack([{
         id:data.id,
         url:data.fileUrl,
@@ -201,7 +194,6 @@ const NoticeOffer = (props:Props) =>{
   const onRemove2 = (info) => {
     const data = info.response ? info.response : info;
     const d = fileListIDBack.filter(item => item.id !== data.id);
-    console.log("d",d);
     setFileListIDBack(d);
   };
   const onRemove3 = (info) => {
@@ -215,7 +207,6 @@ const NoticeOffer = (props:Props) =>{
     setFileListQuit(d);
   };
   const onRemove5 = (info) => {
-    console.log(info);
     const data = info.response ? info.response : info;
     const d = fileListPhysical.filter(item => item.id !== data.id);
     setFileListPhysical(d);
@@ -313,7 +304,6 @@ const NoticeOffer = (props:Props) =>{
             <span className="noticeOffer_upload_div_span">身份证:</span>
             <div className="noticeOffer_upload_div_column">
               <Input value={dataItem.idCard} placeholder="请输入18位身份证号" onInput={(e)=>{
-                console.log(e.target.value);
                 setDataItem({
                   ...dataItem,
                   idCard:e.target.value

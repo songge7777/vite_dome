@@ -20,7 +20,6 @@ const InterviewListCard = (props:Props) =>{
   // 接受面试
   const accept = async(recordId:number) => {
     const rs =await  axios.put("/cpe/post/interview/accept",{recordId});
-    console.log("rs",rs);
     cb();
   };
  

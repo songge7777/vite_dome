@@ -2,9 +2,11 @@ import * as React from "react";
 import homelogo from "@/img/homeLogo.png";
 import { useNavigate } from "react-router-dom";
 import axios from "@/api/axios";
+import { useSelector } from "react-redux";
 
 import "@/styles/pages/header.scss";
 const Card = ()=>{
+  const { loginInfo } = useSelector((store: any) => store.login);
   const [info, setInfo] = React.useState({});
   const [dataItem,setDataItem] = React.useState([]);
   const [userInfo,setUserInfo] = React.useState({});
@@ -13,7 +15,8 @@ const Card = ()=>{
     navigate("/login");
   };
   const goToMessage = () => {
-    navigate(`/messagenotification?userId=${userInfo.userId}`);
+    console.log("loginInfo",loginInfo);
+    // navigate(`/messagenotification?userId=${userInfo.userId}`);
   };
   // resumeManagement
   const goToResumeManagement = () => {
@@ -52,6 +55,9 @@ const Card = ()=>{
     getMessage(data.userId);
     setUserInfo(data);
   };
+  React.useEffect(()=>{
+    console.log("==>");
+  },[]);
   const goToAccount = async()=>{
     navigate(`/loginListTab?userId=${userInfo.userId}`);
   };

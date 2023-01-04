@@ -44,7 +44,6 @@ const FileUpload:React.FC = (props:Props) => {
   const postData = async(rs) => {
     const {data} = await axios.post("/cpe/resume/file",rs);
     cb(false);
-    console.log(data);
   };
   const propsItem: UploadProps = {
     name: "file",
@@ -56,11 +55,7 @@ const FileUpload:React.FC = (props:Props) => {
     },
     onChange(info) {
       const { status } = info.file;
-      if (status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
       if (status === "done") {
-        console.log(info.file.response);
         const {data} = info.file.response;
         const rs = {
           fileUrl:data.fileUrl,
@@ -74,9 +69,6 @@ const FileUpload:React.FC = (props:Props) => {
       } else if (status === "error") {
         message.error(`${info.file.name} 上传失败`);
       }
-    },
-    onDrop(e) {
-      console.log("Dropped files", e.dataTransfer.files);
     },
   };
 
@@ -106,7 +98,6 @@ const resumeManagementCard = () => {
   const initData = async() => {
     const {data} = await axios.get("/cpe/resume/file/list");
     if(data.code === 200){
-      console.log("DATA",data);
       setDataItem(data.data);
     }
   };

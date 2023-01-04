@@ -27,7 +27,6 @@ const ViewEnterprise = () => {
       key: "db1560ddcb7db484b9c65f04f60d04ac", // 申请好的Web端Key，首次调用 load 时必填
       version: "2.0"
     });
-    console.log("positionData",data);
     map = new MpInstance.Map("mapcontainer",{
       zoom: 15,
       plugins:["AMap.Scale","AMap.ToolBar"],
@@ -58,7 +57,6 @@ const ViewEnterprise = () => {
     setCompanySize(rs1);
     const rs2 = await getT("enterprise_type");
     setEnterpriseType(rs2);
-    console.log(rs1,rs2);
     const rs = await getData(routeConfig.state);
     initMap(rs);
     geiRecruitPostData(rs.recruitPostId);

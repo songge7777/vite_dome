@@ -5,7 +5,6 @@ import { Spin } from "antd";
 import _ from "lodash";
 
 export default function Routes() {
-  console.log("routes",routes);
   const element = useRoutes(renderRoutes(routes));
   return element;
 }

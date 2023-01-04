@@ -5,6 +5,8 @@ import { Button, Checkbox, Form, Input,message } from "antd";
 import "@/styles/pages/login.scss";
 import config from "@/config";
 import axios from "@/api/axios";
+import { useDispatch } from "react-redux";
+import { setLoginInfo } from "@/store/modules/login";
 import { useLocation,useNavigate } from "react-router-dom";
 let timer = 0;
 
@@ -37,6 +39,7 @@ const Agreement:React.FC = (props:AgreementProps) => {
 };
 
 const Login = () =>{
+  const dispatch = useDispatch();
   const [swtichType, setSwitchType] = React.useState<SwtichType>(0);
   const [validCodeReqNo, setValidCodeReqNo] = React.useState("");
   const [formRef] = Form.useForm();
@@ -65,7 +68,8 @@ const Login = () =>{
       sessionStorage.setItem("accessToken",accessToken);
       message.success("登录成功");
       const data = await isGoToGuide();
-      message.success("登录成功");
+      console.log("是否有引导页",data);
+      getUserInfo();
       if(data.data){
         navigate("/jobWanted");
       }else {
@@ -93,6 +97,12 @@ const Login = () =>{
     return data;
   };
 
+  const getUserInfo = async () => {
+    const {data} = await axios.get("/auth/client/info");
+    console.log("getUserInfo",data.data);
+    dispatch(setLoginInfo({loginInfo:data.data}));
+  };
+
   const init = async ()=>{
     const { search } = routeConfig;
     const code = search.slice(1,).split("=")[1];
@@ -102,6 +112,8 @@ const Login = () =>{
       if(rsData.code === 200){
         const { accessToken } = rsData;
         sessionStorage.setItem("accessToken",accessToken);
+        // 获取用户信息
+        getUserInfo();
         message.success("登录成功");
         navigate("/search");
       }else{

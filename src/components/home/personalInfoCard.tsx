@@ -12,7 +12,6 @@ const PersonalInfoCard = (props:Props) => {
   const {info} = props;
   const navigate = useNavigate();
   const goToProfile = (num:number,tabType:"string") => {
-    console.log("num",num);
     navigate(`/personalTab?userId=${userInfo.userId}&num=${num}&tabType=${tabType}`);
   };
   const getUserInfo = async () => {

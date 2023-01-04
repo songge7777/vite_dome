@@ -8,14 +8,12 @@ import PersonalInfoCard from "@/components/home/personalInfoCard";
 import ResumeManagementCard from "@/components/home/resumeManagementCard";
 import BrowseInformationCard from "@/components/home/browseInformationCard";
 import { useLocation } from "react-router-dom";
-import useLogin from "@/hooks/login";
 
 import axios from "@/api/axios";
 const Search = () =>{
   const routeConfig = useLocation();
   const [info, setInfo] = React.useState({});
   const [getListData,setGetListData] = React.useState([]);
-  const [] = useLogin();
   const initData = async(searchData:any) => {
     const data = {
       query:{

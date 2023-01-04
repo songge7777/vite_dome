@@ -11,7 +11,6 @@ type AgreementProps = {
 const Agreement:React.FC = (props:AgreementProps) => {
   const { checked,onChange } = props;
   const navigate = useNavigate();
-  console.log(props);
   const selfClick = () => onChange(!checked);
   const goToPage = (id:number) => {
     navigate(`/agreement?id=${id}`);

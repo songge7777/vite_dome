@@ -135,13 +135,6 @@ const AccountSecurityCenter:React.FC = ()=>{
 
   const getAccountInfo = async()=>{
     const {data} = await axios.get("/sys/account/setting/info");
-    // console.log("getAccountInfo",data.data);
-    // const data = {
-    //   account:"123",
-    //   email:"222",
-    //   phone:"15997477937",
-    //   wxAccount:"xxx"
-    // };
     setDataItem(data.data);
   };
   const getCode = async() => {
@@ -297,7 +290,6 @@ const Counter:React.FC = () =>{
       pageSize:10
     };
     const {data:rs} = await axios.post("/cpe/post/search",data);
-    console.log("==>",rs.data.rows);
     setGetListData(rs.data.rows);
   };
 

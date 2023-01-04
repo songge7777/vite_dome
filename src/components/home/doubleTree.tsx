@@ -28,7 +28,6 @@ type TProps = {
 
 const DoubleTree:React.FC = (props:TProps) => {
   const {data,cb,inputNode,single,onChange,name} = props;
-  console.log("DoubleTree",data);
   const [show,setShow] = React.useState(false);
   const [secondData,setSecondData] = React.useState([]);
   const [current,setCurrent] = React.useState({});

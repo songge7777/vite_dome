@@ -134,7 +134,6 @@ const jobWanted: React.FC = () => {
       resumeReq:r1,
       educationReq:r2,
     };
-    console.log(_data);
     const {data} =  await axios.post("/cpe/resume/job",_data);
     if(data.data){
       navigate("/search");
@@ -146,7 +145,6 @@ const jobWanted: React.FC = () => {
   };
   const getPostCategory = async() => {
     const {data} = await axios.get("/sys/post_category/cache_tree");
-    console.log("data=>>",data);
     setPostCategoryData(data.data);
   };
   // 获取数据

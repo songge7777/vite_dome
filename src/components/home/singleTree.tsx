@@ -39,7 +39,6 @@ const SingleTree:React.FC = (props:TProps) => {
     setShow(false);
   };
   React.useEffect(()=>{
-    console.log("---value", name);
     setCurrentValue(name);
   },[]);
   return <div className="custom_select">
