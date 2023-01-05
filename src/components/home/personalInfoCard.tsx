@@ -16,9 +16,9 @@ const PersonalInfoCard = (props:Props) => {
   const init = async()=>{
     // 获取卡片 个人信息的 
     const {data} = await axios.get("/cpe/post/info");
-    if(data.status === 200){
+    if(data.code === 200){
       setInfo(data.data);
-      console.log("个人信息",data);
+      console.log("个人信息*",data);
     }
   };
   React.useEffect(()=>{

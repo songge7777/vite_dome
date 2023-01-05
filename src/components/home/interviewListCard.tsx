@@ -1,6 +1,7 @@
 import * as React from "react";
 import LOGO from "@/img/LOGO.png";
 import "@/styles/pages/interviewListCard.scss";
+import { message } from "antd";
 
 import {
   Button,
@@ -17,9 +18,12 @@ type Props= {
 };
 const InterviewListCard = (props:Props) =>{
   const {data,cb} = props;
+  console.log("==>>",data.interviewStatus);
   // 接受面试
   const accept = async(recordId:number) => {
-    const rs =await  axios.put("/cpe/post/interview/accept",{recordId});
+    const {data} = await  axios.put("/cpe/post/interview/accept",{recordId});
+    console.log("rs",data);
+    message.success("已接受");
     cb();
   };
  
@@ -27,6 +31,7 @@ const InterviewListCard = (props:Props) =>{
   const refuse = async(recordId:number) => {
     const rs =await  axios.put("/cpe/post/interview/refuse",{recordId});
     console.log("rs",rs);
+    message.success("已拒绝");
     cb();
   };
   const filterStatus = (status) => {
@@ -43,6 +48,7 @@ const InterviewListCard = (props:Props) =>{
         return "";
     }
   };
+
   console.log("我的面试",data);
   return (
     <div className="InterviewList_home_lists">
@@ -57,7 +63,8 @@ const InterviewListCard = (props:Props) =>{
       <section className="InterviewList_content_layout_lists_bottom">
         <div className="InterviewList_content_layout_lists_method">
           {/* 面试类型：1线下面试、2腾讯会议 */}
-          {Number(data.interviewType) === 1 ? "线下面试" :"腾讯会议"}
+          {Number(data.interviewType) === 1 && Number(data.interviewResult === 1) ? "线下面试" :""}
+          {Number(data.interviewType) === 2 && Number(data.interviewResult === 1)? "腾讯会议" :""}
         </div>
         <div className="InterviewList_content_layout_lists_address">
           {Number(data.interviewType) === 1 ? data.interviewAddress : "关于支持工程师的面试会议"}
@@ -68,7 +75,7 @@ const InterviewListCard = (props:Props) =>{
           </span>
         </div>
         {
-          Number(data.interviewStatus) !== 10 ? <div className="InterviewList_content_layout_lists_result">
+          Number(data.interviewStatus) === 10 ? <div className="InterviewList_content_layout_lists_result">
             {/* <span>不通过</span> */}
             {/* <Button type="primary">参加面试</Button> */}
             <Button onClick={()=>accept(data.recordId)}>接受</Button>

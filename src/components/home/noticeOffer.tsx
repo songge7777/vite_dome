@@ -25,6 +25,7 @@ const NoticeOffer = (props:Props) =>{
   const [dataItem, setDataItem] = React.useState({});
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [inductionId,setInductionId] = React.useState("");
+  const [isEdit,setIsEdit] = React.useState(false);
   // 身份证图片
   const [fileListIDFront,setFileListIDFront]= React.useState<UploadFile[]>([]);
   // 身份证图片
@@ -48,8 +49,38 @@ const NoticeOffer = (props:Props) =>{
     const rs =await  axios.put("/cpe/post/employ/refuse",{recordId});
     cb();
   };
-  const look = ()=>{};
-  const upload = async(item)=>{
+  const lookFn = async(item)=>{
+    setIsEdit(true);
+    setInductionId(item.inductionId);
+    const _inductionId = item.inductionId;
+    // 查看入职资料
+    const { data:rs } = await axios.get(`/cpe/post/induction/gen/${_inductionId}`);
+    const data = rs.data;
+    data.identityAnnexList[0] && setFileListIDFront([data.identityAnnexList[0]].map(i => ({...i,url:i.fileUrl,uid:i.id})));
+    data.identityAnnexList[1] && setFileListIDBack([data.identityAnnexList[1]].map(i => ({...i,url:i.fileUrl,uid:i.id})));
+    setFileListGraduation(data.diplomaAnnexList.map(i => ({...i,url:i.fileUrl,uid:i.id})));
+    setFileListQuit(data.departAnnexList.map(i => ({...i,url:i.fileUrl,uid:i.id})));
+    setFileListPhysical(data.examAnnexList.map(i => ({...i,url:i.fileUrl,uid:i.id})));
+    setFileListOther(data.otherAnnexList.map(i => ({...i,url:i.fileUrl,uid:i.id})));
+    setDataItem({
+      name:data.name,
+      phone:data.phone,
+      wx:data.wx,
+      email:data.email,
+      birthday:data.birthday,
+      education:data.education,
+      schoolName:data.schoolName,
+      graduateDate:data.graduateDate,
+      postName:data.postName,
+      projectName:data.projectName,
+      companyName:data.companyName,
+      projectDirector:data.projectDirector,
+      idCard:data.idCard,
+    });
+    setIsModalOpen(true);
+  };
+  const uploadFn = async(item)=>{
+    setIsEdit(false);
     setInductionId(item.inductionId);
     const _inductionId = item.inductionId;
     // 查看入职资料
@@ -80,14 +111,16 @@ const NoticeOffer = (props:Props) =>{
   };
   const filterStatus = (status) => {
     switch(Number(status)){
-      case 10:
-        return "待确认";
-      case 20:
-        return "接受面试";
-      case 30:
-        return "拒绝面试";
-      case 40:
-        return "面试完成";
+      case 100:
+        return "待上传资料";
+      case 200 :
+        return "资料已上传";
+      case 300:
+        return "资料审核不通过";
+      case 400 :
+        return "资料审核通过";
+      case 500 :
+        return "候选人拒绝接受";
       default:
         return "";
     }
@@ -234,7 +267,7 @@ const NoticeOffer = (props:Props) =>{
       <section className="InterviewList_content_layout_lists_bottom">
         <div className="InterviewList_content_layout_lists_method">
           {/* 面试类型：1线下面试、2腾讯会议 */}
-          {Number(data.interviewType) === 1 ? "线下面试" :"腾讯会议"}
+          拟录用通知
         </div>
         <div className="InterviewList_content_layout_lists_address">
           {Number(data.interviewType) === 1 ? data.interviewAddress : "关于支持工程师的面试会议"}
@@ -244,20 +277,26 @@ const NoticeOffer = (props:Props) =>{
             {data.interviewTime}
           </span>
         </div>
-        {
-          Number(data.interviewStatus) !== 10 ? <div className="InterviewList_content_layout_lists_result">
-            {/* <span>不通过</span> */}
-            {/* <Button type="primary">参加面试</Button> */}
-            {/* <Button onClick={()=>accept(data.recordId)}>接受</Button>
-            <Button onClick={()=>refuse(data.recordId)}>拒绝</Button> */}
-            <Button onClick={()=>look(data)}>查看</Button>
-            <Button onClick={()=>upload(data)}>上传资料</Button>
-          </div>
-            :
-            <div className="InterviewList_content_layout_lists_status">
-              {filterStatus(data.interviewStatus)}
-            </div>
-        }
+        <div>
+          {filterStatus(data.genStatus)}
+        </div>
+        <div className="InterviewList_content_layout_lists_result">
+          {
+            Number(data.genStatus) == 100 ? <Button onClick={()=>uploadFn(data)}>上传资料</Button> : ""
+          }
+          {
+            Number(data.genStatus) == 200 ? <Button onClick={()=>lookFn(data)}>查看</Button> : ""
+          }
+          {
+            Number(data.genStatus) == 300 ? <div>资料审核不通过</div> : ""
+          }
+          {
+            Number(data.genStatus) == 400 ? <div> 资料审核通过</div> : ""
+          }
+          {
+            Number(data.genStatus) == 500 ? <div> 候选人拒绝接受</div> : ""
+          }
+        </div>
       </section>
       {isModalOpen &&<Modal width={960} className="noticeOffer"  title="上传资料" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <p className="noticeOffer_title">个人信息</p>
@@ -303,14 +342,19 @@ const NoticeOffer = (props:Props) =>{
           <div className="noticeOffer_upload_div">
             <span className="noticeOffer_upload_div_span">身份证:</span>
             <div className="noticeOffer_upload_div_column">
-              <Input value={dataItem.idCard} placeholder="请输入18位身份证号" onInput={(e)=>{
-                setDataItem({
-                  ...dataItem,
-                  idCard:e.target.value
-                });
-              }} />
+              <Input 
+                disabled={isEdit}
+                value={dataItem.idCard} 
+                placeholder="请输入18位身份证号"
+                onInput={(e)=>{
+                  setDataItem({
+                    ...dataItem,
+                    idCard:e.target.value
+                  });
+                }} />
               <div className="noticeOffer_upload_div_row">
                 <Upload
+                  disabled={isEdit}
                   action={`${baseUrl}/res/file/upload`}
                   accept=".jpg,.jpeg,.bmp"
                   listType="picture-card"
@@ -326,6 +370,7 @@ const NoticeOffer = (props:Props) =>{
                   {fileListIDFront.length >= 1 ? null : uploadButton("身份证正面")}
                 </Upload>
                 <Upload
+                  disabled={isEdit}
                   action={`${baseUrl}/res/file/upload`}
                   listType="picture-card"
                   accept=".jpg,.jpeg,.bmp"
@@ -348,6 +393,7 @@ const NoticeOffer = (props:Props) =>{
             <span className="noticeOffer_upload_div_span">毕业证书:</span>
             <div className="noticeOffer_upload_div_column">
               <Upload
+                disabled={isEdit}
                 action={`${baseUrl}/res/file/upload`}
                 listType="picture-card"
                 accept=".jpg,.jpeg,.bmp"
@@ -369,6 +415,7 @@ const NoticeOffer = (props:Props) =>{
             <span className="noticeOffer_upload_div_span">离职证明:</span>
             <div className="noticeOffer_upload_div_column">
               <Upload
+                disabled={isEdit}
                 action={`${baseUrl}/res/file/upload`}
                 listType="picture-card"
                 accept=".jpg,.jpeg,.bmp,.pdf"
@@ -390,6 +437,7 @@ const NoticeOffer = (props:Props) =>{
             <span className="noticeOffer_upload_div_span">体检报告:</span>
             <div className="noticeOffer_upload_div_column">
               <Upload
+                disabled={isEdit}
                 action={`${baseUrl}/res/file/upload`}
                 listType="picture-card"
                 accept=".jpg,.jpeg,.bmp,.pdf,.word"
@@ -411,6 +459,7 @@ const NoticeOffer = (props:Props) =>{
             <span className="noticeOffer_upload_div_span">其他资料:</span>
             <div className="noticeOffer_upload_div_column">
               <Upload
+                disabled={isEdit}
                 action={`${baseUrl}/res/file/upload`}
                 listType="picture-card"
                 accept=".jpg,.jpeg,.bmp,.pdf,.word,.zip"

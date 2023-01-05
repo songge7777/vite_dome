@@ -10,12 +10,14 @@ import UnFollow from "@/img/unfollow.png";
 import "@/styles/pages/viewPosition.scss";
 import AMapLoader from "@amap/amap-jsapi-loader";
 import { useNavigate ,useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import axios from "@/api/axios";
-import { Button } from "antd";
+import { Button,message } from "antd";
 
 const ViewEnterprise = () => {
   const routeConfig = useLocation();
+  const { loginInfo } = useSelector((store: any) => store.login);
   const navigate  = useNavigate();
   const [companySize,setCompanySize] = React.useState([]);
   const [enterpriseType,setEnterpriseType] = React.useState([]);
@@ -34,9 +36,17 @@ const ViewEnterprise = () => {
     });
   };
   const getData = async(recruitPostId) => {
-    const {data} = await axios.get(`/cpe/post/${recruitPostId}`);
-    setPositionData(data.data);
-    return data.data;
+    if(loginInfo.userId){
+      const {data} = await axios.get(`/cpe/post/${recruitPostId}/${loginInfo.userId}`);
+      console.log("dat=>a",data.data);
+      setPositionData(data.data);
+      return data.data;
+    }else{
+      const {data} = await axios.get(`/cpe/post/${recruitPostId}/`);
+      console.log("dat=>a",data.data);
+      setPositionData(data.data);
+      return data.data;
+    }
   };
   // 相似岗位
   const geiRecruitPostData = async(recruitPostId) => {
@@ -60,6 +70,8 @@ const ViewEnterprise = () => {
     const rs = await getData(routeConfig.state);
     initMap(rs);
     geiRecruitPostData(rs.recruitPostId);
+    console.log("routeConfig.state",routeConfig.state);
+    console.log("rs.recruitPostId",rs.recruitPostId);
   
   };
 
@@ -72,6 +84,34 @@ const ViewEnterprise = () => {
 
   const goToPageCompany = (data) => {
     navigate("/viewEnterprise",{state:data.companyId});
+  };
+
+  const send = async() => {
+    const {data} = await axios.put("/cpe/post/send",{
+      recruitPostId:routeConfig.state
+    });
+    if(data.code === 200 && data.data){
+      message.success("已投递");
+      getData(routeConfig.state);
+    }
+  };
+  const concern = async () => {
+    const {data} = await axios.put("/cpe/post/concern",{
+      recruitPostId:routeConfig.state
+    });
+    if(data.code === 200 && data.data){
+      message.success("已操作");
+      getData(routeConfig.state);
+    } 
+  };
+  const cancel = async() => {
+    const {data} = await axios.put("/cpe/post/concern/cancel",{
+      recruitPostId:routeConfig.state
+    });
+    if(data.code === 200 && data.data){
+      message.success("已操作");
+      getData(routeConfig.state);
+    } 
   };
   React.useEffect(()=>{
     getInit();
@@ -100,12 +140,26 @@ const ViewEnterprise = () => {
                   <img src={People} alt="" />
                   <span>{positionData.recruitNum}人</span>
                 </div>
-                <div className="section_btns">
-                  <img src={UnFollow} alt="" />
-                  <span className="span">
-                   感兴趣
-                  </span>
-                  <Button className="btn">投递</Button>
+                <div className="section_btns" >
+                  {
+                    positionData.concernStatus ?
+                      
+                      <span className="span" onClick={cancel}>
+                    取消感兴趣
+                      </span>
+                      :
+                      <div className="section_btns" onClick={concern}>
+                        <img src={UnFollow} alt="" />
+                        <span className="span">
+                          感兴趣
+                        </span>
+                      </div>
+                  }
+                  {
+                    positionData.sendStatus ? <div  className="btn">已经投递</div>:
+                      <Button onClick={send} className="btn">投递</Button>
+                  }
+                  
                 </div>
               </div>
             </section>

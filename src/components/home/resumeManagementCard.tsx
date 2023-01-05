@@ -64,7 +64,9 @@ const FileUpload:React.FC = (props:Props) => {
           resumeId:"1601142715991904258"
         };
         postData(rs);
-        initData();
+        setTimeout(()=>{
+          initData();
+        },1000);
         message.success(`${info.file.name} 上传成功`);
       } else if (status === "error") {
         message.error(`${info.file.name} 上传失败`);
@@ -125,7 +127,7 @@ const resumeManagementCard = () => {
         } 
       </section>
       {/* 按钮 */}
-      {dataItem && dataItem.length >2 ? "": <section  className="resumeManagement_bottom">
+      {dataItem && dataItem.length >0 ? "": <section  className="resumeManagement_bottom">
         <Button onClick={()=>showModal()}>上传简历</Button>
       </section>} 
       <Modal className="hiddenBtn" title="简历上传" open={isModalOpen} onCancel={()=>setIsModalOpen(false)} >

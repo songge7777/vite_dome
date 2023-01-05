@@ -31,30 +31,19 @@ const Card = ()=>{
   };
   const getMessage = async()=>{
     const {data} = await axios.get(`/res/msg/all/${loginInfo.userId}`);
-    // const data = [{
-    //   msgId:"1",
-    //   userId:"1",
-    //   title:"标题",
-    //   content:"内容内容内容内容内容",
-    //   jumpUrl:"http://www.baidu.com",
-    //   // 是否已读 0 未读 1 已读
-    //   status:"0",
-    //   sentTime:"2020-1-1"
-    // },{
-    //   msgId:"2",
-    //   userId:"2",
-    //   title:"标题1",
-    //   content:"内容内容内容内容内容1",
-    //   jumpUrl:"http://www.baidu.com",
-    //   // 是否已读 0 未读 1 已读
-    //   status:"1",
-    //   sentTime:"2020-1-1"
-    // }];
     setDataItem(data);
+  };
+  const getUserInfo = async () => {
+    const {data} = await axios.get("/cpe/post/info");
+    if(data.code === 200){
+      setInfo(data.data);
+      console.log("个人信息*",data);
+    }
   };
   const init = async()=>{
     if(loginInfo.userId){
       getMessage();
+      getUserInfo();
     }
   };
   const goToAccount = async()=>{
@@ -97,8 +86,8 @@ const Card = ()=>{
             {loginInfo.userId ? <div className="header_top_layout_form_layout"
               onClick={goToAccount}
             >
-              <span>{loginInfo.username}</span>
-              <img className="header_top_layout_form_img" src={loginInfo.picture || {}} alt="" />
+              <span>{info.name}</span>
+              <img className="header_top_layout_form_img" src={info.picture || {}} alt="" />
             </div>: <span className="header_top_layout_form_login"
               onClick={()=>goToLogin()}
             >

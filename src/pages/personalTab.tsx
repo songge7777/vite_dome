@@ -64,25 +64,25 @@ const Personal = () => {
     switch(Number(currentIndex)){
       // 沟通过
       case 0:
-        return trenchingData ? trenchingData.map((item,index)=><TrenchingCard data={item} key={index}/>): <div>暂无数据</div>;
+        return trenchingData ? trenchingData.map((item,index)=><TrenchingCard type={0} cb={getTab1List} data={item} key={index}/>): <div>暂无数据</div>;
       // 已投递
       case 1:
-        return trenchingData ? trenchingData.map((item,index)=><TrenchingCard data={item} key={index}/>): <div>暂无数据</div>;
+        return trenchingData ? trenchingData.map((item,index)=><TrenchingCard type={1}  cb={getTab2List} data={item} key={index}/>): <div>暂无数据</div>;
       // 我的面试
       case 7:
         return tab3List ? tab3List.map((item,index) => <InterviewListCard cb={getTab3List} data={item} key={index}/>) : <div>暂无数据</div>;
       // 感兴趣
       case 3:
-        return trenchingData ? trenchingData.map((item,index)=><TrenchingCard data={item} key={index}/>): <div>暂无数据</div>;
+        return trenchingData ? trenchingData.map((item,index)=><TrenchingCard type={3}  cb={getTab4List} data={item} key={index}/>): <div>暂无数据</div>;
       // 我看过
       case 4:
-        return trenchingData ? trenchingData.map((item,index)=><TrenchingCard data={item} key={index}/>): <div>暂无数据</div>;
-      // 看过我
+        return trenchingData ? trenchingData.map((item,index)=><TrenchingCard type={4}  cb={getTab5List} data={item} key={index}/>): <div>暂无数据</div>;
+        // 对我感兴趣的
       case 6:
-        return tab6List ? tab6List.map((item,index) => <SeeMeCard data={item} key={index} />) : <div>暂无数据</div>;
+        return tab6List ? tab6List.map((item,index) => <SeeMeCard cd={getTab6List} data={item} key={index} />) : <div>暂无数据</div>;
       // 拟录通知
       case 8:
-        return tab8List ? tab8List.map((item,index) => <NoticeOffer data={item} key={index} />) : <div>暂无数据</div>;
+        return tab8List ? tab8List.map((item,index) => <NoticeOffer cb={getTab8List} data={item} key={index} />) : <div>暂无数据</div>;
     }
   };
 
