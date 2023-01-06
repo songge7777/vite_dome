@@ -42,7 +42,7 @@ const ViewEnterprise = () => {
       setPositionData(data.data);
       return data.data;
     }else{
-      const {data} = await axios.get(`/cpe/post/${recruitPostId}/`);
+      const {data} = await axios.get(`/cpe/post/${recruitPostId}`);
       console.log("dat=>a",data.data);
       setPositionData(data.data);
       return data.data;
