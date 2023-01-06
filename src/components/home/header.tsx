@@ -1,15 +1,18 @@
 import * as React from "react";
 import homelogo from "@/img/homeLogo.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import axios from "@/api/axios";
-import { useSelector } from "react-redux";
+import {Popover} from "antd";
+import { useSelector,useDispatch } from "react-redux";
+import { setLoginInfo } from "@/store/modules/login";
 
 import "@/styles/pages/header.scss";
 const Card = ()=>{
   const { loginInfo } = useSelector((store: any) => store.login);
   const [info, setInfo] = React.useState({});
   const [dataItem,setDataItem] = React.useState([]);
-  
+  const dispatch = useDispatch();
+  const location = useLocation();
   const navigate = useNavigate();
   const goToLogin = () => {
     navigate("/login");
@@ -37,7 +40,6 @@ const Card = ()=>{
     const {data} = await axios.get("/cpe/post/info");
     if(data.code === 200){
       setInfo(data.data);
-      console.log("个人信息*",data);
     }
   };
   const init = async()=>{
@@ -55,7 +57,25 @@ const Card = ()=>{
   };
   React.useEffect(()=>{
     init();
-  },[]);
+    getUserInfo;
+  },[location]);
+  const signOut = () => {
+    sessionStorage.removeItem("accessToken");
+    localStorage.removeItem("persist:root");
+    navigate("/index");
+    dispatch(setLoginInfo({loginInfo:{}}));
+  };
+  const goToPersonal = () => {
+    navigate("/personal");
+  };
+  const listBtn = () => {
+    return <div className="header_top_btns">
+      <span  className="header_top_btns_item"  onClick={goToPersonal}>个人中心</span>
+      <span  className="header_top_btns_item" onClick={goToAccount}>账号与安全中心</span>
+      {/* <span>消息通知</span> */}
+      <span  className="header_top_btns_item topLine"  onClick={signOut}>退出登录</span>
+    </div>;
+  };
   return (
     <div className="header_top">
       <div className="header_top_layout">
@@ -83,16 +103,18 @@ const Card = ()=>{
             </span>
           </div>
           <div className="header_top_layout_form"> 
-            {loginInfo.userId ? <div className="header_top_layout_form_layout"
-              onClick={goToAccount}
-            >
-              <span>{info.name}</span>
-              <img className="header_top_layout_form_img" src={info.picture || {}} alt="" />
-            </div>: <span className="header_top_layout_form_login"
-              onClick={()=>goToLogin()}
-            >
+            {loginInfo.userId ? 
+              <Popover placement="bottomRight" content={listBtn} trigger="click">
+                <div className="header_top_layout_form_layout">
+                  <span>{info.name}</span>
+                  <img className="header_top_layout_form_img" src={info.picture || {}} alt="" />
+                </div>
+              </Popover>
+              : <span className="header_top_layout_form_login"
+                onClick={()=>goToLogin()}
+              >
               登录
-            </span>}
+              </span>}
           </div>
         </div>
       </div>

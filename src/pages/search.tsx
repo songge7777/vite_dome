@@ -30,7 +30,7 @@ const Search = () =>{
       pageSize:10
     };
     const {data:rs} = await axios.post("/cpe/post/search",data);
-    console.log("==>",rs.data);
+    console.log("==>1",rs.data);
     setGetListData(rs.data.rows);
   };
  

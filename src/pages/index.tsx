@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import "@/styles/pages/index.scss";
 import Card from "@/components/home/card";
 import Header from "@/components/home/header";
@@ -12,6 +12,7 @@ const Counter = () =>{
   const { loginInfo } = useSelector((store: any) => store.login);
   const navigate = useNavigate();
   const [listData,setListData] = React.useState([]);
+  const location = useLocation();
   const getList = async() => {
     // 获取首页列表数据
     const {data} = await axios.post("/cpe/post/choice",{
@@ -27,7 +28,8 @@ const Counter = () =>{
  
   React.useEffect(()=>{
     getList();
-  },[]);
+    // window.location.href=window.location.href;
+  },[location]);
   return (
     <div className="home_layout">
       <Header />

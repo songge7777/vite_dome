@@ -74,5 +74,19 @@
         }
       }
     }
+    &_btns {
+      @include flex();
+      &_item {
+        padding: 9px;
+        width: 160px;
+        background: #ffffff;
+        font-size: 14px;
+        font-weight: 400;
+        color: #606266;
+      }
+      .topLine {
+        border-top: 1px solid #ebedf1;
+      }
+    }
   }
 }

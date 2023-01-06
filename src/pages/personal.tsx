@@ -12,20 +12,31 @@ import { useSelector } from "react-redux";
 
 const Personal = () => { 
   const [info, setInfo] = React.useState({});
+  const [getListData,setGetListData] = React.useState([]);
   const [listData,setListData] = React.useState([]);
   const { loginInfo } = useSelector((store: any) => store.login);
-  const getList = async() => {
-    // 获取首页列表数据
-    const {data} = await axios.post("/cpe/resume/choice",{
+  const initData = async(searchData:any) => {
+    const data = {
+      query:{
+        workAddrCityCode:searchData.workAddrCityCode,
+        search:searchData.inputValue,
+        education:searchData.education,
+        salaryMin:searchData.salaryMin,
+        salaryMax:searchData.salaryMax,
+        workExperience:searchData.workExperience,
+        postCategory:searchData.postCategory,
+        industryCategory:searchData.industryCategory,
+        companyScale:searchData.companyScale,
+      },
       pageNum:1,
-      pageSize:10,
-      query:{}
-    });
-    setListData(data.data.rows);
+      pageSize:10
+    };
+    const {data:rs} = await axios.post("/cpe/post/search",data);
+    console.log("==>1",rs.data);
+    setGetListData(rs.data.rows);
   };
- 
   React.useEffect(()=>{
-    getList();
+    initData({});
     init();
   },[]);
   const init = async()=>{
@@ -43,9 +54,9 @@ const Personal = () => {
         <div className="search_lists_content">
           <div className="search_lists_content_left">
             <div className="search_lists_content_left_top">
-              <SearchHeader />
+              <SearchHeader cb={initData}/>
             </div>
-            {listData && listData.map((item,index) => <Card key={index} data={item} />)}
+            {Array.isArray(getListData) && getListData.map((item,index) => <Card key={index} data={item} />)}
 
           </div>
           <div className="search_lists_content_right">
