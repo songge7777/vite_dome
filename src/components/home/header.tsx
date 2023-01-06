@@ -81,8 +81,8 @@ const Card = ()=>{
       <div className="header_top_layout">
         <img className="header_top_layout_img" src={homelogo} alt="" onClick={()=>{navigate("/index");}} />
         <div className="header_top_layout_btns"> 
-          <span className="header_top_layout_btns_left header_top_layout_btns_active">
-                找工作
+          <span className="header_top_layout_btns_left header_top_layout_btns_active" onClick={()=>{navigate("/search");}}>
+            找工作
           </span>
           {/* <span className="header_top_layout_btns_right">
                 找课程
