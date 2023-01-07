@@ -39,14 +39,14 @@ const NoticeOffer = (props:Props) =>{
   // 其他资料
   const [fileListOther, setFileListOther] = React.useState<UploadFile[]>([]);
   // 接受面试
-  const acceptFn = async(recordId:number) => {
-    const rs =await  axios.put("/cpe/post/employ/accept",{recordId});
+  const acceptFn = async(inductionId:number) => {
+    const rs =await  axios.put("/cpe/post/employ/accept",{inductionId});
     cb();
   };
  
   // 拒绝面试
-  const refuseFn = async(recordId:number) => {
-    const rs =await  axios.put("/cpe/post/employ/refuse",{recordId});
+  const refuseFn = async(inductionId:number) => {
+    const rs =await  axios.put("/cpe/post/employ/refuse",{inductionId});
     cb();
   };
   const lookFn = async(item)=>{
