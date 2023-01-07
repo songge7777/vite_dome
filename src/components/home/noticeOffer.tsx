@@ -277,7 +277,7 @@ const NoticeOffer = (props:Props) =>{
             {data.interviewTime}
           </span>
         </div>
-        <div>--
+        <div>
           {filterStatus(data.genStatus)}{data.genStatus}
         </div>
         <div className="InterviewList_content_layout_lists_result">
