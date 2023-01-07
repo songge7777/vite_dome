@@ -39,13 +39,13 @@ const NoticeOffer = (props:Props) =>{
   // 其他资料
   const [fileListOther, setFileListOther] = React.useState<UploadFile[]>([]);
   // 接受面试
-  const accept = async(recordId:number) => {
+  const acceptFn = async(recordId:number) => {
     const rs =await  axios.put("/cpe/post/employ/accept",{recordId});
     cb();
   };
  
   // 拒绝面试
-  const refuse = async(recordId:number) => {
+  const refuseFn = async(recordId:number) => {
     const rs =await  axios.put("/cpe/post/employ/refuse",{recordId});
     cb();
   };
@@ -277,8 +277,8 @@ const NoticeOffer = (props:Props) =>{
             {data.interviewTime}
           </span>
         </div>
-        <div>
-          {filterStatus(data.genStatus)}
+        <div>--
+          {filterStatus(data.genStatus)}{data.genStatus}
         </div>
         <div className="InterviewList_content_layout_lists_result">
           {
@@ -295,6 +295,13 @@ const NoticeOffer = (props:Props) =>{
           }
           {
             Number(data.genStatus) == 500 ? <div> 候选人拒绝接受</div> : ""
+          }
+          {
+            Number(!data.genStatus)?<React.Fragment>
+              <Button onClick={()=>acceptFn(data.inductionId)}>接受</Button>
+              <Button onClick={()=>refuseFn(data.inductionId)}>拒绝</Button>
+            </React.Fragment>
+              :""
           }
         </div>
       </section>

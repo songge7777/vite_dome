@@ -21,11 +21,12 @@ type TProps = {
   data:baseC[];
   onChange?:()=>{},
   name:string,
+  placeholder: string,
   cb:()=>{}
 }
 
 const SingleTree:React.FC = (props:TProps) => {
-  const {data,cb,onChange,name} = props;
+  const {data,cb,onChange,name,placeholder} = props;
   const [show,setShow] = React.useState(false);
   const [current,setCurrent] = React.useState({});
   const [currentValue,setCurrentValue] = React.useState();
@@ -43,7 +44,7 @@ const SingleTree:React.FC = (props:TProps) => {
   },[]);
   return <div className="custom_select">
     {/* 下拉 */}
-    <Input value={currentValue}  onClick={()=>{setShow(!show);}} />
+    <Input value={currentValue} placeholder={placeholder}  onClick={()=>{setShow(!show);}} />
     {show &&<div className="custom_select_layout">
       <div className="custom_select_layout_title">
         <span>选择行业</span>

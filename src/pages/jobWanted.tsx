@@ -241,7 +241,7 @@ const jobWanted: React.FC = () => {
                     </div>
                   </Form.Item>
                   <Form.Item label="期望行业" name="industryCategoryCode"  rules={[{ required: true, message:"请选择行业"}]}>
-                    <SingleTree data={industryCategoryData} cb={industryCategoryDataCb} />
+                    <SingleTree data={industryCategoryData} cb={industryCategoryDataCb} placeholder={"请选择期望行业"} />
                   </Form.Item>
                   <Form.Item label="当前状态" name="identityStatus" rules={[{ required: true, message:"请选择状态"}]}>
                     <Select placeholder="请选择状态">
