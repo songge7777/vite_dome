@@ -134,10 +134,10 @@ const jobWanted: React.FC = () => {
       educationReq:r2,
     };
     console.log(_data);
-    const {data} =  await axios.post("/cpe/resume/job",_data);
-    if(data.data){
-      navigate("/search");
-    }
+    // const {data} =  await axios.post("/cpe/resume/job",_data);
+    // if(data.data){
+    //   navigate("/search");
+    // }
   };
   const getIndustryCategory = async() => {
     const {data} = await axios.get("/sys/industry_category/get_cache_tree");
