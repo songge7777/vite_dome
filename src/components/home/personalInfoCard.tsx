@@ -47,7 +47,7 @@ const PersonalInfoCard = (props:Props) => {
       {/* offer */}
       <div className="personalInfo_offer">
         <section className="personalInfo_offer_div" onClick={()=>goToProfile(6,"top")}>
-          <span  className="personalInfo_offer_div_num">{info.offerNum}</span>
+          <span  className="personalInfo_offer_div_num">{info.concernMeNum}</span>
           <span>对我感兴趣</span>
         </section>
         <section className="personalInfo_offer_div" onClick={()=>goToProfile(7,"top")}>

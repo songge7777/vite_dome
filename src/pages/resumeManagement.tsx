@@ -564,12 +564,13 @@ const ResumeManagement = () => {
                         <span>{ dayjs(OnlyShowFormOneData.workTime).format("YYYY-MM")}参加工作</span>
                       </div>
                       <div  className="part-1_call">
-                        <img src={LOGO} alt="" />
-                        <span>{OnlyShowFormOneData.phone}</span>
-                        <img src={LOGO} alt="" />
-                        <span>{OnlyShowFormOneData.wx}</span>
-                        <img src={LOGO} alt="" />
-                        <span>{OnlyShowFormOneData.email}</span>
+                        {OnlyShowFormOneData.phone &&<img src={LOGO} alt="" />}
+                        {OnlyShowFormOneData.phone &&<span>{OnlyShowFormOneData.phone}</span>}
+                        {OnlyShowFormOneData.wx && <img src={LOGO} alt="" />}
+                        {OnlyShowFormOneData.wx && <span>{OnlyShowFormOneData.wx}</span>}
+                        
+                        {OnlyShowFormOneData.email && <img src={LOGO} alt="" />}
+                        {OnlyShowFormOneData.email && <span>{OnlyShowFormOneData.email}</span>}
                       </div>
                     </div>
                     <div className="resumeM_lists_content_left_resume_card_right">

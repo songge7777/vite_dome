@@ -227,6 +227,7 @@ const SearchHeader:React.FC =  (props:Props) =>{
         <div className="search_header_layout_list_item">
           <span>薪资待遇:</span>
           <div className="search_header_layout_list_selectOption">
+            123
             <Select placeholder="请选择"
               onChange={(e)=>{
                 changeDataFn("salaryMin",e);

@@ -13,7 +13,6 @@ import Upload from "@/components/home/upload";
 import { useNavigate } from "react-router-dom";
 import {
   moneyList,
-  expectedIndustryData,
   expectedCityData,
   identityStatusData,
   educationData,
@@ -98,7 +97,7 @@ const jobWanted: React.FC = () => {
     // 期望城市
     workCityCode:undefined,
     // 求职身份
-    jobMent:"2",
+    jobIdentity:"2",
     // 参加工作时间
     workTime	:undefined,
     // 个人优势
@@ -134,10 +133,11 @@ const jobWanted: React.FC = () => {
       resumeReq:{...r1,type:1},
       educationReq:r2,
     };
-    const {data} =  await axios.post("/cpe/resume/job",_data);
-    if(data.data){
-      navigate("/search");
-    }
+    console.log(_data);
+    // const {data} =  await axios.post("/cpe/resume/job",_data);
+    // if(data.data){
+    //   navigate("/search");
+    // }
   };
   const getIndustryCategory = async() => {
     const {data} = await axios.get("/sys/industry_category/get_cache_tree");
@@ -171,7 +171,7 @@ const jobWanted: React.FC = () => {
   };
   const clickJob = (id:string) => {
     formMust.setFieldsValue({
-      jobMent:id
+      jobIdentity:id
     });
     setUpdate(!update);
   };
@@ -253,20 +253,20 @@ const jobWanted: React.FC = () => {
                       {expectedCityData().map(item => <Select.Option key={`&2_${item.id}`} value={item.id}>{item.value}</Select.Option>)}
                     </Select>
                   </Form.Item>
-                  <Form.Item label="求职身份"  name='jobMent' rules={[{ required: true, message:"请选择职身份"  }]}>
+                  <Form.Item label="求职身份"  name='jobIdentity' rules={[{ required: true, message:"请选择职身份"  }]}>
                     {/* Radio */}
                     {/* defaultValue="a" */}
                     <div onChange={()=>{}} className="formRadio">
                       <div
                         className={classnames("formRadio_item",{
-                          "formRadio_active":formMust.getFieldValue("jobMent") === "1"
+                          "formRadio_active":formMust.getFieldValue("jobIdentity") === "1"
                         })}
                         onClick={()=>{clickJob("1");}}
                       >职场精英</div>
                       <span className="formRadio_empty"></span>
                       <div
                         className={classnames("formRadio_item",{
-                          "formRadio_active":formMust.getFieldValue("jobMent") === "2"
+                          "formRadio_active":formMust.getFieldValue("jobIdentity") === "2"
                         })}
                         onClick={()=>{clickJob("2");}}
                       >学生</div>
@@ -309,7 +309,7 @@ const jobWanted: React.FC = () => {
                     </Select>
                   </Form.Item>
                   <Form.Item label="担任职位" name="postCategoryCode">
-                    <Input placeholder="如：Java工程师" />
+                    <DoubleTree data={postCategoryData} cb={postCategoryDataCb} />
                   </Form.Item>
                   <Form.Item label="学制类型" name="educationType">
                     <Select placeholder="请选择制类型" 
@@ -334,11 +334,11 @@ const jobWanted: React.FC = () => {
                   <Form.Item className="formItemTwo"> </Form.Item>
                   <Form.Item label="时间" name="educationDate">
                     <div className="formItemLine">
-                      <Form.Item className="formItemTwo" name="entranceTime">
+                      <Form.Item className="formItemTwo" name="educationDataStart">
                         <DatePicker onChange={()=>{}} placeholder="入学时间" />
                       </Form.Item>
                     -
-                      <Form.Item  className="formItemTwo" name="graduationTime">
+                      <Form.Item  className="formItemTwo" name="educationDataEnd">
                         <DatePicker onChange={()=>{}}  placeholder="毕业时间" />
                       </Form.Item>
                     </div>

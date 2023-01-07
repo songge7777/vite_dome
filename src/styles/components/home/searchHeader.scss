@@ -32,6 +32,9 @@
             text-align: end;
           }
         }
+        &_selectOption {
+          color: red;
+        }
         &_select {
           @include flex(row);
           margin-bottom: 20px;
