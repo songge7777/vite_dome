@@ -2,7 +2,10 @@ import * as React from "react";
 import LOGO from "@/img/LOGO.png";
 import "@/styles/pages/trenchingCard.scss";
 import axios from "@/api/axios";
+import { useNavigate } from "react-router-dom";
 import { message,Modal  } from "antd";
+import { useSelector } from "react-redux";
+import { workExperience,educationalRequirementsDta } from "@/utils/optionList";
 /**
  * 感兴趣 3
  * 已投递 1
@@ -16,6 +19,8 @@ type Props = {
   cb:()=>void
 }
 const TrenchingCard:React.FC = (props:Props) =>{
+  const { loginInfo } = useSelector((store: any) => store.login);
+  const navigate = useNavigate();
   const {data,type,cb}= props;
   // postStatus 1 生效  2岗位关闭 岗位状态	
   // recruitPostId 招聘岗位ID	
@@ -49,6 +54,10 @@ const TrenchingCard:React.FC = (props:Props) =>{
     }
   };
   const callFn = async() => {
+    if(!loginInfo.userId){
+      navigate("/login");
+      return;
+    }
     const {data:rs} = await axios.put("/cpe/post/interact",{
       recruitPostId
     });
@@ -69,9 +78,22 @@ const TrenchingCard:React.FC = (props:Props) =>{
       <span>立即沟通</span>
     </div>;
   };
-
+  const goToPage = (data:{}) => {
+    const { recruitPostId, postStatus } = data;
+    if(Number(postStatus) !== 2){
+      navigate("/viewPosition",{state:recruitPostId});
+    }
+  };
+  const workExperienceFilter =(id)=>{
+    const rs = workExperience().filter(item => Number(item.id) === Number(id));
+    return rs[0] ? rs[0].value :"";
+  };
+  const educationalRequirementsDtaFilter = (id)=>{
+    const rs = educationalRequirementsDta().filter(item => Number(item.id) === Number(id));
+    return rs[0] ? rs[0].value :"";
+  };
   return (
-    <div className="trenching_home_lists">
+    <div className="trenching_home_lists" onClick={()=>goToPage(data)}>
       <div className="trenching_content_layout_lists_left">
         <section className="trenching_content_layout_lists_div">
           <div className="trenching_content_layout_lists_div_personnel">
@@ -84,8 +106,8 @@ const TrenchingCard:React.FC = (props:Props) =>{
           </div>
           <div className="trenching_content_layout_lists_div_btns">
             <span className="trenching_content_layout_lists_div_btns_item">{data.workAddrCityName}</span>
-            <span className="trenching_content_layout_lists_div_btns_item">{data.workExperience}</span>
-            <span className="trenching_content_layout_lists_div_btns_item">{data.education}</span>
+            <span className="trenching_content_layout_lists_div_btns_item">{workExperienceFilter(data.workExperience)}</span>
+            <span className="trenching_content_layout_lists_div_btns_item">{educationalRequirementsDtaFilter(data.education)}</span>
           </div>
         </section>
       </div>

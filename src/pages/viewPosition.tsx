@@ -13,7 +13,7 @@ import { useNavigate ,useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import axios from "@/api/axios";
-import { Button,message } from "antd";
+import { Button,message,Modal } from "antd";
 
 const ViewEnterprise = () => {
   const routeConfig = useLocation();
@@ -76,7 +76,7 @@ const ViewEnterprise = () => {
   };
 
   const filter = (data,id) => {
-    if(Boolean(data.length)) return;
+    if(!Boolean(data.length)) return;
     const r = data.filter(i => Number(i.value)===Number(id))[0];
     const label =  r ? r.label : "";
     return label;
@@ -87,6 +87,10 @@ const ViewEnterprise = () => {
   };
 
   const send = async() => {
+    if(!loginInfo.userId){
+      navigate("/login");
+      return;
+    }
     const {data} = await axios.put("/cpe/post/send",{
       recruitPostId:routeConfig.state
     });
@@ -96,6 +100,10 @@ const ViewEnterprise = () => {
     }
   };
   const concern = async () => {
+    if(!loginInfo.userId){
+      navigate("/login");
+      return;
+    }
     const {data} = await axios.put("/cpe/post/concern",{
       recruitPostId:routeConfig.state
     });
@@ -112,6 +120,24 @@ const ViewEnterprise = () => {
       message.success("已操作");
       getData(routeConfig.state);
     } 
+  };
+  const callFn = async() => {
+    if(!loginInfo.userId){
+      navigate("/login");
+      return;
+    }
+    const {data:rs} = await axios.put("/cpe/post/interact",{
+      recruitPostId:routeConfig.state
+    });
+    Modal.success({
+      title: "联系方式:",
+      width: "300px",
+      okText: "我知道了",
+      content: 
+        <div>
+          <p>{rs.data}</p>
+        </div>
+    });
   };
   React.useEffect(()=>{
     getInit();
@@ -197,7 +223,7 @@ const ViewEnterprise = () => {
             <div className="right_divTop">
               <img src={People} alt="" />
               <span className="right_divTop_name">{positionData.hrName}/HR</span>
-              <div className="right_divTop_btn">
+              <div className="right_divTop_btn" onClick={callFn}>
                 <img src={call}  alt="" />
                 <span>立即沟通</span>
               </div>

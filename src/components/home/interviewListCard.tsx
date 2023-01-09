@@ -7,6 +7,7 @@ import {
   Button,
 } from "antd";
 import axios from "@/api/axios";
+import dayjs from "dayjs";
 
 /**
  * 我的面试
@@ -71,7 +72,7 @@ const InterviewListCard = (props:Props) =>{
         </div>
         <div className="InterviewList_content_layout_lists_time">
           <span>
-            {data.interviewTime}
+            {dayjs(data.employTime).format("YYYY-MM-DD hh:mm")}
           </span>
         </div>
         {

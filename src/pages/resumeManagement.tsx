@@ -689,7 +689,7 @@ const ResumeManagement = () => {
                   <div className="resumeM_lists_content_left_resume_card_left">
                     <span className="part-2_title">个人优势</span>
                     <div>
-                      <TextArea value={merit} onChange={(e)=>setMerit(e.target.value)} />
+                      <TextArea autoSize={{ minRows: 3, maxRows: 10 }} value={merit} onChange={(e)=>setMerit(e.target.value)} />
                       <Button onClick={()=>setEdit2(false)}>取消</Button>
                       <Button onClick={()=>submitFormData2()}>完成</Button>
                     </div>
@@ -792,7 +792,7 @@ const ResumeManagement = () => {
                           </Select>
                         </Form.Item>
                         <Form.Item label="期望岗位" name="postCategoryCode" rules={[{ required: true, message:"请选择期望职位"}]}>
-                          <DoubleTree data={postCategoryData} cb={postCategoryDataCb} name={formTwoData.postCategoryName} />
+                          <DoubleTree placeholder="请选择期望岗位" data={postCategoryData} cb={postCategoryDataCb} name={formTwoData.postCategoryName} />
                         </Form.Item>
                         <Form.Item label="期望行业" name="industryCategoryCode"  rules={[{ required: true, message:"请选择行业"}]}>
                           <SingleTree data={industryCategoryData} cb={industryCategoryDataCb} name={formTwoData.industryCategoryName} />
@@ -877,23 +877,25 @@ const ResumeManagement = () => {
                         initialValues={{ layout: "vertical",...formThreeData }}
                         className="jobWanted_options_layout_cartTop_content_right_form"
                       >
-                        <Form.Item label="公司名称	" name="companyName" rules={[{ required: true, message:"请输入姓名"},{validator:inputValidator }]}>
+                        <Form.Item label="公司名称	" name="companyName" rules={[{ required: true, message:"请输入公司名称"},{validator:inputValidator }]}>
                           <Input placeholder="请输入姓名" />
                         </Form.Item>
-                        <Form.Item label="所属行业" name="industryCategoryCode"  rules={[{ required: true, message:"请选择行业"}]}>
-                          <SingleTree data={industryCategoryData} cb={industryCategoryDataCb} name={formThreeData.postCategoryName}/>
+                        <Form.Item label="所属行业" name="industryCategoryCode"  rules={[{ required: true, message:"请选择所属行业"}]}>
+                          <SingleTree placeholder="请选择所属行业" data={industryCategoryData} cb={industryCategoryDataCb} name={formThreeData.postCategoryName}/>
                         </Form.Item>
-                        <Form.Item label="担任职位" name="postCategoryCode" rules={[{ required: true, message:"请选择期望职位"}]}>
+                        <Form.Item label="担任职位" name="postCategoryCode" rules={[{ required: true, message:"请选择担任职位"}]}>
                           <DoubleTree data={postCategoryData} cb={postCategoryDataCb} name={formThreeData.postCategoryName}/>
                         </Form.Item>
-                        <Form.Item label="在职时间" name="workDate" rules={[{ required: true, message:"请选择期望职位"}]}>
+                        <Form.Item label="在职时间" name="workDate" rules={[{ required: true, message:"请选择职时间"}]}>
                           <RangePicker />
                         </Form.Item>
-                        <Form.Item label="汇报对象" name="reportingObject" rules={[{ required: true, message:"请输入姓名"},{validator:inputValidator }]}>
+                        <Form.Item label="汇报对象" name="reportingObject" rules={[{ required: true, message:"请输入汇报对象"},{validator:inputValidator }]}>
                           <Input placeholder="请输入姓名" />
                         </Form.Item>
-                        <Form.Item label="工作内容" name="workContent" rules={[{ required: true, message:"请输入姓名"},{validator:inputValidator }]}>
-                          <TextArea />
+                        <Form.Item>
+                        </Form.Item>
+                        <Form.Item label="工作内容" className="full" name="workContent" rules={[{ required: true, message:"请输入工作内容"},{validator:inputValidator }]}>
+                          <TextArea  autoSize={{ minRows: 3, maxRows: 10 }} placeholder="请输入工作内容"/>
                         </Form.Item>
                       </Form>
                       <Button onClick={()=>setEdit4(false)}>取消</Button>
@@ -977,7 +979,7 @@ const ResumeManagement = () => {
                       <RangePicker placeholder="请选择出生日期" />
                     </Form.Item>
                     <Form.Item label="项目描述" name="projectDesc" rules={[{ required: true, message:"请输入姓名"},{validator:inputValidator }]}>
-                      <TextArea />
+                      <TextArea autoSize={{ minRows: 3, maxRows: 10 }} placeholder="请输入项目描述"/>
                     </Form.Item>
                   </Form>
                   <Button onClick={()=>setEdit5(false)}>取消</Button>
@@ -1085,8 +1087,8 @@ const ResumeManagement = () => {
                       <RangePicker placeholder="请选择出生日期" />
                     </Form.Item>
                     <Form.Item className="career"> </Form.Item>
-                    <Form.Item label="在校经历" name="career" rules={[{ required: true, message:"请输入姓名"},{validator:inputValidator }]}>
-                      <TextArea />
+                    <Form.Item label="在校经历" className="full" name="career" rules={[{ required: true, message:"请输入姓名"},{validator:inputValidator }]}>
+                      <TextArea autoSize={{ minRows: 3, maxRows: 10 }} placeholder="请输入在校经历"/>
                     </Form.Item>
                   </Form>
                   <Button onClick={()=>setEdit6(false)}>取消</Button>

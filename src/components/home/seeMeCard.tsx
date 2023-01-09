@@ -4,6 +4,8 @@ import call from "@/img/call.png";
 import axios from "@/api/axios";
 import "@/styles/pages/seeMeCard.scss";
 import { Modal  } from "antd";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 /**
  * 看过我
  * 
@@ -12,9 +14,15 @@ type Props = {
   data:{}
 }
 const seeMeCard = (props:Props) => {
+  const { loginInfo } = useSelector((store: any) => store.login);
+  const navigate  = useNavigate();
   const {data} = props;
   const { recruitPostId } = data;
   const callFn = async() => {
+    if(!loginInfo.userId){
+      navigate("/login");
+      return;
+    }
     const {data:rs} = await axios.put("/cpe/post/interact",{
       recruitPostId
     });

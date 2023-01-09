@@ -22,7 +22,6 @@ import {
   Form,
   Input,
   Button,
-  Radio,
   Select,
   DatePicker,
 } from "antd";
@@ -70,7 +69,6 @@ const SalaryExpectation: React.FC = (props:TestProps) => {
 };
 
 
-const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
 const {useState} = React;
@@ -133,11 +131,10 @@ const jobWanted: React.FC = () => {
       resumeReq:{...r1,type:1},
       educationReq:r2,
     };
-    console.log(_data);
-    // const {data} =  await axios.post("/cpe/resume/job",_data);
-    // if(data.data){
-    //   navigate("/search");
-    // }
+    const {data} =  await axios.post("/cpe/resume/job",_data);
+    if(data.data){
+      navigate("/search");
+    }
   };
   const getIndustryCategory = async() => {
     const {data} = await axios.get("/sys/industry_category/get_cache_tree");
@@ -273,12 +270,11 @@ const jobWanted: React.FC = () => {
                     </div>
                   </Form.Item>
                   
-                  <Form.Item className="formItemTwo"> </Form.Item>
                   <Form.Item label="参加工作时间" name='workTime' rules={[{ required: true, message:"请填写参加工作时间"  }]}>
                     <DatePicker placeholder="请选择参加工作时间" />
                   </Form.Item>
                   <Form.Item label="个人优势" name="merit" className="formFloat">
-                    <TextArea rows={5} placeholder="您可以总结一下您的工作成果，向HR展示您的擅长领域 (选填)" />
+                    <TextArea  autoSize={{ minRows: 3, maxRows: 10 }} placeholder="您可以总结一下您的工作成果，向HR展示您的擅长领域 (选填)" />
                   </Form.Item>
                 </Form>
               </div>
@@ -345,7 +341,7 @@ const jobWanted: React.FC = () => {
                   </Form.Item>
                   <Form.Item className="formItemTwo"> </Form.Item>
                   <Form.Item label="在校经历" name="career" >
-                    <TextArea rows={5} placeholder="如：在校期间学习到的主要技能及获得的荣誉" />
+                    <TextArea autoSize={false} rows={5} placeholder="如：在校期间学习到的主要技能及获得的荣誉" />
                   </Form.Item>
                   <Form.Item className="formItemTwo"> </Form.Item>
                 </Form>

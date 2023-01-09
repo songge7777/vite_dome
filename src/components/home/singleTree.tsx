@@ -3,12 +3,7 @@ import "@/styles/components/home/doubleTree.scss";
 import inputRight from "@/img/inputRight.png";
 import classnames from "classnames";
 import {
-  Form,
   Input,
-  Button,
-  Radio,
-  Select,
-  DatePicker,
 } from "antd";
 
 type baseC  = {
@@ -48,7 +43,7 @@ const SingleTree:React.FC = (props:TProps) => {
     {show &&<div className="custom_select_layout">
       <div className="custom_select_layout_title">
         <span>选择行业</span>
-        <span>x</span>
+        <span onClick={()=>{setShow(!show);}}>x</span>
       </div>
       <article className="custom_select_layout_flex">
         {/* list */}

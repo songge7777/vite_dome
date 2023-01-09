@@ -2,6 +2,7 @@ import * as React from "react";
 import LOGO from "@/img/LOGO.png";
 import "@/styles/pages/searchCard.scss";
 import { useNavigate } from "react-router-dom";
+import { workExperience,educationalRequirementsDta } from "@/utils/optionList";
 type Props = {
   data:{}
 }
@@ -11,6 +12,14 @@ const Card:React.FC = (props:Props)=>{
   const goToPage = (data:{}) => {
     const { recruitPostId } = data;
     navigate("/viewPosition",{state:recruitPostId});
+  };
+  const workExperienceFilter =(id)=>{
+    const rs = workExperience().filter(item => Number(item.id) === Number(id));
+    return rs[0] ? rs[0].value :"";
+  };
+  const educationalRequirementsDtaFilter = (id)=>{
+    const rs = educationalRequirementsDta().filter(item => Number(item.id) === Number(id));
+    return rs[0] ? rs[0].value :"";
   };
   return (
     <div className="search_home_lists" onClick={()=>goToPage(data)} >
@@ -22,11 +31,11 @@ const Card:React.FC = (props:Props)=>{
           </div>
           <div className="search_content_layout_lists_div_btns">
             <span className="search_content_layout_lists_div_btns_item">{data.workAddrCityName}</span>
-            <span className="search_content_layout_lists_div_btns_item">{data.workExperience}</span>
-            <span className="search_content_layout_lists_div_btns_item">{data.education}</span>
+            <span className="search_content_layout_lists_div_btns_item">{workExperienceFilter(data.workExperience)}</span>
+            <span className="search_content_layout_lists_div_btns_item">{educationalRequirementsDtaFilter(data.education)}</span>
           </div>
           <div className="search_content_layout_lists_div_bottom">
-            {Array.isArray(data.postKeywordList) && data.postKeywordList.map((i,index) => <span className="search_content_layout_lists_div_bottom_name" key={index}>i</span>)}
+            {Array.isArray(data.postKeywordList) && data.postKeywordList.map((i,index) => <span className="search_content_layout_lists_div_bottom_name" key={index}>{i}</span>)}
           </div>
         </section>
       </div>

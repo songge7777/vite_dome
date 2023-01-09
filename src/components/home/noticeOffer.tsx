@@ -2,6 +2,7 @@ import * as React from "react";
 import uploadIcon from "@/img/upload.png";
 import "@/styles/pages/noticeOffer.scss";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
+import dayjs from "dayjs";
 const baseUrl = import.meta.env.VITE_BASE_URL;
 import {
   Button,
@@ -21,6 +22,7 @@ type Props= {
   cb:()=>void
 };
 const NoticeOffer = (props:Props) =>{
+  console.log("NoticeOffer",props.data);
   const {data,cb} = props;
   const [dataItem, setDataItem] = React.useState({});
   const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -266,11 +268,10 @@ const NoticeOffer = (props:Props) =>{
       </section>
       <section className="InterviewList_content_layout_lists_bottom">
         <div className="InterviewList_content_layout_lists_method">
-          {/* 面试类型：1线下面试、2腾讯会议 */}
           拟录用通知
         </div>
         <div className="InterviewList_content_layout_lists_address">
-          {Number(data.interviewType) === 1 ? data.interviewAddress : "关于支持工程师的面试会议"}
+          {dayjs(data.employTime).format("YYYY-MM-DD hh:mm")}
         </div>
         <div className="InterviewList_content_layout_lists_time">
           <span>
@@ -278,7 +279,7 @@ const NoticeOffer = (props:Props) =>{
           </span>
         </div>
         <div>
-          {filterStatus(data.genStatus)}{data.genStatus}
+          {filterStatus(data.genStatus)}
         </div>
         <div className="InterviewList_content_layout_lists_result">
           {
@@ -295,6 +296,8 @@ const NoticeOffer = (props:Props) =>{
           }
           {
             Number(data.genStatus) == 500 ? <div> 候选人拒绝接受</div> : ""
+          }
+          {
           }
           {
             Number(!data.genStatus)?<React.Fragment>

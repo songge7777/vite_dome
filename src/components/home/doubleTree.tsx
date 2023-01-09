@@ -22,12 +22,14 @@ type TProps = {
   inputNode:React.ReactNode;
   single: boolean;
   value?:String,
+  placeholder?: String,
+  name?: String,
   onChange?:()=>{},
   cb:()=>{}
 }
 
 const DoubleTree:React.FC = (props:TProps) => {
-  const {data,cb,inputNode,single,onChange,name} = props;
+  const {data,cb,inputNode,single,onChange,name,placeholder} = props;
   const [show,setShow] = React.useState(false);
   const [secondData,setSecondData] = React.useState([]);
   const [current,setCurrent] = React.useState({});
@@ -55,14 +57,14 @@ const DoubleTree:React.FC = (props:TProps) => {
   return <div className="custom_select">
     {/* 下拉 */}
     <div onClick={()=>{setShow(!show);}} >
-      {inputNode ? inputNode :<Input value={currentValue} />}
+      {inputNode ? inputNode :<Input value={currentValue} placeholder={placeholder}  />}
     </div>
     {show &&<div className={classnames("custom_select_layout",{
       "custom_select_NoSingle": !single 
     })}>
       <div className="custom_select_layout_title">
         <span>选择职位</span>
-        <span>x</span>
+        <span  onClick={()=>{setShow(!show);}} >x</span>
       </div>
       <article className="custom_select_layout_flex">
         {/* list */}
