@@ -35,6 +35,7 @@ const MessagePostChildren:React.FC = (props:MessageProps) => {
     console.log(item);
   };
   const arrFilter = () => {
+    if(!dataItem.length) return undefined;
     return dataItem.filter(item => {
       if(!index) return true;
       return Number(item.status) === Number(index);

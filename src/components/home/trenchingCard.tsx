@@ -102,7 +102,7 @@ const TrenchingCard:React.FC = (props:Props) =>{
           </div>
           <div className="trenching_content_layout_lists_div_title">
             <span className="trenching_content_layout_lists_div_title_left">{data.postName}</span>
-            <span className="trenching_content_layout_lists_div_title_right">{`${data.salaryMin/10000}万-${data.salaryMax}·${data.salaryNum}薪`}</span>
+            <span className="trenching_content_layout_lists_div_title_right">{`${data.salaryMin/1000}万-${data.salaryMax/1000}万·${data.salaryNum}薪`}</span>
           </div>
           <div className="trenching_content_layout_lists_div_btns">
             <span className="trenching_content_layout_lists_div_btns_item">{data.workAddrCityName}</span>

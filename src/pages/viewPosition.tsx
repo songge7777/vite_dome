@@ -11,6 +11,7 @@ import "@/styles/pages/viewPosition.scss";
 import AMapLoader from "@amap/amap-jsapi-loader";
 import { useNavigate ,useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { workExperience,educationalRequirementsDta } from "@/utils/optionList";
 
 import axios from "@/api/axios";
 import { Button,message,Modal } from "antd";
@@ -139,6 +140,17 @@ const ViewEnterprise = () => {
         </div>
     });
   };
+  const workExperienceFilter =(id)=>{
+    const rs = workExperience().filter(item => Number(item.id) === Number(id));
+    return rs[0] ? rs[0].value :"";
+  };
+  const educationalRequirementsDtaFilter = (id)=>{
+    const rs = educationalRequirementsDta().filter(item => Number(item.id) === Number(id));
+    return rs[0] ? rs[0].value :"";
+  };
+  const goToPage = () => {
+    navigate("/viewPosition",{state:routeConfig.state});
+  };
   React.useEffect(()=>{
     getInit();
   },[]);
@@ -158,9 +170,9 @@ const ViewEnterprise = () => {
                   <img src={Address} alt="" />
                   <span>{positionData.workAddrCityName}</span>
                   <img src={Experience} alt="" />
-                  <span>{positionData.workExperience}年</span>
+                  <span>{workExperienceFilter(positionData.workExperience)}</span>
                   <img src={Education} alt="" />
-                  <span>{positionData.education}</span>
+                  <span>{educationalRequirementsDtaFilter(positionData.education)}</span>
                   <img src={FullTime} alt="" />
                   <span>{positionData.workNature}</span>
                   <img src={People} alt="" />
@@ -253,7 +265,7 @@ const ViewEnterprise = () => {
             </div>
             <div className="right_divList">
               <div className="right_divList_title">相似岗位</div>
-              {recruitPostData && recruitPostData.map((item,index)=> <section key={index} className="right_divList_section">
+              {recruitPostData && recruitPostData.map((item,index)=> <section key={index} className="right_divList_section"  onClick={goToPage} >
                 <div className="right_divList_section_top">
                   <span className="right_divList_section_top_name">{item.postName}</span>
                   <span className="right_divList_section_top_money">{item.salaryMin/10000}万-{item.salaryMax/10000}万*${item.salaryNum}薪水</span>

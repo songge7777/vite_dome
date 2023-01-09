@@ -113,6 +113,10 @@ export const identityStatusData = ()=>{
 export const educationData = ()=>{
   return [
     {
+      id:0,
+      value:"不限",
+    },
+    {
       id:10203,
       value:"高中及以下"
     },
@@ -202,6 +206,10 @@ export const searchCityData = ()=>{
  */
 export const educationalRequirementsDta = ()=>{
   return [
+    {
+      id:0,
+      value:"不限",
+    },
     {
       id:10203,
       value:"高中及以下"

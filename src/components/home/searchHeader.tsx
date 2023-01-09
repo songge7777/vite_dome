@@ -270,6 +270,7 @@ const SearchHeader:React.FC =  (props:Props) =>{
             <span>公司规模:</span>
             <div className="search_header_layout_list_selectOptionItem">
               <Select placeholder="请选择"
+                className="selectL"
                 onChange={(e)=>{
                   changeDataFn("companyScale",e);
                 }}

@@ -29,7 +29,7 @@ const floatDiv:React.FC = (item,initData) => {
       <span>{item.fileName}</span>
     </div>
     <div className="floatDiv_bottom">
-      <span>下载</span>
+      <a href={item.fileUrl}>下载</a>
       <span onClick={()=>deleteFn(item.id)} >删除</span>
     </div>
   </div>;

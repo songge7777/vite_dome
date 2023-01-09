@@ -21,6 +21,8 @@
       font-size: 16px;
       font-weight: 500;
       color: #343130;
+      width: 200px;
+      @include textHidden();
     }
     &_method {
       width: 80px;

@@ -267,9 +267,12 @@ const NoticeOffer = (props:Props) =>{
         </div>
       </section>
       <section className="InterviewList_content_layout_lists_bottom">
-        <div className="InterviewList_content_layout_lists_method">
+        {data.noticeId &&<div className="InterviewList_content_layout_lists_method">
           拟录用通知
-        </div>
+        </div>}
+        {data.employNoticeId &&<div className="InterviewList_content_layout_lists_method">
+          入职通知
+        </div>}
         <div className="InterviewList_content_layout_lists_address">
           {dayjs(data.employTime).format("YYYY-MM-DD hh:mm")}
         </div>
