@@ -499,7 +499,7 @@ const ResumeManagement = () => {
     const newR = {
       name:rs.name,
       jobMent:Number(rs.jobMent),
-      birthday:dayjs(`${rs.workTime}`),
+      birthday:dayjs(`${rs.birthday}`),
       sex:rs.sex,
       wx:rs.wx,
       email:rs.email,
