@@ -64,8 +64,8 @@ const InterviewListCard = (props:Props) =>{
       <section className="InterviewList_content_layout_lists_bottom">
         <div className="InterviewList_content_layout_lists_method">
           {/* 面试类型：1线下面试、2腾讯会议 */}
-          {Number(data.interviewType) === 1 && Number(data.interviewResult === 1) ? "线下面试" :""}
-          {Number(data.interviewType) === 2 && Number(data.interviewResult === 1)? "腾讯会议" :""}
+          {Number(data.interviewType) === 1 ? "线下面试" :""}
+          {Number(data.interviewType) === 2 ? "腾讯会议" :""}
         </div>
         <div className="InterviewList_content_layout_lists_address">
           {Number(data.interviewType) === 1 ? data.interviewAddress : "关于支持工程师的面试会议"}
