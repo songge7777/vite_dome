@@ -292,7 +292,7 @@ const NoticeOffer = (props:Props) =>{
             Number(data.genStatus) == 200 ? <Button onClick={()=>lookFn(data)}>查看</Button> : ""
           }
           {
-            Number(data.genStatus) == 300 ? <div>资料审核不通过</div> : ""
+            Number(data.genStatus) == 300 ? <Button onClick={()=>uploadFn(data)}>上传资料</Button> : ""
           }
           {
             Number(data.genStatus) == 400 ? <div> 资料审核通过</div> : ""
