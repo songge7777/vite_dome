@@ -199,45 +199,50 @@ const ResumeManagement = () => {
     console.log("routeConfig",routeConfig);
   },[]);
   const inputValidator = (rule: RuleObject, value: StoreValue, callback: (error?: string) => void):Promise<void | any> | void =>{
-    if(!value) return callback();
-    if(value.length < 2 || value.length >50){
-      callback("2-50个字以内");
-    }else{
-      callback();
-    }
+    // if(!value) return callback();
+    callback();
+    // if(value.length < 2 || value.length >2000){
+    //   callback("2000个字以内");
+    // }else{
+    //   callback();
+    // }
   };
   const submitFormData1 = async () => {
-    const data = await formOne.getFieldsValue();
-    data.birthday = dayjs(data.birthday).format("YYYY-MM-DD");
-    data.workTime = dayjs(data.workTime).format("YYYY-MM-DD");
-    // 新增
-    // type c端口 type 默认为1
-    if(!resumeId){
-      const {data:rs} = await axios.post("/cpe/resume/single",{...data,type:1});
-      if(rs.code === 200 ){
-        message.success("新增成功");
-      }else{
-        message.success(rs.data);
+    try {
+      const rs = await formOne.validateFields(["name","jobMent","sex","phone","birthday","wx","jobIdentity","email","workTime"]);
+      console.log("------1",rs);
+      const data = await formOne.getFieldsValue();
+      data.birthday = dayjs(data.birthday).format("YYYY-MM-DD");
+      data.workTime = dayjs(data.workTime).format("YYYY-MM-DD");
+      // 新增
+      // type c端口 type 默认为1
+      if(!resumeId){
+        const {data:rs} = await axios.post("/cpe/resume/single",{...data,type:1});
+        if(rs.code === 200 ){
+          message.success("新增成功");
+        }else{
+          message.success(rs.data);
+        }
+      } else {
+        const {data:rs} = await axios.put("/cpe/resume/single",{
+          ...data,
+          type:1,
+          resumeId
+        });
+        if(rs.code === 200 ){
+          message.success("修改成功");
+        }else{
+          message.success(rs.data);
+        }
       }
-    } else {
-      const {data:rs} = await axios.put("/cpe/resume/single",{
-        ...data,
-        type:1,
-        resumeId
-      });
-      if(rs.code === 200 ){
-        message.success("修改成功");
-      }else{
-        message.success(rs.data);
-      }
+      // 清空 没写
+      setEdit1(false);
+      getData1();
+    } catch (error) {
+      console.log("error1",error);
     }
-
-    // 清空 没写
-    setEdit1(false);
-    getData1();
   };
-  const submitFormData2 = async () => {
-       
+  const submitFormData2 = async () => {       
     const {data:rs} =await axios.put("/cpe/resume/single",{merit,resumeId, type:1});
     if(rs.code === 200 ){
       message.success("修改成功");
@@ -251,45 +256,69 @@ const ResumeManagement = () => {
   };
   const submitFormData3 = async(id:number|string)=>{
     const data = await formTwo.getFieldsValue();
+    await formTwo.validateFields();
     if(data.salaryExpectation){
       data["salaryMin"] = data.salaryExpectation[0];
       data["salaryMax"] = data.salaryExpectation[1];
     }
     // 新增
     if(!id){
-      const rs = await axios.post("/cpe/resume/post",{
+      const {data:rs} = await axios.post("/cpe/resume/post",{
         ...data,
         workCityName:cityFilter(data.workCityCode),
         resumeId
       });
+      if(rs.code === 200 ){
+        message.success("修改成功");
+      }else{
+        message.success(rs.data);
+      }
     } else {
-      const rs = await axios.put("/cpe/resume/post",{
+      const {data:rs} = await axios.put("/cpe/resume/post",{
         ...data,
         workCityName:cityFilter(data.workCityCode),
         id,
         resumeId
       });
+      if(rs.code === 200 ){
+        message.success("修改成功");
+      }else{
+        message.success(rs.data);
+      }
     }
     // 刷新
     getData3(resumeId);
     setEdit3(false);
   };
   const submitFormData4 = async(id?: number | string)=>{
+    const data1 = await formThree.getFieldsValue();
+    console.log("data",data1);
+    await formThree.validateFields();
     const data = await formThree.getFieldsValue();
     data.workDateStart = dayjs(data.workDate[0]).format("YYYY-MM-DD");
     data.workDateEnd = dayjs(data.workDate[1]).format("YYYY-MM-DD");
     // 新增
     if(!id){
-      const rs = await axios.post("/cpe/resume/work",{
+      const {data:rs}  = await axios.post("/cpe/resume/work",{
         ...data,
         resumeId
       });
+      if(rs.code === 200 ){
+        message.success("修改成功");
+      }else{
+        message.success(rs.data);
+      }
     } else {
-      const rs = await axios.put("/cpe/resume/work",{
+      const {data:rs}  = await axios.put("/cpe/resume/work",{
         ...data,
         resumeId,
         id
       });
+      if(rs.code === 200 ){
+        message.success("修改成功");
+      }else{
+        message.success(rs.data);
+      }
     }
     getData4(resumeId);
     setEdit4(false);
@@ -318,6 +347,7 @@ const ResumeManagement = () => {
   };
   
   const submitFormData5 = async(id?: number | string)=>{
+    await formFour.validateFields();
     const data = await formFour.getFieldsValue();
     // data.projectDate = [dayjs(data.projectDate[0]).format("YYYY-MM-DD"),dayjs(data.projectDate[1]).format("YYYY-MM-DD")];
     // projectDateStart projectDateEnd
@@ -327,16 +357,26 @@ const ResumeManagement = () => {
     }
     // 新增
     if(!id){
-      const rs = await axios.post("/cpe/resume/project",{
+      const {data:rs} = await axios.post("/cpe/resume/project",{
         resumeId,
         ...data,
       });
+      if(rs.code === 200 ){
+        message.success("修改成功");
+      }else{
+        message.success(rs.data);
+      }
     } else {
-      const rs = await axios.put("/cpe/resume/project",{
+      const {data:rs} = await axios.put("/cpe/resume/project",{
         ...data,
         resumeId,
         id
       });
+      if(rs.code === 200 ){
+        message.success("修改成功");
+      }else{
+        message.success(rs.data);
+      }
     }
     getData5(resumeId);
     setEdit5(false);
@@ -351,37 +391,58 @@ const ResumeManagement = () => {
     }
     // 新增
     if(!id){
-      const rs = await axios.post("/cpe/resume/education",{
+      const {data:rs}  = await axios.post("/cpe/resume/education",{
         resumeId,
         ...data,
       });
+      if(rs.code === 200 ){
+        message.success("修改成功");
+      }else{
+        message.success(rs.data);
+      }
     } else {
-      const rs = await axios.put("/cpe/resume/education",{
+      const {data:rs}  = await axios.put("/cpe/resume/education",{
         ...data,
         resumeId,
         id
       });
+      if(rs.code === 200 ){
+        message.success("修改成功");
+      }else{
+        message.success(rs.data);
+      }
     }
     getData6(resumeId);
     setEdit6(false);
   };
   const submitFormData7 = async(id?: number | string)=>{
+    await formSix.validateFields();
     const data = await formSix.getFieldsValue();
     if(data.gainDate){
       data.gainDate = dayjs(data.gainDate).format("YYYY-MM-DD");
     }
     // 新增
     if(!id){
-      const rs = await axios.post("/cpe/resume/certificate",{
+      const {data:rs}  = await axios.post("/cpe/resume/certificate",{
         ...data,
         resumeId,
       });
+      if(rs.code === 200 ){
+        message.success("修改成功");
+      }else{
+        message.success(rs.data);
+      }
     } else {
-      const rs = await axios.put("/cpe/resume/certificate",{
+      const {data:rs}  = await axios.put("/cpe/resume/certificate",{
         ...data,
         resumeId,
         id
       });
+      if(rs.code === 200 ){
+        message.success("修改成功");
+      }else{
+        message.success(rs.data);
+      }
     }
     getData7(resumeId);
     setEdit7(false);
@@ -622,13 +683,13 @@ const ResumeManagement = () => {
                           >女</div>
                         </div>
                       </Form.Item>
-                      <Form.Item label="手机号码" name="phone" rules={[{ required: true, message:"请输入姓名"},{validator:inputValidator }]}>
+                      <Form.Item label="手机号码" name="phone" rules={[{ required: true, message:"请输入手机号码"},{validator:inputValidator }]}>
                         <Input placeholder="请输入手机号码" />
                       </Form.Item>
                       <Form.Item label="出生日期" name="birthday"rules={[{ required: true, message:"请选择出生日期"}]}>
                         <DatePicker placeholder="请选择时间" />
                       </Form.Item>
-                      <Form.Item label="微信" name="wx" rules={[{ required: true, message:"请输入姓名"},{validator:inputValidator }]}>
+                      <Form.Item label="微信" name="wx" rules={[{ required: true, message:"请输入微信"},{validator:inputValidator }]}>
                         <Input placeholder="请输入微信" />
                       </Form.Item>
                       <Form.Item label="求职身份"  name='jobIdentity' rules={[{ required: true, message:"请选择职身份"  }]}>
@@ -650,12 +711,12 @@ const ResumeManagement = () => {
                           >学生</div>
                         </div>
                       </Form.Item>
-                      <Form.Item label="邮箱" name="email" rules={[{ required: true, message:"请输入姓名"},{validator:inputValidator }]}>
+                      <Form.Item label="邮箱" name="email" rules={[{ required: true, message:"请输入微信"},{validator:inputValidator }]}>
                         <Input placeholder="请输入微信" />
                       </Form.Item>
                   
                       <Form.Item label="参加工作时间" name='workTime' rules={[{ required: true, message:"请填写参加工作时间"  }]}>
-                        <DatePicker placeholder="请选择时间" />
+                        <DatePicker placeholder="请选择参加工作时间" />
                       </Form.Item>
                       <Form.Item className="formItemTwo">
                         <Button onClick={()=>{
@@ -715,12 +776,13 @@ const ResumeManagement = () => {
                               <div className="part-3_list">
                                 <div className="part-3_list_span" onClick={()=>{
                                   setEdit3(true);
+                                  console.log(item);
                                   formTwo.setFieldsValue({
                                     wantedType:item.wantedType,
                                     workCityCode:item.workCityCode,
                                     industryCategoryCode: item.industryCategoryCode,
                                     postCategoryCode:item.postCategoryCode,
-                                    salaryExpectation:[],
+                                    salaryExpectation:[item.salaryMin,item.salaryMax],
                                     id:item.id
                                   });
                                   setFormTwoData(item);
@@ -765,7 +827,7 @@ const ResumeManagement = () => {
                         initialValues={{ layout: "vertical",...formTwoData }}
                         className="jobWanted_options_layout_cartTop_content_right_form"
                       >
-                        <Form.Item label="求职类型" name="wantedType" rules={[{ required: true, message:"请选择期望职位"}]}>
+                        <Form.Item label="求职类型" name="wantedType" rules={[{ required: true, message:"请选择求职类型"}]}>
                           <div onChange={()=>{}} className="formRadio">
                             <div
                               className={classnames("formRadio_item",
@@ -881,7 +943,7 @@ const ResumeManagement = () => {
                           <Input placeholder="请输入姓名" />
                         </Form.Item>
                         <Form.Item label="所属行业" name="industryCategoryCode"  rules={[{ required: true, message:"请选择所属行业"}]}>
-                          <SingleTree placeholder="请选择所属行业" data={industryCategoryData} cb={industryCategoryDataCb} name={formThreeData.postCategoryName}/>
+                          <SingleTree placeholder="请选择所属行业" data={industryCategoryData} cb={industryCategoryDataCb} name={formThreeData.industryCategoryName}/>
                         </Form.Item>
                         <Form.Item label="担任职位" name="postCategoryCode" rules={[{ required: true, message:"请选择担任职位"}]}>
                           <DoubleTree data={postCategoryData} cb={postCategoryDataCb} name={formThreeData.postCategoryName}/>
@@ -889,8 +951,8 @@ const ResumeManagement = () => {
                         <Form.Item label="在职时间" name="workDate" rules={[{ required: true, message:"请选择职时间"}]}>
                           <RangePicker />
                         </Form.Item>
-                        <Form.Item label="汇报对象" name="reportingObject" rules={[{ required: true, message:"请输入汇报对象"},{validator:inputValidator }]}>
-                          <Input placeholder="请输入姓名" />
+                        <Form.Item label="汇报对象" name="reportingObject" >
+                          <Input placeholder="请输入汇报对象" />
                         </Form.Item>
                         <Form.Item>
                         </Form.Item>
@@ -968,17 +1030,19 @@ const ResumeManagement = () => {
                     initialValues={{ layout: "vertical",...formFourData }}
                     className="jobWanted_options_layout_cartTop_content_right_form"
                   >
-                    <Form.Item label="项目名称" name="projectName" rules={[{ required: true, message:"请输入姓名"},{validator:inputValidator }]}>
-                      <Input placeholder="请输入姓名" />
+                    <Form.Item label="项目名称" name="projectName" rules={[{ required: true, message:"请输入项目名称"},{validator:inputValidator }]}>
+                      <Input placeholder="请输入项目名称" />
                     </Form.Item>
-                    <Form.Item label="项目角色" name="projectPost"  rules={[{ required: true, message:"请选择行业"}]}>
-                      <DoubleTree data={postCategoryData} cb={postCategoryDataCb} name={formFourData.projectPostName}/>
+                    <Form.Item label="项目角色" name="projectPost"  rules={[{ required: true, message:"请选择项目角色"}]}>
+                      <DoubleTree placeholder="请输入项目角色" data={postCategoryData} cb={postCategoryDataCb} name={formFourData.projectPostName}/>
                     </Form.Item>
                     {/* projectDateStart projectDateEnd  */}
-                    <Form.Item label="项目时间" name="projectDate" rules={[{ required: true, message:"请选择期望职位"}]}>
-                      <RangePicker placeholder="请选择出生日期" />
+                    <Form.Item label="项目时间" name="projectDate" rules={[{ required: true, message:"请选择项目时间"}]}>
+                      <RangePicker placeholder="请选择项目时间" />
                     </Form.Item>
-                    <Form.Item label="项目描述" name="projectDesc" rules={[{ required: true, message:"请输入姓名"},{validator:inputValidator }]}>
+                    <Form.Item >
+                    </Form.Item>
+                    <Form.Item label="项目描述" name="projectDesc" className="full" rules={[{ required: true, message:"请输入项目描述"},{validator:inputValidator }]}>
                       <TextArea autoSize={{ minRows: 3, maxRows: 10 }} placeholder="请输入项目描述"/>
                     </Form.Item>
                   </Form>
@@ -1050,8 +1114,8 @@ const ResumeManagement = () => {
                     initialValues={{ layout: "vertical",...formFiveData }}
                     className="jobWanted_options_layout_cartTop_content_right_form"
                   >
-                    <Form.Item label="学校名称" name="schoolName" rules={[{ required: true, message:"请输入姓名"}]}>
-                      <Input placeholder="请输入姓名" />
+                    <Form.Item label="学校名称" name="schoolName" rules={[{ required: true, message:"请输入学校名称"}]}>
+                      <Input placeholder="请输入学校名称" />
                     </Form.Item>
                     <Form.Item label="求职类型" name="educationType" rules={[{ required: true, message:"请选择求职类型"}]}>
                       <div onChange={()=>{}} className="formRadio">
@@ -1083,11 +1147,11 @@ const ResumeManagement = () => {
                     <Form.Item label="专业" name="major" rules={[{ required: true, message:"请输入专业"}]}>
                       <Input placeholder="如：计算机" />
                     </Form.Item>
-                    <Form.Item label="时间" name="educationDate" rules={[{ required: true, message:"请选择期望职位"}]}>
-                      <RangePicker placeholder="请选择出生日期" />
+                    <Form.Item label="时间" name="educationDate" rules={[{ required: true, message:"请选择时间"}]}>
+                      <RangePicker placeholder="请选择时间" />
                     </Form.Item>
                     <Form.Item className="career"> </Form.Item>
-                    <Form.Item label="在校经历" className="full" name="career" rules={[{ required: true, message:"请输入姓名"},{validator:inputValidator }]}>
+                    <Form.Item label="在校经历" className="full" name="career" rules={[{ required: true, message:"请输入在校经历"},{validator:inputValidator }]}>
                       <TextArea autoSize={{ minRows: 3, maxRows: 10 }} placeholder="请输入在校经历"/>
                     </Form.Item>
                   </Form>
@@ -1144,11 +1208,11 @@ const ResumeManagement = () => {
                     initialValues={{ layout: "vertical" }}
                     className="jobWanted_options_layout_cartTop_content_right_form"
                   >
-                    <Form.Item label="证书名字" name="certificateName" rules={[{ required: true, message:"请输入姓名"},{validator:inputValidator }]}>
-                      <Input placeholder="请输入证书名" />
+                    <Form.Item label="证书名字" name="certificateName" rules={[{ required: true, message:"请输入证书名字"}]}>
+                      <Input placeholder="请输入证书名字" />
                     </Form.Item>
-                    <Form.Item label="获取证书时间" name="gainDate" rules={[{ required: true, message:"请选择期望职位"}]}>
-                      <DatePicker placeholder="请选时间" />
+                    <Form.Item label="获取证书时间" name="gainDate" rules={[{ required: true, message:"请选择获取证书时间"}]}>
+                      <DatePicker placeholder="请选获取证书时间" />
                     </Form.Item>
                   </Form>
                   <Button onClick={()=>setEdit7(false)}>取消</Button>

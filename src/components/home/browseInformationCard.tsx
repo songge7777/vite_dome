@@ -15,9 +15,10 @@ const BrowseInformationCard = () => {
       query:{}
     };
     const {data:rs} = await axios.post("/cpe/post/all/browse",data);
-    if(rs.status === 200){
+    console.log("我看过的rs=>>", rs);
+    if(Number(rs.code) === 200){
       setTrenchingData(rs.data.rows);
-      // console.log("我看过的rs=>>", rs.data);
+      console.log("我看过的rs=>>", rs.data);
     }
   }; 
   // 看过我的-列表
@@ -49,7 +50,7 @@ const BrowseInformationCard = () => {
       {/* tab */}
       <div className="browseInformation_tab">
         <span className={classNames("browseInformation_tab_left",{"browseInformation_tab_active":currentIndex===1})}  onClick={()=>clickFn(1)}>我看过</span>
-        <span className={classNames("browseInformation_tab_right",{"browseInformation_tab_active":currentIndex===2})} onClick={()=>clickFn(2)}>看过我</span>
+        <span className={classNames("browseInformation_tab_right",{"browseInformation_tab_active":currentIndex===2})} onClick={()=>clickFn(2)}>对我感兴趣</span>
       </div>
       {/* list */}
       { Number(currentIndex) === 1 && trenchingData && trenchingData.map((item,index) => <div key={index} className="browseInformation_list">

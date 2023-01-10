@@ -154,8 +154,8 @@ const jobWanted: React.FC = () => {
   },[]);
   const inputValidator = (rule: RuleObject, value: StoreValue, callback: (error?: string) => void):Promise<void | any> | void =>{
     if(!value) return callback();
-    if(value.length < 2 || value.length >50){
-      callback("2-50个字以内");
+    if(value.length < 2 || value.length >2000){
+      callback("2000个字以内");
     }else{
       callback();
     }
