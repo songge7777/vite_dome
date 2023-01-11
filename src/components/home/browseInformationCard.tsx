@@ -3,10 +3,33 @@ import "@/styles/pages/browseInformationCard.scss";
 import call from "@/img/call.png";
 import axios from "@/api/axios";
 import classNames from "classnames";
+import { useSelector } from "react-redux";
+import { Modal  } from "antd";
+import { useNavigate } from "react-router-dom";
 const BrowseInformationCard = () => {
+  const { loginInfo } = useSelector((store: any) => store.login);
   const [currentIndex,setCurrentIndex] = React.useState(1);
   const [trenchingData,setTrenchingData] = React.useState([]);
   const [tab6List,setTab6List] = React.useState([]);
+  const navigate = useNavigate();
+  const callFn = async(item) => {
+    if(!loginInfo.userId){
+      navigate("/login");
+      return;
+    }
+    const {data:rs} = await axios.put("/cpe/post/interact",{
+      recruitPostId: item.recruitPostId
+    });
+    Modal.success({
+      title: "联系方式:",
+      width: "300px",
+      okText: "我知道了",
+      content: 
+        <div>
+          <p>{rs.data}</p>
+        </div>
+    });
+  };
   // 我看过的-列表
   const getTab5List = async () => {
     const data = {
@@ -42,6 +65,10 @@ const BrowseInformationCard = () => {
 
     }
   };
+  const goToPage = (item) => {
+    const { recruitPostId } = item;
+    navigate("/viewPosition",{state:recruitPostId});
+  };
   React.useEffect(()=>{
     getTab5List();
   },[]);
@@ -53,11 +80,13 @@ const BrowseInformationCard = () => {
         <span className={classNames("browseInformation_tab_right",{"browseInformation_tab_active":currentIndex===2})} onClick={()=>clickFn(2)}>对我感兴趣</span>
       </div>
       {/* list */}
-      { Number(currentIndex) === 1 && trenchingData && trenchingData.map((item,index) => <div key={index} className="browseInformation_list">
+      { Number(currentIndex) === 1 && trenchingData && trenchingData.map((item,index) => <div key={index} className="browseInformation_list"
+        onClick={()=>goToPage(item)}
+      >
         <section className="browseInformation_list_item">
           <div className="browseInformation_list_item_top">
             <span className="browseInformation_list_item_top_position">{item.postName}</span>
-            <span className="browseInformation_list_item_top_money">{item.salaryMin}万-{item.salaryMax}万·{item.salaryNum}薪</span>
+            <span className="browseInformation_list_item_top_money">{Number(item.salaryMin) /10000}万-{Number(item.salaryMax) / 10000}万·{item.salaryNum}薪</span>
           </div>
           <div className="browseInformation_list_item_bottom">
             <span className="browseInformation_list_item_bottom_company">{item.companyName}</span>
@@ -72,7 +101,7 @@ const BrowseInformationCard = () => {
             <img src={item.hrPicture} alt="" />
             <span>{item.hrName}</span>
           </div>
-          <div className="browseInformation_listMe_right">
+          <div className="browseInformation_listMe_right" onClick={()=>callFn(item)}>
             <img src={call}  alt="" />
             <span>立即沟通</span>
           </div>

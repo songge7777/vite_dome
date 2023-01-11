@@ -4,7 +4,7 @@
   "description": "react+ts+vite",
   "main": "index.js",
   "scripts": {
-    "dev": "npm run lint && vite",
+    "dev": "npm run lint && vite --host 0.0.0.0",
     "dev:test": "npm run lint && vite --mode test",
     "build": "npm run lint && vite build --mode development",
     "build:test": "npm run lint && vite build --mode test",

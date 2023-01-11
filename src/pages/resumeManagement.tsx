@@ -1014,7 +1014,7 @@ const ResumeManagement = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="part-5_card_post">{item.projectPost}</div>
+                      <div className="part-5_card_post">{item.projectPostName}</div>
                       <div className="part-5_card_workList">工作内容</div>
                       <div className="part-5_card_workContent">
                         {handleTextarea(item.projectDesc).map((item,index) => <div key={index}>{item}</div>)}
@@ -1100,7 +1100,7 @@ const ResumeManagement = () => {
                     </div>
                     <div className="part-6_card_title">
                       <span className="part-6_card_title_major">{item.major}</span>
-                      <span className="part-6_card_title_time">{item.education} {item.educationType ===1?"全日制":"非全日制"}</span>
+                      <span className="part-6_card_title_time">{item.educationName} {item.educationType ===1?"全日制":"非全日制"}</span>
                     </div>
                     
                   </div>
@@ -1151,7 +1151,7 @@ const ResumeManagement = () => {
                       <RangePicker placeholder="请选择时间" />
                     </Form.Item>
                     <Form.Item className="career"> </Form.Item>
-                    <Form.Item label="在校经历" className="full" name="career" rules={[{ required: true, message:"请输入在校经历"},{validator:inputValidator }]}>
+                    <Form.Item label="在校经历" className="full" name="career">
                       <TextArea autoSize={{ minRows: 3, maxRows: 10 }} placeholder="请输入在校经历"/>
                     </Form.Item>
                   </Form>

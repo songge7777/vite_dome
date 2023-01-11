@@ -53,7 +53,8 @@ const TrenchingCard:React.FC = (props:Props) =>{
       message.success("操作成功");
     }
   };
-  const callFn = async() => {
+  const callFn = async(e) => {
+    e.stopPropagation();
     if(!loginInfo.userId){
       navigate("/login");
       return;

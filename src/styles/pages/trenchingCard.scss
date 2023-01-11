@@ -91,7 +91,7 @@
         margin-bottom: 13px;
         @include flex(row);
         &_item {
-          width: 48px;
+          width: 64px;
           height: 24px;
           border-radius: 3px 3px 3px 3px;
           opacity: 1;
@@ -100,6 +100,7 @@
           padding: 4px;
           box-sizing: content-box;
           background: #f1f2f5;
+          @include textHidden();
         }
       }
       &_personnel {

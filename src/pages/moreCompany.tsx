@@ -7,6 +7,8 @@ import "@/styles/pages/moreCompany.scss";
 import { useNavigate ,useLocation } from "react-router-dom";
 import BrowseInformationCard from "@/components/home/browseInformationCard";
 import axios from "@/api/axios";
+import { useSelector } from "react-redux";
+import { Modal  } from "antd";
 
 const MoreCompany = () => {
   const routeConfig = useLocation();
@@ -15,6 +17,7 @@ const MoreCompany = () => {
   const [companySize,setCompanySize] = React.useState([]);
   const [enterpriseType,setEnterpriseType] = React.useState([]);
   const [dataList,setDataList] = React.useState([]);
+  const { loginInfo } = useSelector((store: any) => store.login);
  
   const getData = async(companyId) => {
     const {data} = await axios.post("/cpe/post/search/company/post",{
@@ -23,6 +26,25 @@ const MoreCompany = () => {
       query:{companyId}
     });
     setDataList(data.data.rows);
+  };
+  const callFn = async(e,item) => {
+    e.stopPropagation();
+    if(!loginInfo.userId){
+      navigate("/login");
+      return;
+    }
+    const {data:rs} = await axios.put("/cpe/post/interact",{
+      recruitPostId: item.recruitPostId
+    });
+    Modal.success({
+      title: "联系方式:",
+      width: "300px",
+      okText: "我知道了",
+      content: 
+        <div>
+          <p>{rs.data}</p>
+        </div>
+    });
   };
   // 字典 查数据
   const getT = async(key) => {
@@ -60,7 +82,7 @@ const MoreCompany = () => {
               <div className="top_title">
                 <img src={Address} alt="" />
                 <div className="top_title_info">
-                  <div className="top_title_info_title">东风汽车</div>
+                  <div className="top_title_info_title">{dataItem.companyName}</div>
                   <span>{filter(enterpriseType,dataItem.enterpriseType)}</span>
                   <span>{filter(companySize,dataItem.scale)}</span>
                   <span>{dataItem.companyIndustryCategory}</span>
@@ -87,7 +109,8 @@ const MoreCompany = () => {
                   <section className="main_right">
                     <img className="main_right_img" src={item.hrPicture} alt="" />
                     <span className="main_right_hr">{item.hrName}/HR</span>
-                    <div className="main_right_call">
+                    <div className="main_right_call"
+                      onClick={(e)=>callFn(e,item)}>
                       <img src={call}  alt="" />
                       <span>立即沟通</span>
                     </div>

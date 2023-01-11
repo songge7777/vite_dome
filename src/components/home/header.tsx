@@ -100,9 +100,6 @@ const Card = ()=>{
             <span className="header_top_layout_myResume_btn" onClick={goToResumeManagement}>
               简历
             </span>
-            <span className="header_top_layout_myResume_btn" onClick={goToResumeManagement}>
-              上传
-            </span>
           </div>
           <div className="header_top_layout_form"> 
             {loginInfo.userId ? 

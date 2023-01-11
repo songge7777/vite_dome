@@ -3,6 +3,9 @@ import LOGO from "@/img/LOGO.png";
 import "@/styles/pages/searchCard.scss";
 import { useNavigate } from "react-router-dom";
 import { workExperience,educationalRequirementsDta } from "@/utils/optionList";
+import { useSelector } from "react-redux";
+import axios from "@/api/axios";
+import { Modal  } from "antd";
 type Props = {
   data:{}
 }
@@ -20,6 +23,26 @@ const Card:React.FC = (props:Props)=>{
   const educationalRequirementsDtaFilter = (id)=>{
     const rs = educationalRequirementsDta().filter(item => Number(item.id) === Number(id));
     return rs[0] ? rs[0].value :"";
+  };
+  const { loginInfo } = useSelector((store: any) => store.login);
+  const callFn = async(e,item) => {
+    e.stopPropagation();
+    if(!loginInfo.userId){
+      navigate("/login");
+      return;
+    }
+    const {data:rs} = await axios.put("/cpe/post/interact",{
+      recruitPostId: item.recruitPostId
+    });
+    Modal.success({
+      title: "联系方式:",
+      width: "300px",
+      okText: "我知道了",
+      content: 
+        <div>
+          <p>{rs.data}</p>
+        </div>
+    });
   };
   return (
     <div className="search_home_lists" onClick={()=>goToPage(data)} >
@@ -47,7 +70,9 @@ const Card:React.FC = (props:Props)=>{
             <img src={data.hrPicture}  alt="" />
             <span>{data.hrName}/HR</span>
           </div>
-          <div className="search_content_layout_lists_right_info_call">
+          <div className="search_content_layout_lists_right_info_call"
+            onClick={(e)=>callFn(e,data)}
+          >
             <img src={LOGO}  alt="" />
               立即沟通
           </div>
