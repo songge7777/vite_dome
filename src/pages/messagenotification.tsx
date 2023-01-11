@@ -35,11 +35,14 @@ const MessagePostChildren:React.FC = (props:MessageProps) => {
     console.log(item);
   };
   const arrFilter = () => {
-    if(!dataItem.length) return undefined;
-    return dataItem.filter(item => {
+    console.log("=============>>>>", dataItem);
+    if(!Array.isArray(dataItem)) return [];
+    const arr = dataItem.filter(item => {
       if(!index) return true;
       return Number(item.status) === Number(index);
     });
+    console.log("arr",arr);
+    return arr;
   };
   return <div className="messagePost">
     <div className="messagePost_list">
@@ -81,7 +84,7 @@ const MessagePost:React.FC = () => {
     //   sentTime:"2020-1-1"
     // }];
     if(data.code === 200){
-      setDataItem(data);
+      setDataItem(data.data);
     }
   };
   const onChange = (num) => {
