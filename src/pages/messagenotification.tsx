@@ -35,7 +35,6 @@ const MessagePostChildren:React.FC = (props:MessageProps) => {
     console.log(item);
   };
   const arrFilter = () => {
-    console.log("=============>>>>", dataItem);
     if(!Array.isArray(dataItem)) return [];
     const arr = dataItem.filter(item => {
       if(!index) return true;
