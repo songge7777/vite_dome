@@ -2,7 +2,7 @@ import * as React from "react";
 import LOGO from "@/img/LOGO.png";
 import "@/styles/pages/interviewListCard.scss";
 import { message } from "antd";
-
+import ReactClipboard from "react-clipboardjs-copy";
 import {
   Modal,
   Button,
@@ -23,6 +23,7 @@ type Props= {
 const InterviewListCard = (props:Props) =>{
   const {data,cb} = props;
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [interviewData, setInterviewData ] = React.useState({});
   // 1 线上   2线下
   const [interviewType, setInterviewType] = React.useState<Number>(1);
   // 接受面试
@@ -58,15 +59,26 @@ const InterviewListCard = (props:Props) =>{
     console.log("handleOkNotice");
     setIsModalOpen(false);
   };
-  const clickOfflineInterviewInfo = () => {
+  const clickOfflineInterviewInfo = async(recordId) => {
+    const {data} = await axios.get(`/cpe/post/interview/${recordId}`);
+    console.log("data",data);
+    setInterviewData(data.data);
     setInterviewType(2);
     setIsModalOpen(true);
   };
-  const clickOnlineInterviewInfo = () => {
+  const clickOnlineInterviewInfo = async(recordId) => {
+    const {data} = await axios.get(`/cpe/post/interview/${recordId}`);
+    console.log("data",data);
+    setInterviewData(data.data);
     setInterviewType(1);
     setIsModalOpen(true);
   };
-  console.log("我的面试",data);
+  const copy = () => {
+    const content = document.getElementById("copyText");
+    content.select();
+    document.execCommand("Copy");
+    message.success("复制成功");
+  };
   return (
     <div className="InterviewList_home_lists">
       <section className="InterviewList_content_layout_lists_div">
@@ -80,8 +92,8 @@ const InterviewListCard = (props:Props) =>{
       <section className="InterviewList_content_layout_lists_bottom">
         <div className="InterviewList_content_layout_lists_method">
           {/* 面试类型：1线下面试、2腾讯会议 */}
-          {Number(data.interviewType) === 1 ? <span onClick={clickOfflineInterviewInfo}>线下面试</span> :""}
-          {Number(data.interviewType) === 2 ? <span onClick={clickOnlineInterviewInfo}>腾讯会议</span> :""}
+          {Number(data.interviewType) === 1 ? <span onClick={()=>clickOfflineInterviewInfo(data.recordId)}>线下面试</span> :""}
+          {Number(data.interviewType) === 2 ? <span onClick={()=>clickOnlineInterviewInfo(data.recordId)}>腾讯会议</span> :""}
         </div>
         <div className="InterviewList_content_layout_lists_address">
           {Number(data.interviewType) === 1 ? data.interviewAddress : "关于支持工程师的面试会议"}
@@ -105,49 +117,51 @@ const InterviewListCard = (props:Props) =>{
         }
       </section>
       { isModalOpen && <Modal className="hiddenBtn" title="查看预约" okText="接受" cancelText="拒绝" width={720} open={isModalOpen} onOk={handleOkNotice} onCancel={()=>setIsModalOpen(false)} >
-        <Row>
+        <Row className="marginTop">
           <Col span={12} >
             <span>姓名:</span>
-            <span>xxxx</span>
+            <span>{interviewData.name}</span>
           </Col>
           <Col span={12} >
-            <span>岗位:</span>
-            <span>xxxx</span>
+            <span id="textAreas">岗位:</span>
+            <span>{interviewData.postName}</span>
           </Col>
         </Row>
-        <Row>
+        <Row className="marginTop">
           <Col span={12} >
             <span>招聘专员:</span>
-            <span>xxxx</span>
+            <span>{interviewData.hrName}</span>
           </Col>
           <Col span={12} >
             <span>面试方式:</span>
-            <span>xxxx</span>
+            <span>{Number(interviewData.interviewType) === 1?"线下面试" :"腾讯会议"}</span>
           </Col>
         </Row>
-        <Row>
+        <Row className="marginTop">
           <Col span={12} >
             <span>企业联系人:</span>
-            <span>xxxx</span>
+            <span>{interviewData.contactsName}</span>
           </Col>
           <Col span={12} >
             <span>面试时间:</span>
-            <span>xxxx</span>
+            <span>{interviewData.interviewTime}</span>
           </Col>
         </Row>
-        <Row>
+        <Row className="marginTop">
           { Number(interviewType) === 2 &&<Col span={24} >
             <span>面试地点:</span>
-            <span>xxxx</span>
+            <span>{interviewData.interviewAddress}</span>
           </Col>
           }
           { Number(interviewType) === 1 &&<Col span={24} >
             <span>会议信息:</span>
-            <span>xxxx</span>
+            <span>{interviewData.meeting}</span>
+            <Button onClick={copy}>复制</Button>
           </Col>
           }
+          <input id="copyText"  value={interviewData.meeting} />
         </Row>
-        <Row>
+        <Row className="marginTop">
           <Col span={2} offset={19}>
             <Button onClick={handleOkNotice}>确认</Button>
           </Col>

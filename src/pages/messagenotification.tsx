@@ -62,7 +62,8 @@ const MessagePost:React.FC = () => {
   const [dataItem,setDataItem] = React.useState([]);
   const [index,setIndex] = React.useState("");
   const getMessage = async(_userId)=>{
-    const {data} = await axios.get(`/res/msg/all/${userId}`);
+    const {data} = await axios.get(`/res/msg/a
+      ll/${userId}`);
     // const data = [{
     //   msgId:"1",
     //   userId:"1",
