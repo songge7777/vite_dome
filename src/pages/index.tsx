@@ -38,7 +38,7 @@ const Counter = () =>{
           <div className="home_banner_layout_search">
             <InputSearch cb={searchList}/>
           </div>
-          {!loginInfo.userId && <div className="home_banner_layout_form"><LoginCard /></div>} 
+          {!loginInfo || !loginInfo.userId && <div className="home_banner_layout_form"><LoginCard /></div>} 
         </div>
       </div>
       <div className="home_content">
