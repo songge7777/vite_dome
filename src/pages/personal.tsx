@@ -13,7 +13,6 @@ import { useSelector } from "react-redux";
 const Personal = () => { 
   const [info, setInfo] = React.useState({});
   const [getListData,setGetListData] = React.useState([]);
-  const [listData,setListData] = React.useState([]);
   const { loginInfo } = useSelector((store: any) => store.login);
   const initData = async(searchData:any) => {
     const data = {
@@ -61,7 +60,7 @@ const Personal = () => {
           </div>
           <div className="search_lists_content_right">
             {
-              loginInfo.userId ? <React.Fragment>
+              loginInfo && loginInfo.userId ? <React.Fragment>
                 <PersonalInfoCard />
                 <ResumeManagementCard />
                 <BrowseInformationCard />

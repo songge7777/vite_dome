@@ -1225,7 +1225,7 @@ const ResumeManagement = () => {
           </div>
           <div className="resumeM_lists_content_right">
             {
-              loginInfo.userId ? <React.Fragment>
+              loginInfo && loginInfo.userId ? <React.Fragment>
                 <PersonalInfoCard />
                 <ResumeManagementCard />
                 <BrowseInformationCard />

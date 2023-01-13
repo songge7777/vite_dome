@@ -302,7 +302,7 @@ const Personal = () => {
           </div>
           <div className="personalTab_lists_content_right">
             {
-              loginInfo.userId ? <React.Fragment>
+              loginInfo && loginInfo.userId ? <React.Fragment>
                 <PersonalInfoCard />
                 <ResumeManagementCard />
                 <BrowseInformationCard />

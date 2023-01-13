@@ -17,6 +17,9 @@ const Card = ()=>{
   const goToLogin = () => {
     navigate("/login");
   };
+  React.useEffect(()=>{
+    console.log("loginInfo",loginInfo);
+  });
   const goToMessage = () => {
     if(loginInfo.userId){
       navigate(`/messagenotification?userId=${loginInfo.userId}`);
@@ -93,7 +96,7 @@ const Card = ()=>{
         <div className="header_top_layout_right">
           <div className="header_top_layout_myResume"> 
             {
-              loginInfo.userId &&<span className="header_top_layout_myResume_btn" onClick={goToMessage}>
+              loginInfo && loginInfo.userId &&<span className="header_top_layout_myResume_btn" onClick={goToMessage}>
               消息
               </span>
             }
@@ -102,18 +105,19 @@ const Card = ()=>{
             </span>
           </div>
           <div className="header_top_layout_form"> 
-            {loginInfo.userId ? 
-              <Popover placement="bottomRight" content={listBtn} trigger="click">
-                <div className="header_top_layout_form_layout">
-                  <span>{info.name}</span>
-                  <img className="header_top_layout_form_img" src={info.picture || {}} alt="" />
-                </div>
-              </Popover>
-              : <span className="header_top_layout_form_login"
-                onClick={()=>goToLogin()}
-              >
+            {
+              loginInfo && loginInfo && loginInfo.userId ? 
+                <Popover placement="bottomRight" content={listBtn} trigger="click">
+                  <div className="header_top_layout_form_layout">
+                    <span>{info.name}</span>
+                    <img className="header_top_layout_form_img" src={info.picture || {}} alt="" />
+                  </div>
+                </Popover>
+                : <span className="header_top_layout_form_login"
+                  onClick={()=>goToLogin()}
+                >
               登录
-              </span>}
+                </span>}
           </div>
         </div>
       </div>
