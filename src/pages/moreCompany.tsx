@@ -22,7 +22,7 @@ const MoreCompany = () => {
   const getData = async(companyId) => {
     const {data} = await axios.post("/cpe/post/search/company/post",{
       pageNum:1,
-      pageSize:10,
+      pageSize:50,
       query:{companyId}
     });
     setDataList(data.data.rows);

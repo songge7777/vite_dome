@@ -29,7 +29,7 @@ const Personal = () => {
         companyScale:searchData.companyScale,
       },
       pageNum:1,
-      pageSize:10
+      pageSize:50
     };
     const {data:rs} = await axios.post("/cpe/post/search",data);
     console.log("==>1",rs.data);

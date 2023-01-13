@@ -28,15 +28,22 @@ const TrenchingCard:React.FC = (props:Props) =>{
   const [phone,setPhone] = React.useState("");
   const postedFn = () => {
     console.log("已投递 data",data,type);
+    const { sendStatus } = data;
     if(Number(type) === 0) return;
     if(Number(type) === 3) return;
-    return <span>已投递</span>;
+    if(sendStatus ){
+      return <span>已投递</span>;
+    }
+    if(Number(type) === 1 ){
+      return <span>已投递</span>;
+    }
   };
   const disinterestFn = () =>{
     if(Number(type) === 0) return;
     if(Number(type) === 1) return;
+    if(Number(type) === 4) return;
     if(Number(postStatus) === 2) return;
-    return <span onClick={cancelFn}>取消感兴趣</span>;
+    return <span onClick={(e) => cancelFn(e)}>取消感兴趣</span>;
   };
   const postClosing = () => {
     if(Number(type) === 0) return;
@@ -44,7 +51,8 @@ const TrenchingCard:React.FC = (props:Props) =>{
       return <span>岗位关闭</span>;
     }
   };
-  const cancelFn = async() => {
+  const cancelFn = async(e) => {
+    e.stopPropagation();
     const {data:rs} = await axios.put("/cpe/post/concern/cancel",{
       recruitPostId
     });
@@ -114,7 +122,7 @@ const TrenchingCard:React.FC = (props:Props) =>{
       </div>
       <div className="trenching_content_layout_lists_center">
         <img src={data.companyLogo}  alt="" />
-        <div>{data.postName}</div>
+        <div>{data.companyName}</div>
       </div>
       <div className="trenching_content_layout_lists_right">
         <div className="trenching_content_layout_lists_right_top">

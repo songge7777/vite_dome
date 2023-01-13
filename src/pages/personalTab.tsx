@@ -90,7 +90,7 @@ const Personal = () => {
   const getTab1List = async () => {
     const data = {
       pageNum:1,
-      pageSize:10,
+      pageSize:50,
       query:{}
     };
     const {data:rs} = await axios.post("/cpe/post/all/interact",data);
@@ -101,7 +101,7 @@ const Personal = () => {
   const getTab2List = async () => {
     const data = {
       pageNum:1,
-      pageSize:10,
+      pageSize:50,
       query:{}
     };
     const {data:rs} = await axios.post("/cpe/post/all/send",data);
@@ -112,7 +112,7 @@ const Personal = () => {
   const getTab4List = async () => {
     const data = {
       pageNum:1,
-      pageSize:10,
+      pageSize:50,
       query:{}
     };
     const {data:rs} = await axios.post("/cpe/post/all/concern",data);
@@ -123,7 +123,7 @@ const Personal = () => {
   const getTab5List = async () => {
     const data = {
       pageNum:1,
-      pageSize:10,
+      pageSize:50,
       query:{}
     };
     const {data:rs} = await axios.post("/cpe/post/all/browse",data);
@@ -134,7 +134,7 @@ const Personal = () => {
   const getTab8List =async () => {
     const data = {
       pageNum:1,
-      pageSize:10,
+      pageSize:50,
       query:{}
     };
     const {data:rs} = await axios.post("/cpe/post/all/employ",data);
@@ -146,7 +146,7 @@ const Personal = () => {
   const getTab6List = async () => {
     const data = {
       pageNum:1,
-      pageSize:10,
+      pageSize:50,
       query:{}
     };
     const {data:rs} = await axios.post("/cpe/post/all/me",data);
@@ -157,7 +157,7 @@ const Personal = () => {
   const getTab3List = async () => {
     const data = {
       pageNum:1,
-      pageSize:10,
+      pageSize:50,
       query:{}
     };
     const {data:rs} = await axios.post("/cpe/post/all/interview",data);

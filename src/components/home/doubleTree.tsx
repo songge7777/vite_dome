@@ -29,7 +29,7 @@ type TProps = {
 }
 
 const DoubleTree:React.FC = (props:TProps) => {
-  const {data,cb,inputNode,single,onChange,name,placeholder} = props;
+  const {value,data,cb,inputNode,single,onChange,name,placeholder} = props;
   const [show,setShow] = React.useState(false);
   const [secondData,setSecondData] = React.useState([]);
   const [current,setCurrent] = React.useState({});
@@ -57,7 +57,7 @@ const DoubleTree:React.FC = (props:TProps) => {
   return <div className="custom_select">
     {/* 下拉 */}
     <div onClick={()=>{setShow(!show);}} >
-      {inputNode ? inputNode :<Input value={currentValue} placeholder={placeholder}  />}
+      {inputNode ? inputNode :<Input value={value && currentValue} placeholder={placeholder}  />}
     </div>
     {show &&<div className={classnames("custom_select_layout",{
       "custom_select_NoSingle": !single 

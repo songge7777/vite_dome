@@ -9,6 +9,7 @@ import {
   Modal,
   Input,
   Upload,
+  Col, Row,
   message
 } from "antd";
 import axios from "@/api/axios";
@@ -28,6 +29,10 @@ const NoticeOffer = (props:Props) =>{
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [inductionId,setInductionId] = React.useState("");
   const [isEdit,setIsEdit] = React.useState(false);
+  const [isModalNoticeOpen, setIsModalNoticeOpen] = React.useState(false);
+  const [noticeData,setNoticeData] = React.useState({});
+  const [btnsShow,setBtnsShow] = React.useState(false);
+  
   // 身份证图片
   const [fileListIDFront,setFileListIDFront]= React.useState<UploadFile[]>([]);
   // 身份证图片
@@ -128,6 +133,30 @@ const NoticeOffer = (props:Props) =>{
     }
   };
   const handleOk = async() => {
+    if(!dataItem.idCard) {
+      message.error("请填写身份证号码");
+      return;
+    }
+    if(fileListIDFront.length === 0) {
+      message.error("请上传身份证正面");
+      return;
+    }
+    if(fileListIDBack.length === 0) {
+      message.error("请上传身份证反面");
+      return;
+    }
+    if(fileListGraduation.length === 0) {
+      message.error("请上传毕业证");
+      return;
+    }
+    if(fileListQuit.length === 0) {
+      message.error("请上传离职证明");
+      return;
+    }
+    if(fileListPhysical.length === 0) {
+      message.error("请上传体检证明");
+      return;
+    }
     const data = {
       inductionId,
       idCard:dataItem.idCard,
@@ -251,11 +280,34 @@ const NoticeOffer = (props:Props) =>{
     const d = fileListOther.filter(item => item.id !== data.id);
     setFileListOther(d);
   };
+  const handleCancelNotice = () => {
+    refuseFn(noticeData.inductionId);
+    setIsModalNoticeOpen(false);
+  };
+  const handleOkNotice = () => {
+    acceptFn(noticeData.inductionId);
+    setIsModalNoticeOpen(false);
+  };
+
   const uploadButton = (name: string) => <div className="uploadButton">
     <img src={uploadIcon} alt="" />
     <div>{name}</div>
-  </div>
-  ;
+  </div>;
+  const clickPreviewNotice = async(item) => {
+    const {data} = await axios.get(`/cpe/post/notice/${item.noticeId}`);
+    setNoticeData(data.data);
+    console.log(data.data);
+    setIsModalNoticeOpen(true);
+    setBtnsShow(true);
+    console.log("clickPreviewNotice",item);
+  };
+  const clickEntryNotice =async (item) => {
+    const {data} = await axios.get(`/cpe/post/notice/${item.employNoticeId}`);
+    setNoticeData(data.data);
+    console.log(data.data);
+    setBtnsShow(false);
+    setIsModalNoticeOpen(true);
+  };
   return (
     <div className="InterviewList_home_lists">
       <section className="InterviewList_content_layout_lists_div">
@@ -267,10 +319,10 @@ const NoticeOffer = (props:Props) =>{
         </div>
       </section>
       <section className="InterviewList_content_layout_lists_bottom">
-        {data.noticeId &&<div className="InterviewList_content_layout_lists_method">
+        {data.noticeId &&<div className="InterviewList_content_layout_lists_method" onClick={()=>clickPreviewNotice(data)}>
           拟录用通知
         </div>}
-        {data.employNoticeId &&<div className="InterviewList_content_layout_lists_method">
+        {data.employNoticeId &&<div className="InterviewList_content_layout_lists_method" onClick={()=>clickEntryNotice(data)}>
           入职通知
         </div>}
         <div className="InterviewList_content_layout_lists_address">
@@ -294,9 +346,9 @@ const NoticeOffer = (props:Props) =>{
           {
             Number(data.genStatus) == 300 ? <Button onClick={()=>uploadFn(data)}>上传资料</Button> : ""
           }
-          {
+          {/* {
             Number(data.genStatus) == 400 ? <div> 资料审核通过</div> : ""
-          }
+          } */}
           {
             Number(data.genStatus) == 500 ? <div> 候选人拒绝接受</div> : ""
           }
@@ -491,6 +543,20 @@ const NoticeOffer = (props:Props) =>{
             </div>
           </div>
         </section>
+      </Modal>}
+     
+      { isModalNoticeOpen && <Modal className="hiddenBtn" okText="接受" cancelText="拒绝" width={720} open={isModalNoticeOpen} onOk={handleOkNotice} onCancel={()=>setIsModalNoticeOpen(false)} >
+        <p dangerouslySetInnerHTML={{ __html: noticeData.content }}></p>
+        {
+          btnsShow && <Row>
+            <Col span={2} offset={19}>
+              <Button onClick={handleOkNotice}>接受</Button>
+            </Col>
+            <Col  span={2}  offset={1}>
+              <Button  onClick={handleCancelNotice}>拒绝</Button>
+            </Col>
+          </Row>
+        }
       </Modal>}
     </div>
   );

@@ -4,7 +4,10 @@ import "@/styles/pages/interviewListCard.scss";
 import { message } from "antd";
 
 import {
+  Modal,
   Button,
+  Row,
+  Col
 } from "antd";
 import axios from "@/api/axios";
 import dayjs from "dayjs";
@@ -19,7 +22,9 @@ type Props= {
 };
 const InterviewListCard = (props:Props) =>{
   const {data,cb} = props;
-  console.log("==>>",data.interviewStatus);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  // 1 线上   2线下
+  const [interviewType, setInterviewType] = React.useState<Number>(1);
   // 接受面试
   const accept = async(recordId:number) => {
     const {data} = await  axios.put("/cpe/post/interview/accept",{recordId});
@@ -49,7 +54,18 @@ const InterviewListCard = (props:Props) =>{
         return "";
     }
   };
-
+  const handleOkNotice = () => {
+    console.log("handleOkNotice");
+    setIsModalOpen(false);
+  };
+  const clickOfflineInterviewInfo = () => {
+    setInterviewType(2);
+    setIsModalOpen(true);
+  };
+  const clickOnlineInterviewInfo = () => {
+    setInterviewType(1);
+    setIsModalOpen(true);
+  };
   console.log("我的面试",data);
   return (
     <div className="InterviewList_home_lists">
@@ -64,8 +80,8 @@ const InterviewListCard = (props:Props) =>{
       <section className="InterviewList_content_layout_lists_bottom">
         <div className="InterviewList_content_layout_lists_method">
           {/* 面试类型：1线下面试、2腾讯会议 */}
-          {Number(data.interviewType) === 1 ? "线下面试" :""}
-          {Number(data.interviewType) === 2 ? "腾讯会议" :""}
+          {Number(data.interviewType) === 1 ? <span onClick={clickOfflineInterviewInfo}>线下面试</span> :""}
+          {Number(data.interviewType) === 2 ? <span onClick={clickOnlineInterviewInfo}>腾讯会议</span> :""}
         </div>
         <div className="InterviewList_content_layout_lists_address">
           {Number(data.interviewType) === 1 ? data.interviewAddress : "关于支持工程师的面试会议"}
@@ -88,6 +104,55 @@ const InterviewListCard = (props:Props) =>{
             </div>
         }
       </section>
+      { isModalOpen && <Modal className="hiddenBtn" title="查看预约" okText="接受" cancelText="拒绝" width={720} open={isModalOpen} onOk={handleOkNotice} onCancel={()=>setIsModalOpen(false)} >
+        <Row>
+          <Col span={12} >
+            <span>姓名:</span>
+            <span>xxxx</span>
+          </Col>
+          <Col span={12} >
+            <span>岗位:</span>
+            <span>xxxx</span>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={12} >
+            <span>招聘专员:</span>
+            <span>xxxx</span>
+          </Col>
+          <Col span={12} >
+            <span>面试方式:</span>
+            <span>xxxx</span>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={12} >
+            <span>企业联系人:</span>
+            <span>xxxx</span>
+          </Col>
+          <Col span={12} >
+            <span>面试时间:</span>
+            <span>xxxx</span>
+          </Col>
+        </Row>
+        <Row>
+          { Number(interviewType) === 2 &&<Col span={24} >
+            <span>面试地点:</span>
+            <span>xxxx</span>
+          </Col>
+          }
+          { Number(interviewType) === 1 &&<Col span={24} >
+            <span>会议信息:</span>
+            <span>xxxx</span>
+          </Col>
+          }
+        </Row>
+        <Row>
+          <Col span={2} offset={19}>
+            <Button onClick={handleOkNotice}>确认</Button>
+          </Col>
+        </Row>
+      </Modal>}
     </div>
   );
 };

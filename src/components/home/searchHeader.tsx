@@ -84,6 +84,23 @@ const SearchHeader:React.FC =  (props:Props) =>{
     }
   };
   const filterRenderFn = ():React.ReactNode|string => {
+    const cleanItem = (i)=>{
+      let data = searchData;
+      if(i.type === "salaryMin"){
+        data = {
+          ...data,
+          salaryMin: undefined,
+          salaryMax: undefined,
+        };
+      } else {
+        data = {
+          ...data,
+          [i.type]: undefined
+        };
+      }
+      setSearchData(data);
+      console.log(i,searchData);
+    };
     // // 工作地点-市code	
     // workAddrCityCode:"",
     // // 输入条件	
@@ -106,44 +123,52 @@ const SearchHeader:React.FC =  (props:Props) =>{
       // 工作地点-市code	
       {
         value:searchData.workAddrCityCode,
+        type:"workAddrCityCode",
         data:searchCityData()
       },
       {
         value:searchData.education,
+        type:"education",
         data:educationalRequirementsDta()
       },
       // 薪资待遇
       {
         value:[searchData.salaryMin,searchData.salaryMax],
+        type:"salaryMin",
         data:moneyList()
       },
       // 工作经验
       {
         value:searchData.workExperience,
+        type:"workExperience",
         data:workExperience()
       },
       // 职位
       {
         value:searchData.postCategory,
+        type:"postCategory",
         data:postCategoryShowList
       },
       // 行业分类
       {
         value:searchData.industryCategory,
+        type:"industryCategory",
         data:industryCategoryShowList
       },
       // 公司规模
       {
         value:searchData.companyScale,
+        type:"companyScale",
         data:companySize()
       },
       // 融资阶段
       {
         value:searchData.financingStage,
+        type:"financingStage",
         data:financingStage()
       }
-    ].map(item => filterContentFn(item.data,item.value));
-    return arr.filter(i => i).map((i,index) => <span key={index}>{i}</span>);
+    ].map(item => ({data:filterContentFn(item.data,item.value),type:item.type}));
+    return arr.filter(i => i.data).map((i,index) => <span onClick={()=>cleanItem(i)} key={index}>{i.data}</span>);
   };
   const getIndustryCategory = async() => {
     const {data} = await axios.get("/sys/industry_category/get_cache_tree");
@@ -207,12 +232,22 @@ const SearchHeader:React.FC =  (props:Props) =>{
           <div className="search_header_layout_list_select">
             { 
               searchCityData().map(item => <span key={item.id}
-                className={classnames({"fontActive":String(searchData.workAddrCityCode)===String(item.id)})}
+                className={classnames({"fontActive":String(searchData.workAddrCityCode)===String(item.id),"disabled":item.id !== "420100"})}
                 onClick={()=>{
-                  changeDataFn("workAddrCityCode",String(item.id));
+                  console.log(item);
+                  // changeDataFn("workAddrCityCode",String(item.id));
                 }}
               >{item.value}</span>) 
             }
+          </div>
+          <div className="search_header_layout_bottom_hidden" onClick={()=>{
+            setShow(!show);
+          }}>
+            高级搜索
+          </div>
+        
+          <div className="search_header_layout_bottom_clean" onClick={cleanBtn}>
+            x清空筛选
           </div>
         </div>
         <div className="search_header_layout_list_item">
@@ -261,11 +296,11 @@ const SearchHeader:React.FC =  (props:Props) =>{
           <div className="search_header_layout_list_item">
             <span>职位:</span>
             <div className="search_header_layout_list_selectOptionItem">
-              <DoubleTree data={postCategoryData} cb={postCategoryDataCb} />
+              <DoubleTree placeholder={"请选择职位"} data={postCategoryData} value={searchData.postCategory} cb={postCategoryDataCb} />
             </div>
             <span>行业分类:</span>
             <div className="search_header_layout_list_selectOptionItem">
-              <SingleTree data={industryCategoryData} cb={industryCategoryDataCb} />
+              <SingleTree placeholder={"请选择行业分类"} data={industryCategoryData} value={searchData.industryCategory} cb={industryCategoryDataCb} />
             </div>
             <span>公司规模:</span>
             <div className="search_header_layout_list_selectOptionItem">
@@ -299,6 +334,7 @@ const SearchHeader:React.FC =  (props:Props) =>{
           <div className="search_header_layout_bottom_select">
             {filterRenderFn()}
           </div>
+          {/* 
           <div className="search_header_layout_bottom_hidden" onClick={()=>{
             setShow(!show);
           }}>
@@ -308,6 +344,7 @@ const SearchHeader:React.FC =  (props:Props) =>{
           <div className="search_header_layout_bottom_clean" onClick={cleanBtn}>
             x清空筛选
           </div>
+          */}
         </div>
       </div>
     </article>

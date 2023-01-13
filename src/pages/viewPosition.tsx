@@ -53,7 +53,7 @@ const ViewEnterprise = () => {
   const geiRecruitPostData = async(recruitPostId) => {
     const {data} = await axios.post("/cpe/post/search/resemble/post",{
       pageNum:1,
-      pageSize:10,
+      pageSize:50,
       query:{recruitPostId}
     });
     setRecruitPostData(data.data.rows);

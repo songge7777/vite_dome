@@ -17,7 +17,7 @@ const Counter = () =>{
     // 获取首页列表数据
     const {data} = await axios.post("/cpe/post/choice",{
       pageNum:1,
-      pageSize:10,
+      pageSize:50,
       query:{}
     });
     setListData(data.data.rows);

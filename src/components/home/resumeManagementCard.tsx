@@ -45,14 +45,22 @@ const FileUpload:React.FC = (props:Props) => {
     const {data} = await axios.post("/cpe/resume/file",rs);
     cb(false);
   };
+  const beforeUpload = (file: RcFile) => {
+    const isLt10M = file.size / 1024 / 1024 < 10;
+    if (!isLt10M) {
+      message.error("上传大小不能超过10MB!");
+    }
+    return isLt10M;
+  };
   const propsItem: UploadProps = {
     name: "file",
-    accept: "*",
+    accept: ".doc,.docx,application/msword,.pdf",
     multiple: true,
     action: `${baseUrl}/res/file/upload`,
     headers:{
       "Hx-Token": sessionStorage.getItem("accessToken")
     },
+    beforeUpload,
     onChange(info) {
       const { status } = info.file;
       if (status === "done") {
@@ -130,9 +138,9 @@ const resumeManagementCard = () => {
       {dataItem && dataItem.length >0 ? "": <section  className="resumeManagement_bottom">
         <Button onClick={()=>showModal()}>上传简历</Button>
       </section>} 
-      <Modal className="hiddenBtn" title="简历上传" open={isModalOpen} onCancel={()=>setIsModalOpen(false)} >
+      {isModalOpen &&<Modal className="hiddenBtn" title="简历上传" open={isModalOpen} onCancel={()=>setIsModalOpen(false)} >
         <FileUpload cb={setIsModalOpen} initData={initData}/>
-      </Modal>
+      </Modal>}
     </section>
   );
 };

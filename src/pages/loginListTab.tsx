@@ -287,7 +287,7 @@ const Counter:React.FC = () =>{
         companyScale:searchData.companyScale,
       },
       pageNum:1,
-      pageSize:10
+      pageSize:50
     };
     const {data:rs} = await axios.post("/cpe/post/search",data);
     setGetListData(rs.data.rows);

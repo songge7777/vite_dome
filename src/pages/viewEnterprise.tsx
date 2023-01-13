@@ -34,7 +34,7 @@ const ViewEnterprise = () => {
     initMap(rs);
   };
   const filter = (data,id) => {
-    if(Boolean(data.length)) return;
+    if(!Array.isArray(data)) return;
     const r = data.filter(i => Number(i.value)===Number(id))[0];
     const label =  r ? r.label : "";
     return label;
@@ -45,7 +45,6 @@ const ViewEnterprise = () => {
       key: "db1560ddcb7db484b9c65f04f60d04ac", // 申请好的Web端Key，首次调用 load 时必填
       version: "2.0"
     });
-    console.log("positionData",data);
     map = new MpInstance.Map("mapcontainer",{
       zoom: 15,
       plugins:["AMap.Scale","AMap.ToolBar"],
@@ -56,7 +55,7 @@ const ViewEnterprise = () => {
   const getCompanyPost = async(companyId) => {
     const {data} = await axios.post("/cpe/post/search/company/post",{
       pageNum:1,
-      pageSize:10,
+      pageSize:50,
       query:{
         companyId
       }
@@ -116,7 +115,7 @@ const ViewEnterprise = () => {
               </section>
               <section className="enterprise_lists_content_left_content_row">
                 <span className="enterprise_lists_content_left_content_row_title">注册资本</span>
-                <span className="enterprise_lists_content_left_content_row_value">{dataItem.regCapital}(元)</span>
+                <span className="enterprise_lists_content_left_content_row_value">{dataItem.regCapital}(万元)</span>
               </section>
               <section className="enterprise_lists_content_left_content_row">
                 <span className="enterprise_lists_content_left_content_row_title">成立日期</span>

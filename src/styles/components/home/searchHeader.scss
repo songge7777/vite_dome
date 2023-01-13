@@ -24,6 +24,9 @@
       &_list {
         @include flex();
         &_item {
+          width: 100%;
+          position: relative;
+          margin-top: 10px;
           @include flex(row);
           & > span {
             display: inline-block;
@@ -37,7 +40,7 @@
         }
         &_select {
           @include flex(row);
-          margin-bottom: 20px;
+          margin-bottom: 10px;
           font-size: 14px;
           cursor: pointer;
           span {
@@ -47,6 +50,7 @@
         }
       }
       &_bottom {
+        margin-top: 20px;
         @include flex(row);
         padding-top: 13px;
         border-top: 1px solid #ebedf1;
@@ -64,7 +68,7 @@
           margin-bottom: 20px;
           font-size: 14px;
           span {
-            width: 70px;
+            padding: 0 6px;
             height: 24px;
             background: #f1f2f5;
             border-radius: 3px 3px 3px 3px;
@@ -77,18 +81,22 @@
         &_clean {
           position: absolute;
           right: 0;
-          top: -32px;
+          // top: -32px;
           color: #9c9e9c;
         }
         &_hidden {
           position: absolute;
           right: 100px;
-          top: -32px;
+          // top: -32px;
           color: #9c9e9c;
         }
       }
       .fontActive {
         color: $primaryColor;
+      }
+      .disabled {
+        color: gray;
+        cursor: no-drop;
       }
     }
   }
