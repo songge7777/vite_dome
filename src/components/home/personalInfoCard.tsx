@@ -18,7 +18,7 @@ const PersonalInfoCard = (props:Props) => {
     const {data} = await axios.get("/cpe/post/info");
     if(data.code === 200){
       setInfo(data.data);
-      // console.log("个人信息*",data);
+      // ;
     }
   };
   React.useEffect(()=>{

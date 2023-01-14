@@ -27,7 +27,7 @@ const TrenchingCard:React.FC = (props:Props) =>{
   const { postStatus,recruitPostId } = data;
   const [phone,setPhone] = React.useState("");
   const postedFn = () => {
-    console.log("已投递 data",data,type);
+    ;
     const { sendStatus } = data;
     if(Number(type) === 0) return;
     if(Number(type) === 3) return;

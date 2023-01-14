@@ -23,7 +23,7 @@ type Props= {
   cb:()=>void
 };
 const NoticeOffer = (props:Props) =>{
-  console.log("NoticeOffer",props.data);
+  ;
   const {data,cb} = props;
   const [dataItem, setDataItem] = React.useState({});
   const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -296,15 +296,15 @@ const NoticeOffer = (props:Props) =>{
   const clickPreviewNotice = async(item) => {
     const {data} = await axios.get(`/cpe/post/notice/${item.noticeId}`);
     setNoticeData(data.data);
-    console.log(data.data);
+    ;
     setIsModalNoticeOpen(true);
     setBtnsShow(true);
-    console.log("clickPreviewNotice",item);
+    ;
   };
   const clickEntryNotice =async (item) => {
     const {data} = await axios.get(`/cpe/post/notice/${item.employNoticeId}`);
     setNoticeData(data.data);
-    console.log(data.data);
+    ;
     setBtnsShow(false);
     setIsModalNoticeOpen(true);
   };

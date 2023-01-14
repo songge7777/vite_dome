@@ -56,7 +56,7 @@ const MoreCompany = () => {
     setCompanySize(rs1);
     const rs2 = await getT("enterprise_type");
     setEnterpriseType(rs2);
-    console.log("routeConfig",routeConfig);
+    ;
     setDataItem(routeConfig.state.dataItem);
     const rs = await getData(routeConfig.state.companyId);
   

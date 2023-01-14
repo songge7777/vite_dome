@@ -39,12 +39,12 @@ const ViewEnterprise = () => {
   const getData = async(recruitPostId) => {
     if(loginInfo.userId){
       const {data} = await axios.get(`/cpe/post/${recruitPostId}/${loginInfo.userId}`);
-      console.log("dat=>a",data.data);
+      ;
       setPositionData(data.data);
       return data.data;
     }else{
       const {data} = await axios.get(`/cpe/post/${recruitPostId}`);
-      console.log("dat=>a",data.data);
+      ;
       setPositionData(data.data);
       return data.data;
     }
@@ -71,14 +71,14 @@ const ViewEnterprise = () => {
     const rs = await getData(routeConfig.state);
     initMap(rs);
     geiRecruitPostData(rs.recruitPostId);
-    console.log("routeConfig.state",routeConfig.state);
-    console.log("rs.recruitPostId",rs.recruitPostId);
+    ;
+    ;
   
   };
 
   const filter = (data,id) => {
     if(!Array.isArray(data)) return;
-    console.log("Array.isArray", data);
+    ;
     const r = data.filter(i => Number(i.value)===Number(id))[0];
     const label =  r ? r.label : "";
     return label;

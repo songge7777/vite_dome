@@ -53,7 +53,7 @@ const Upload:React.FC = (props:Props) => {
       method: "POST",
       data: formData,
     });
-    console.log("上传成功的数据", data);
+    ;
     return data;
   };
   const createUrl = (currentFile) => {

@@ -213,7 +213,7 @@ const SearchHeader:React.FC =  (props:Props) =>{
               searchCityData().map(item => <span key={item.id}
                 className={classnames({"fontActive":String(searchData.workAddrCityCode)===String(item.id),"disabled":item.id !== "420100"})}
                 onClick={()=>{
-                  console.log(item);
+                  ;
                   // changeDataFn("workAddrCityCode",String(item.id));
                 }}
               >{item.value}</span>) 

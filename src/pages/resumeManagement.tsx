@@ -196,7 +196,7 @@ const ResumeManagement = () => {
   };
   React.useEffect(()=>{
     getData();
-    console.log("routeConfig",routeConfig);
+    ;
   },[]);
   const inputValidator = (rule: RuleObject, value: StoreValue, callback: (error?: string) => void):Promise<void | any> | void =>{
     // if(!value) return callback();
@@ -210,7 +210,7 @@ const ResumeManagement = () => {
   const submitFormData1 = async () => {
     try {
       const rs = await formOne.validateFields(["name","jobMent","sex","phone","birthday","wx","jobIdentity","email","workTime"]);
-      console.log("------1",rs);
+      ;
       const data = await formOne.getFieldsValue();
       data.birthday = dayjs(data.birthday).format("YYYY-MM-DD");
       data.workTime = dayjs(data.workTime).format("YYYY-MM-DD");
@@ -239,7 +239,7 @@ const ResumeManagement = () => {
       setEdit1(false);
       getData1();
     } catch (error) {
-      console.log("error1",error);
+      ;
     }
   };
   const submitFormData2 = async () => {       
@@ -292,7 +292,7 @@ const ResumeManagement = () => {
   };
   const submitFormData4 = async(id?: number | string)=>{
     const data1 = await formThree.getFieldsValue();
-    console.log("data",data1);
+    ;
     await formThree.validateFields();
     const data = await formThree.getFieldsValue();
     data.workDateStart = dayjs(data.workDate[0]).format("YYYY-MM-DD");
@@ -384,7 +384,7 @@ const ResumeManagement = () => {
   const submitFormData6 = async(id?: number | string)=>{
     await formFive.validateFields();
     const data = await formFive.getFieldsValue();
-    console.log(data);
+    ;
     if(data.educationDate){
       data.educationDataStart = dayjs(data.educationDate[0]).format("YYYY-MM-DD");
       data.educationDataEnd = dayjs(data.educationDate[1]).format("YYYY-MM-DD");
@@ -547,7 +547,7 @@ const ResumeManagement = () => {
     const {data:_rs} = await axios.get(`/cpe/resume/education/${id}`);
     if(_rs.code === 200){
       const rs = _rs.data;
-      console.log("教育经历", rs);
+      ;
       setFormFiveDataList(rs);
     }
   };
@@ -555,7 +555,7 @@ const ResumeManagement = () => {
     const {data:_rs} = await axios.get(`/cpe/resume/certificate/${id}`);
     if(_rs.code === 200){
       const rs = _rs.data;
-      console.log("资格证书", rs);
+      ;
       setFormSixDataList(rs);
     }
   };
@@ -571,10 +571,10 @@ const ResumeManagement = () => {
     return text?text.split("\n"):[];
   };
   const cbResult = async(data) => {
-    console.log("新增",data);
+    ;
     const picture = data.data.fileUrl;
     // 新增
-    console.log("---->>", picture);
+    ;
     const {data:rs} = await axios.put("/cpe/resume/single",{
       type:1,
       picture,
@@ -777,7 +777,7 @@ const ResumeManagement = () => {
                               <div className="part-3_list">
                                 <div className="part-3_list_span" onClick={()=>{
                                   setEdit3(true);
-                                  console.log(item);
+                                  ;
                                   formTwo.setFieldsValue({
                                     wantedType:item.wantedType,
                                     workCityCode:item.workCityCode,
@@ -862,7 +862,7 @@ const ResumeManagement = () => {
                         </Form.Item>
                         {/*  salaryMin  salaryMax */}
                         <Form.Item label="期望薪资" name="salaryExpectation" rules={[{ required: true, message:"请选择期望薪资"}]} >
-                          <SalaryExpectation formData={formTwo} onChange={(i:any) => {console.log("------->>");}}/>
+                          <SalaryExpectation formData={formTwo} onChange={(i:any) => {;}}/>
                         </Form.Item>
                       </Form>
                       <Button onClick={()=>setEdit3(false)}>取消</Button>

@@ -40,7 +40,7 @@ const Personal = () => {
   const init = async()=>{
     const {data} = await axios.get("/cpe/post/info");
     setInfo(data.data);
-    console.log("个人信息",data.data);
+    ;
   };
   return (
     <div className="search_layout">

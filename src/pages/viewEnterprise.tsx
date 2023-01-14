@@ -14,7 +14,7 @@ const ViewEnterprise = () => {
   const [dataList,setDataList] = React.useState([]);
   const getData = async(companyId) => {
     const {data} = await  axios.get(`/cpe/post/company/${companyId}`);
-    console.log("data==>>",data);
+    ;
     setDataItem(data.data?data.data:{});
     return data.data;
   };
@@ -61,10 +61,10 @@ const ViewEnterprise = () => {
       }
     });
     setDataList(data.data.rows);
-    console.log("dat",data.data);
+    ;
   };
   const goToPage = (item) => {
-    console.log("==>",item);
+    ;
     const companyId = item.companyId;
     const state = {
       dataItem,

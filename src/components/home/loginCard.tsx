@@ -51,7 +51,7 @@ const LoginCard = () => {
     };
     const getUserInfo = async () => {
       const {data} = await axios.get("/auth/client/info");
-      console.log("getUserInfo",data.data);
+      ;
       const loginInfo = data.data ? data.data : {};
       dispatch(setLoginInfo({loginInfo}));
     };
@@ -61,7 +61,7 @@ const LoginCard = () => {
       sessionStorage.setItem("accessToken",accessToken);
       message.success("登录成功");
       const data = await isGoToGuide();
-      console.log("是否有引导页",data);
+      ;
       getUserInfo();
       if(data.data){
         navigate("/jobWanted");
