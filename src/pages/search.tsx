@@ -30,12 +30,22 @@ const Search = () =>{
       pageSize:50
     };
     const {data:rs} = await axios.post("/cpe/post/search",data);
-    console.log("==>1",rs.data);
     setGetListData(rs.data.rows);
   };
- 
+
   React.useEffect(()=>{
-    initData({});
+    const data = sessionStorage.getItem("searchData");
+    if(data){
+      const {value,code} = JSON.parse(data);
+      const searchData = {
+        inputValue:value,
+        postCategory:code,
+      };
+      initData(searchData);
+      sessionStorage.removeItem("searchData");
+    }else{
+      initData({});
+    }
   },[]);
   return (
     <div className="search_layout">

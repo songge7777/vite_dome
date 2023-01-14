@@ -23,12 +23,13 @@ const Counter = () =>{
     setListData(data.data.rows);
   };
   const searchList = async(data)=> {
+    // 本地存储
+    sessionStorage.setItem("searchData", JSON.stringify(data));
     navigate("/search");
   };
  
   React.useEffect(()=>{
     getList();
-    // window.location.href=window.location.href;
   },[location]);
   return (
     <div className="home_layout">

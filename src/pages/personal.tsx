@@ -31,7 +31,6 @@ const Personal = () => {
       pageSize:50
     };
     const {data:rs} = await axios.post("/cpe/post/search",data);
-    console.log("==>1",rs.data);
     setGetListData(rs.data.rows);
   };
   React.useEffect(()=>{

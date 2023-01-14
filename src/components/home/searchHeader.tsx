@@ -99,26 +99,7 @@ const SearchHeader:React.FC =  (props:Props) =>{
         };
       }
       setSearchData(data);
-      console.log(i,searchData);
     };
-    // // 工作地点-市code	
-    // workAddrCityCode:"",
-    // // 输入条件	
-    // search:"",
-    // // 学历
-    // education:"",
-    // // 薪资待遇
-    // salary:["",""],
-    // // 工作经验
-    // workExperience:"",
-    // // 职位
-    // postCategory:"",
-    // // 行业分类
-    // industryCategory:"",
-    // // 公司规模
-    // companyScale:"",
-    // // 融资阶段
-    // financingStage:"",
     const arr = [
       // 工作地点-市code	
       {
@@ -213,9 +194,7 @@ const SearchHeader:React.FC =  (props:Props) =>{
       // 下拉选中才触发
       changeDataFn("workAddrCityCode",String(select.code));
     }
-    if(value){
-      changeDataFn("inputValue",String(value));
-    }
+    changeDataFn("inputValue",value);
     // 点击搜索 提交数据
     if(type === "submit"){
       submitSearchData();

@@ -64,25 +64,6 @@ const MessagePost:React.FC = () => {
   const getMessage = async(_userId)=>{
     const {data} = await axios.get(`/res/msg/a
       ll/${userId}`);
-    // const data = [{
-    //   msgId:"1",
-    //   userId:"1",
-    //   title:"标题",
-    //   content:"内容内容内容内容内容 未读",
-    //   jumpUrl:"http://www.baidu.com",
-    //   // 是否已读 0 未读 1 已读
-    //   status:"0",
-    //   sentTime:"2020-1-1"
-    // },{
-    //   msgId:"2",
-    //   userId:"2",
-    //   title:"标题1",
-    //   content:"内容内容内容内容内容1 已读",
-    //   jumpUrl:"http://www.baidu.com",
-    //   // 是否已读 0 未读 1 已读
-    //   status:"1",
-    //   sentTime:"2020-1-1"
-    // }];
     if(data.code === 200){
       setDataItem(data.data);
     }

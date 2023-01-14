@@ -17,9 +17,6 @@ const Card = ()=>{
   const goToLogin = () => {
     navigate("/login");
   };
-  React.useEffect(()=>{
-    console.log("loginInfo",loginInfo);
-  });
   const goToMessage = () => {
     if(loginInfo.userId){
       navigate(`/messagenotification?userId=${loginInfo.userId}`);
