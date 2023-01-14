@@ -100,7 +100,8 @@ const Login = () =>{
   const getUserInfo = async () => {
     const {data} = await axios.get("/auth/client/info");
     console.log("getUserInfo",data.data);
-    dispatch(setLoginInfo({loginInfo:data.data}));
+    const loginInfo = data.data ? data.data : {};
+    dispatch(setLoginInfo({loginInfo}));
   };
 
   const init = async ()=>{

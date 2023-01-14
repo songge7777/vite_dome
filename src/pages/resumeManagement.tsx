@@ -571,6 +571,7 @@ const ResumeManagement = () => {
     return text?text.split("\n"):[];
   };
   const cbResult = async(data) => {
+    console.log("新增",data);
     const picture = data.data.fileUrl;
     // 新增
     console.log("---->>", picture);

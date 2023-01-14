@@ -52,7 +52,8 @@ const LoginCard = () => {
     const getUserInfo = async () => {
       const {data} = await axios.get("/auth/client/info");
       console.log("getUserInfo",data.data);
-      dispatch(setLoginInfo({loginInfo:data.data}));
+      const loginInfo = data.data ? data.data : {};
+      dispatch(setLoginInfo({loginInfo}));
     };
     const {data:rsData} = await axios.post("/auth/client/login",param);
     if(rsData.code === 200){
