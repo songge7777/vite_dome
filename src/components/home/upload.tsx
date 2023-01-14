@@ -53,7 +53,7 @@ const Upload:React.FC = (props:Props) => {
       method: "POST",
       data: formData,
     });
-    ;
+   
     return data;
   };
   const createUrl = (currentFile) => {

@@ -11,7 +11,7 @@ type MessageProps = {
 }
 const MessagePostChildren:React.FC = (props:MessageProps) => {
   const {dataItem,index} = props;
-  ;
+ 
   const [info,SetInfo] = React.useState([
     {
       name:"允许新消息通知",
@@ -32,7 +32,7 @@ const MessagePostChildren:React.FC = (props:MessageProps) => {
   ]);
   const clickMessage = async(item) => {
     const rs = await axios(`/res/msg/read?id=${item.msgId}`);
-    ;
+   
   };
   const arrFilter = () => {
     if(!Array.isArray(dataItem)) return [];
@@ -40,7 +40,7 @@ const MessagePostChildren:React.FC = (props:MessageProps) => {
       if(!index) return true;
       return Number(item.status) === Number(index);
     });
-    ;
+   
     return arr;
   };
   return <div className="messagePost">
@@ -120,7 +120,7 @@ const MessagePost:React.FC = () => {
 const Counter:React.FC = () =>{
 
   const onChange = (key: string) => {
-    ;
+   
   };
   
   return (

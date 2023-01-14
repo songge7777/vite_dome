@@ -18,7 +18,7 @@ export const getList = createAsyncThunk("article/getList",
     }
 
     const payload = _.get(res, "data", { list: [], total: 0 });
-    ;
+   
     return payload;
   },
 );

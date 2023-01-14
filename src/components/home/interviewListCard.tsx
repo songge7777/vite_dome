@@ -29,7 +29,7 @@ const InterviewListCard = (props:Props) =>{
   // 接受面试
   const accept = async(recordId:number) => {
     const {data} = await  axios.put("/cpe/post/interview/accept",{recordId});
-    ;
+   
     message.success("已接受");
     cb();
   };
@@ -37,7 +37,7 @@ const InterviewListCard = (props:Props) =>{
   // 拒绝面试
   const refuse = async(recordId:number) => {
     const rs =await  axios.put("/cpe/post/interview/refuse",{recordId});
-    ;
+   
     message.success("已拒绝");
     cb();
   };
@@ -56,19 +56,19 @@ const InterviewListCard = (props:Props) =>{
     }
   };
   const handleOkNotice = () => {
-    ;
+   
     setIsModalOpen(false);
   };
   const clickOfflineInterviewInfo = async(recordId) => {
     const {data} = await axios.get(`/cpe/post/interview/${recordId}`);
-    ;
+   
     setInterviewData(data.data);
     setInterviewType(2);
     setIsModalOpen(true);
   };
   const clickOnlineInterviewInfo = async(recordId) => {
     const {data} = await axios.get(`/cpe/post/interview/${recordId}`);
-    ;
+   
     setInterviewData(data.data);
     setInterviewType(1);
     setIsModalOpen(true);

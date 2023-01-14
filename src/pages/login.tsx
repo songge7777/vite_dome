@@ -68,7 +68,7 @@ const Login = () =>{
       sessionStorage.setItem("accessToken",accessToken);
       message.success("登录成功");
       const data = await isGoToGuide();
-      ;
+     
       getUserInfo();
       if(data.data){
         navigate("/jobWanted");
@@ -99,7 +99,7 @@ const Login = () =>{
 
   const getUserInfo = async () => {
     const {data} = await axios.get("/auth/client/info");
-    ;
+   
     const loginInfo = data.data ? data.data : {};
     dispatch(setLoginInfo({loginInfo}));
   };

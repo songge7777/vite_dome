@@ -40,7 +40,7 @@ const Personal = () => {
   const init = async()=>{
     const {data} = await axios.get("/cpe/post/info");
     setInfo(data.data);
-    ;
+   
   };
   return (
     <div className="search_layout">

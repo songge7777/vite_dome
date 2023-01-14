@@ -38,10 +38,10 @@ const BrowseInformationCard = () => {
       query:{}
     };
     const {data:rs} = await axios.post("/cpe/post/all/browse",data);
-    // ;
+    //
     if(Number(rs.code) === 200){
       setTrenchingData(rs.data.rows);
-      // ;
+      //
     }
   }; 
   // 看过我的-列表
@@ -52,7 +52,6 @@ const BrowseInformationCard = () => {
       query:{}
     };
     const {data:rs} = await axios.post("/cpe/post/all/me",data);
-    ;
     setTab6List(rs.data.rows);
   };
   const clickFn = (n)=>{

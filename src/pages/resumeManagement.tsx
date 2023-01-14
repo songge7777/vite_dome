@@ -196,7 +196,7 @@ const ResumeManagement = () => {
   };
   React.useEffect(()=>{
     getData();
-    ;
+   
   },[]);
   const inputValidator = (rule: RuleObject, value: StoreValue, callback: (error?: string) => void):Promise<void | any> | void =>{
     // if(!value) return callback();
@@ -208,39 +208,35 @@ const ResumeManagement = () => {
     // }
   };
   const submitFormData1 = async () => {
-    try {
-      const rs = await formOne.validateFields(["name","jobMent","sex","phone","birthday","wx","jobIdentity","email","workTime"]);
-      ;
-      const data = await formOne.getFieldsValue();
-      data.birthday = dayjs(data.birthday).format("YYYY-MM-DD");
-      data.workTime = dayjs(data.workTime).format("YYYY-MM-DD");
-      // 新增
-      // type c端口 type 默认为1
-      if(!resumeId){
-        const {data:rs} = await axios.post("/cpe/resume/single",{...data,type:1});
-        if(rs.code === 200 ){
-          message.success("新增成功");
-        }else{
-          message.success(rs.data);
-        }
-      } else {
-        const {data:rs} = await axios.put("/cpe/resume/single",{
-          ...data,
-          type:1,
-          resumeId
-        });
-        if(rs.code === 200 ){
-          message.success("修改成功");
-        }else{
-          message.success(rs.data);
-        }
+    const rs = await formOne.validateFields(["name","jobMent","sex","phone","birthday","wx","jobIdentity","email","workTime"]);
+     
+    const data = await formOne.getFieldsValue();
+    data.birthday = dayjs(data.birthday).format("YYYY-MM-DD");
+    data.workTime = dayjs(data.workTime).format("YYYY-MM-DD");
+    // 新增
+    // type c端口 type 默认为1
+    if(!resumeId){
+      const {data:rs} = await axios.post("/cpe/resume/single",{...data,type:1});
+      if(rs.code === 200 ){
+        message.success("新增成功");
+      }else{
+        message.success(rs.data);
       }
-      // 清空 没写
-      setEdit1(false);
-      getData1();
-    } catch (error) {
-      ;
+    } else {
+      const {data:rs} = await axios.put("/cpe/resume/single",{
+        ...data,
+        type:1,
+        resumeId
+      });
+      if(rs.code === 200 ){
+        message.success("修改成功");
+      }else{
+        message.success(rs.data);
+      }
     }
+    // 清空 没写
+    setEdit1(false);
+    getData1();
   };
   const submitFormData2 = async () => {       
     const {data:rs} =await axios.put("/cpe/resume/single",{merit,resumeId, type:1});
@@ -292,7 +288,7 @@ const ResumeManagement = () => {
   };
   const submitFormData4 = async(id?: number | string)=>{
     const data1 = await formThree.getFieldsValue();
-    ;
+   
     await formThree.validateFields();
     const data = await formThree.getFieldsValue();
     data.workDateStart = dayjs(data.workDate[0]).format("YYYY-MM-DD");
@@ -384,7 +380,7 @@ const ResumeManagement = () => {
   const submitFormData6 = async(id?: number | string)=>{
     await formFive.validateFields();
     const data = await formFive.getFieldsValue();
-    ;
+   
     if(data.educationDate){
       data.educationDataStart = dayjs(data.educationDate[0]).format("YYYY-MM-DD");
       data.educationDataEnd = dayjs(data.educationDate[1]).format("YYYY-MM-DD");
@@ -547,7 +543,7 @@ const ResumeManagement = () => {
     const {data:_rs} = await axios.get(`/cpe/resume/education/${id}`);
     if(_rs.code === 200){
       const rs = _rs.data;
-      ;
+     
       setFormFiveDataList(rs);
     }
   };
@@ -555,7 +551,7 @@ const ResumeManagement = () => {
     const {data:_rs} = await axios.get(`/cpe/resume/certificate/${id}`);
     if(_rs.code === 200){
       const rs = _rs.data;
-      ;
+     
       setFormSixDataList(rs);
     }
   };
@@ -571,10 +567,10 @@ const ResumeManagement = () => {
     return text?text.split("\n"):[];
   };
   const cbResult = async(data) => {
-    ;
+   
     const picture = data.data.fileUrl;
     // 新增
-    ;
+   
     const {data:rs} = await axios.put("/cpe/resume/single",{
       type:1,
       picture,
@@ -777,7 +773,7 @@ const ResumeManagement = () => {
                               <div className="part-3_list">
                                 <div className="part-3_list_span" onClick={()=>{
                                   setEdit3(true);
-                                  ;
+                                 
                                   formTwo.setFieldsValue({
                                     wantedType:item.wantedType,
                                     workCityCode:item.workCityCode,
@@ -862,7 +858,7 @@ const ResumeManagement = () => {
                         </Form.Item>
                         {/*  salaryMin  salaryMax */}
                         <Form.Item label="期望薪资" name="salaryExpectation" rules={[{ required: true, message:"请选择期望薪资"}]} >
-                          <SalaryExpectation formData={formTwo} onChange={(i:any) => {;}}/>
+                          <SalaryExpectation formData={formTwo} onChange={(i:any) => {}}/>
                         </Form.Item>
                       </Form>
                       <Button onClick={()=>setEdit3(false)}>取消</Button>

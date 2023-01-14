@@ -61,7 +61,6 @@ const Card = ()=>{
   },[location]);
   const signOut = async() => {
     const {data} = await axios.get("/auth/client/logout");
-    ;
     sessionStorage.removeItem("accessToken");
     localStorage.removeItem("persist:root");
     navigate("/index");

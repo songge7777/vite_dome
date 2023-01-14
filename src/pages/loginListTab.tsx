@@ -194,7 +194,7 @@ const AccountSecurityCenter:React.FC = ()=>{
           });
         }} />
         <button onClick={async()=>{
-          // ;
+          //
           setShowOne(true);
           //  axios.post("/sys/account/change_phone");
         }}>提交</button>
@@ -271,7 +271,7 @@ const AccountSecurityCenter:React.FC = ()=>{
 const Counter:React.FC = () =>{
   const [getListData,setGetListData] = React.useState([]);
   const onChange = (key: string) => {
-    ;
+   
   };
   const initData = async(searchData:any) => {
     const data = {

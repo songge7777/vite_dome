@@ -94,7 +94,7 @@ const Personal = () => {
       query:{}
     };
     const {data:rs} = await axios.post("/cpe/post/all/interact",data);
-    ;
+   
     setTrenchingData(rs.data.rows);
   }; 
   // 已投递-列表
@@ -106,7 +106,7 @@ const Personal = () => {
     };
     const {data:rs} = await axios.post("/cpe/post/all/send",data);
     setTrenchingData(rs.data.rows);
-    ;
+   
   }; 
   // 感兴趣的-列表
   const getTab4List = async () => {
@@ -117,7 +117,7 @@ const Personal = () => {
     };
     const {data:rs} = await axios.post("/cpe/post/all/concern",data);
     setTrenchingData(rs.data.rows);
-    ;
+   
   }; 
   // 我看过的-列表
   const getTab5List = async () => {
@@ -128,7 +128,7 @@ const Personal = () => {
     };
     const {data:rs} = await axios.post("/cpe/post/all/browse",data);
     setTrenchingData(rs.data.rows);
-    // ;
+    //
   }; 
   // 拟录通知
   const getTab8List =async () => {
@@ -139,7 +139,7 @@ const Personal = () => {
     };
     const {data:rs} = await axios.post("/cpe/post/all/employ",data);
     // const {data:rs} = await axios.post("/cpe/post/all/me",data);
-    // ;
+    //
     setTab8List(rs.data.rows);
   }; 
   // 看过我的-列表
@@ -150,7 +150,7 @@ const Personal = () => {
       query:{}
     };
     const {data:rs} = await axios.post("/cpe/post/all/me",data);
-    ;
+   
     setTab6List(rs.data.rows);
   }; 
   // 我的面试
@@ -162,7 +162,7 @@ const Personal = () => {
     };
     const {data:rs} = await axios.post("/cpe/post/all/interview",data);
     setTab3List(rs.data.rows);
-    ;
+   
   }; 
 
   const clickChange = (i:number) => {

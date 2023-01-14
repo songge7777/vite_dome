@@ -18,7 +18,7 @@ export const login = createSlice({
   // 定义 reducers 并生成关联的操作
   reducers: {
     setLoginInfo(state, { payload }){
-      ;
+     
       state.loginInfo = payload.loginInfo;
     }
   },

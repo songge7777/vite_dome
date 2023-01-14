@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 const Agreement = () => {
   const routeConfig = useLocation();
   const getInit = ()=>{
-    ;
+   
   };
   React.useEffect(()=>{
     getInit();

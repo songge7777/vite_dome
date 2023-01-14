@@ -37,8 +37,8 @@ function renderRoutes(routes: Array<routeType>) {
     // 重定向
     if (item?.redirect) {
       res.element = 
-                <Navigate to={item.redirect} replace />
-      ;
+                <Navigate to={item.redirect} replace />;
+     
     }
 
     return res;

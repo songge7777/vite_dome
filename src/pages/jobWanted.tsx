@@ -173,10 +173,10 @@ const jobWanted: React.FC = () => {
     setUpdate(!update);
   };
   const postCategoryDataCb = (item:{}) => {
-    ;
+   
   };
   const industryCategoryDataCb = (item:{}) => {
-    ;
+   
   };
   const cbResult = async(data) => {
     const picture = data.data.fileUrl;
