@@ -39,12 +39,12 @@ const ViewEnterprise = () => {
   const getData = async(recruitPostId) => {
     if(loginInfo.userId){
       const {data} = await axios.get(`/cpe/post/${recruitPostId}/${loginInfo.userId}`);
-     
-      setPositionData(data.data);
+      const r = data.data? data.data:{};
+      setPositionData(r);
       return data.data;
     }else{
       const {data} = await axios.get(`/cpe/post/${recruitPostId}`);
-     
+      const r = data.data? data.data:{};
       setPositionData(data.data);
       return data.data;
     }
